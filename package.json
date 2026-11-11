@@ -31,11 +31,64 @@
     "./is-overflow": "./src/is-overflow.ts"
   },
   "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./workers-ai": {
+        "types": "./dist/workers-ai/index.d.ts",
+        "default": "./dist/workers-ai/index.js"
+      },
+      "./openai": {
+        "types": "./dist/openai/index.d.ts",
+        "default": "./dist/openai/index.js"
+      },
+      "./openai-compatible": {
+        "types": "./dist/openai-compatible/index.d.ts",
+        "default": "./dist/openai-compatible/index.js"
+      },
+      "./groq": {
+        "types": "./dist/groq/index.d.ts",
+        "default": "./dist/groq/index.js"
+      },
+      "./deepgram": {
+        "types": "./dist/deepgram/index.d.ts",
+        "default": "./dist/deepgram/index.js"
+      },
+      "./elevenlabs": {
+        "types": "./dist/elevenlabs/index.d.ts",
+        "default": "./dist/elevenlabs/index.js"
+      },
+      "./fish-audio": {
+        "types": "./dist/fish-audio/index.d.ts",
+        "default": "./dist/fish-audio/index.js"
+      },
+      "./anthropic": {
+        "types": "./dist/anthropic/index.d.ts",
+        "default": "./dist/anthropic/index.js"
+      },
+      "./google": {
+        "types": "./dist/google/index.d.ts",
+        "default": "./dist/google/index.js"
+      },
+      "./bedrock": {
+        "types": "./dist/bedrock/index.d.ts",
+        "default": "./dist/bedrock/index.js"
+      },
+      "./is-overflow": {
+        "types": "./dist/is-overflow.d.ts",
+        "default": "./dist/is-overflow.js"
+      }
+    },
     "access": "public"
   },
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.build.json && node scripts/esm-extensions.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify:pack": "pnpm build && node scripts/verify-pack.mjs"
   },
   "devDependencies": {
     "es-toolkit": "^1.53.1",
