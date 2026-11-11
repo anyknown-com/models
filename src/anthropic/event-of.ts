@@ -1,8 +1,8 @@
 import { ModelError } from "../model-error";
 import { httpErrorOf } from "../wire/http-error-of";
 import { streamErrorOf } from "../wire/stream-error-of";
-import { STREAM_ERROR_STATUS, UNKNOWN_STREAM_ERROR_STATUS } from "./constants";
-import { messagesEventOf } from "./messages-event-of";
+import { typedDataOf } from "../wire/typed-data-of";
+import { READ_FIELDS, STREAM_ERROR_STATUS, UNKNOWN_STREAM_ERROR_STATUS } from "./constants";
 import { modelErrorOf } from "./model-error-of";
 import type { MessagesEvent } from "./types";
 
@@ -11,7 +11,7 @@ export function eventOf(
   data: string,
   first: boolean,
 ): MessagesEvent | ModelError {
-  const event = messagesEventOf(provider, data);
+  const event = typedDataOf<MessagesEvent>(provider, data, () => READ_FIELDS);
 
   if (event instanceof ModelError || event.type !== "error") return event;
 

@@ -40,5 +40,3 @@ export type MessagesEvent = {
   usage?: JsonObject;
   error?: { type?: string };
 };
-
-export type ReadField = { path: string[]; type: "string" | "number" | "object" };

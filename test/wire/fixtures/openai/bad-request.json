@@ -1,0 +1,40 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/responses",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "gpt-6-luna",
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Hello."
+            }
+          ]
+        }
+      ],
+      "max_output_tokens": -1,
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "Invalid 'max_output_tokens': integer below minimum value. Expected a value >= 16, but got -1 instead.",
+        "type": "invalid_request_error",
+        "param": "max_output_tokens",
+        "code": "integer_below_min_value"
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
-import type { KnownModel, ReadField } from "./types";
+import type { ReadField } from "../wire/types";
+import type { KnownModel } from "./types";
 
 export const PROVIDER = "anthropic";
 

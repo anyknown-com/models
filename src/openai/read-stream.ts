@@ -4,14 +4,13 @@ import type { JsonObject } from "../types/json";
 import type { StreamEvent } from "../types/stream-event";
 import { finishEventsOf } from "../wire/finish-events-of";
 import { readSse } from "../wire/read-sse";
-import { sseDataOf } from "../wire/sse-data-of";
+import { NOT_OUTPUT } from "./constants";
 import { contentEventOf } from "./content-event-of";
-import { finishReasonOf } from "./finish-reason-of";
+import { endReasonOf } from "./end-reason-of";
+import { eventFailureOf } from "./event-failure-of";
+import { responsesEventOf } from "./responses-event-of";
 import { tokenUsageOf } from "./token-usage-of";
 import { toolCallEventsOf } from "./tool-call-events-of";
-import type { ResponsesEvent } from "./types";
-
-const FINISHED = new Set(["response.completed", "response.incomplete"]);
 
 export async function* readStream(
   provider: string,
@@ -19,23 +18,27 @@ export async function* readStream(
   declared: ReadonlySet<string>,
 ): AsyncIterable<StreamEvent> {
   const itemIds = new Map<number, string>();
+  let started = false;
   let called = false;
   let reason: FinishReason | undefined;
   let usage: JsonObject | undefined;
   let failure: ModelError | undefined;
 
   for await (const { data } of readSse(body)) {
-    const event = sseDataOf<ResponsesEvent>(provider, data);
+    const event = responsesEventOf(provider, data);
+    const failed = eventFailureOf(provider, data, event, started);
 
-    if (event instanceof ModelError) {
-      failure = event;
-      continue;
+    started ||= event instanceof ModelError || !NOT_OUTPUT.has(event.type);
+
+    if (failed) {
+      failure = failed;
+      reason = "error";
     }
 
-    if (FINISHED.has(event.type)) {
-      reason = finishReasonOf(event.response?.incomplete_details?.reason, called);
-      usage = event.response?.usage ?? undefined;
-    }
+    if (event instanceof ModelError) continue;
+
+    reason = endReasonOf(event, called, reason, failure !== undefined);
+    usage = event.response?.usage ?? usage;
 
     const content = contentEventOf(event, itemIds);
     const toolCalls = toolCallEventsOf(event, declared);
@@ -47,10 +50,5 @@ export async function* readStream(
     yield* toolCalls;
   }
 
-  yield* finishEventsOf(provider, {
-    reason: failure ? undefined : reason,
-    usage: tokenUsageOf(usage),
-    raw: usage,
-    failure,
-  });
+  yield* finishEventsOf(provider, { reason, usage: tokenUsageOf(usage), raw: usage, failure });
 }

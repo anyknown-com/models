@@ -1,5 +1,6 @@
 import type { StreamEvent } from "../types/stream-event";
 import type { TextRequest } from "../types/text-request";
+import { modelErrorOf } from "../openai-compatible/model-error-of";
 import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
 import { readStream } from "./read-stream";
@@ -17,7 +18,7 @@ export async function* streamResponses(
     ...buildRequest(call, request),
     fetch,
     signal,
-    errorOf: (text) => ({ message: text }),
+    errorOf: modelErrorOf,
   });
 
   const declared = new Set(request.tools?.map((tool) => tool.name));
