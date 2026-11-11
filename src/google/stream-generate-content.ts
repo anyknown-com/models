@@ -4,12 +4,12 @@ import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
 import { PROVIDER } from "./constants";
 import type { GoogleCall } from "./types";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 const unreadStream = async (response: Response): Promise<StreamEvent[]> => {
   await response.body?.cancel();
 
-  throw unsupported("google does not read the stream yet");
+  throw unsupported(PROVIDER, "google does not read the stream yet");
 };
 
 export async function* streamGenerateContent(

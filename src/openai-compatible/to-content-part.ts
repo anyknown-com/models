@@ -3,7 +3,7 @@ import type { FilePart, ImagePart } from "../types/parts";
 import { base64Of } from "../wire/base64";
 import { imageMediaTypeOf } from "../wire/image-media-type-of";
 import { imageUrlPartOf } from "./image-url-part-of";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 const PDF = "application/pdf";
 

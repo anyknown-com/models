@@ -4,7 +4,7 @@ import { imageMediaTypeOf } from "../wire/image-media-type-of";
 import { isImage } from "./is-image";
 import { sourceOf } from "./source-of";
 import type { Media } from "./types";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 const PDF = "application/pdf";
 

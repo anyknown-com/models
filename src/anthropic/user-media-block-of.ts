@@ -4,13 +4,14 @@ import { cacheControlOf } from "./cache-control-of";
 import { mediaOf } from "./media-of";
 import { textDocumentOf } from "./text-document-of";
 import { toContentBlock } from "./to-content-block";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
+import { PROVIDER } from "./constants";
 
 export function userMediaBlockOf(part: ImagePart | FilePart): JsonObject {
   const media = mediaOf(part);
   const block = toContentBlock(media) ?? textDocumentOf(media);
 
-  if (!block) throw unsupported(`${media.mediaType} files`);
+  if (!block) throw unsupported(PROVIDER, `anthropic does not send ${media.mediaType} files`);
 
   const title = part.type === "file" && block.type === "document" ? part.filename : undefined;
 

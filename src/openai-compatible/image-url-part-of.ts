@@ -1,7 +1,7 @@
 import type { JsonObject } from "../types/json";
 import { base64Of } from "../wire/base64";
 import { imageMediaTypeOf } from "../wire/image-media-type-of";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 const hasSubtype = (mediaType: string) => /^[^/]+\/[^*]/.test(mediaType);
 

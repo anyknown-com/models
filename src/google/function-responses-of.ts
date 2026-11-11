@@ -1,12 +1,12 @@
 import type { JsonObject } from "../types/json";
 import type { FilePart, ImagePart, TextPart, ToolResultPart } from "../types/parts";
-import { TOOL_SUCCEEDED } from "./constants";
+import { PROVIDER, TOOL_SUCCEEDED } from "./constants";
 import { functionResponseOf } from "./function-response-of";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 const textOf = (part: TextPart | ImagePart | FilePart): string => {
   if (part.type !== "text") {
-    throw unsupported(`google does not send a tool result ${part.type} part yet`);
+    throw unsupported(PROVIDER, `google does not send a tool result ${part.type} part yet`);
   }
 
   return part.text;

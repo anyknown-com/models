@@ -1,5 +1,6 @@
 import type { JsonObject, JsonValue } from "../../types/json";
-import { unsupported } from "../unsupported";
+import { unsupported } from "../../wire/unsupported";
+import { PROVIDER } from "../constants";
 import { enumTypeOf } from "./enum-type-of";
 
 const allowsNull = (type: JsonValue | undefined): boolean =>
@@ -22,7 +23,10 @@ export function addEnum(result: JsonObject, values: JsonValue[], type: JsonValue
   }
 
   if (!enumType) {
-    throw unsupported("google only takes a JSON Schema enum whose values share one primitive type");
+    throw unsupported(
+      PROVIDER,
+      "google only takes a JSON Schema enum whose values share one primitive type",
+    );
   }
 
   result.type = enumType;

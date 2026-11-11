@@ -3,7 +3,7 @@ import { base64Of } from "../wire/base64";
 import { hasSubtype } from "./has-subtype";
 import { isImage } from "./is-image";
 import type { Media } from "./types";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 export function inputMediaOf(provider: string, { data, mediaType, filename }: Media): JsonObject {
   if (data instanceof URL) {

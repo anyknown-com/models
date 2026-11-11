@@ -1,6 +1,7 @@
 import type { JsonObject } from "../types/json";
 import type { UserModelMessage } from "../types/model-message";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
+import { PROVIDER } from "./constants";
 
 export function userPartsOf(content: UserModelMessage["content"]): JsonObject[] {
   if (typeof content === "string") return [{ text: content }];
@@ -9,7 +10,7 @@ export function userPartsOf(content: UserModelMessage["content"]): JsonObject[] 
     .filter((part) => part.type !== "text" || part.text !== "")
     .map((part) => {
       if (part.type !== "text") {
-        throw unsupported(`google does not send a user ${part.type} part yet`);
+        throw unsupported(PROVIDER, `google does not send a user ${part.type} part yet`);
       }
 
       return { text: part.text };

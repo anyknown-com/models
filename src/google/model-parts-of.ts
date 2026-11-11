@@ -1,7 +1,8 @@
 import type { JsonObject } from "../types/json";
 import type { AssistantModelMessage } from "../types/model-message";
 import { functionCallOf } from "./function-call-of";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
+import { PROVIDER } from "./constants";
 
 type AssistantPart = Exclude<AssistantModelMessage["content"], string>[number];
 
@@ -16,7 +17,7 @@ const modelPartOf = (part: AssistantPart, gemini3: boolean): JsonObject[] => {
     case "tool-result":
       return [];
     case "file":
-      throw unsupported("google does not send an assistant file part yet");
+      throw unsupported(PROVIDER, "google does not send an assistant file part yet");
   }
 };
 

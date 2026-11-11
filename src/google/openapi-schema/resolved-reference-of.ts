@@ -1,6 +1,7 @@
 import type { JsonObject, JsonValue } from "../../types/json";
 import { isJsonObject } from "../../wire/is-json-object";
-import { unsupported } from "../unsupported";
+import { unsupported } from "../../wire/unsupported";
+import { PROVIDER } from "../constants";
 import { RecursiveReference } from "./recursive-reference";
 import { referencedDefinitionOf } from "./referenced-definition-of";
 import type { SchemaContext } from "./types";
@@ -17,7 +18,8 @@ export function resolvedReferenceOf(
 ): { schema: JsonValue; context: SchemaContext } {
   const { $ref: reference, ...sibling } = schema;
 
-  if (typeof reference !== "string") throw unsupported("google only converts string $ref values");
+  if (typeof reference !== "string")
+    throw unsupported(PROVIDER, "google only converts string $ref values");
 
   const { definition, key } = referencedDefinitionOf(reference, context);
 

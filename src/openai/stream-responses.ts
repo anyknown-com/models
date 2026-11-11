@@ -3,7 +3,7 @@ import type { TextRequest } from "../types/text-request";
 import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
 import type { ResponsesCall } from "./types";
-import { unsupported } from "./unsupported";
+import { unsupported } from "../wire/unsupported";
 
 const unreadStream = async (provider: string, response: Response): Promise<StreamEvent[]> => {
   await response.body?.cancel();

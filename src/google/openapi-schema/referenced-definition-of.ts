@@ -1,5 +1,6 @@
 import type { JsonValue } from "../../types/json";
-import { unsupported } from "../unsupported";
+import { unsupported } from "../../wire/unsupported";
+import { PROVIDER } from "../constants";
 import type { SchemaContext } from "./types";
 
 const SOURCES = [
@@ -31,6 +32,7 @@ export function referencedDefinitionOf(
 
   if (!source || malformed || /~(?![01])/u.test(decoded) || definition === undefined) {
     throw unsupported(
+      PROVIDER,
       `google only converts references to direct children of root-level $defs or definitions, not ${reference}`,
     );
   }
