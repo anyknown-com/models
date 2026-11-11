@@ -1,0 +1,11 @@
+{
+  "provider": "zai",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "glm-4.6"
+  },
+  "unsupported": {},
+  "unverified": true
+}

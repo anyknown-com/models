@@ -1,0 +1,11 @@
+{
+  "provider": "ling",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "ling-1t"
+  },
+  "unsupported": {},
+  "unverified": true
+}

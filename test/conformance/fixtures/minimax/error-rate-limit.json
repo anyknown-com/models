@@ -1,0 +1,29 @@
+{
+  "unverified": true,
+  "derivedFrom": "error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.minimax.io/anthropic/v1/messages",
+    "headers": {
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "MiniMax-M2",
+      "max_tokens": 4096,
+      "messages": [],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

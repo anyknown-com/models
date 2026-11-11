@@ -1,0 +1,9 @@
+{
+  "provider": "bedrock",
+  "adapters": {
+    "text": "bedrock"
+  },
+  "models": {},
+  "unsupported": {},
+  "unverified": true
+}

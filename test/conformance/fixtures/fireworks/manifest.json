@@ -1,0 +1,11 @@
+{
+  "provider": "fireworks",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "accounts/fireworks/models/gpt-oss-120b"
+  },
+  "unsupported": {},
+  "unverified": true
+}

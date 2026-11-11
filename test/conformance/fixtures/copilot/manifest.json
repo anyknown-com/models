@@ -1,0 +1,11 @@
+{
+  "provider": "copilot",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "gpt-5-mini"
+  },
+  "unsupported": {},
+  "unverified": true
+}

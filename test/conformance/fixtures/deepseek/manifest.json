@@ -1,0 +1,11 @@
+{
+  "provider": "deepseek",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "deepseek-chat"
+  },
+  "unsupported": {},
+  "unverified": true
+}

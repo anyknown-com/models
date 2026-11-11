@@ -1,0 +1,27 @@
+{
+  "unverified": true,
+  "derivedFrom": "error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://openai.azure.com/openai/v1/responses",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "gpt-5.2",
+      "input": [],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

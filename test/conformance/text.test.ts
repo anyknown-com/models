@@ -2,11 +2,16 @@
 import { readdirSync } from "node:fs";
 import { afterAll, expect, it } from "vitest";
 import { TEXT_ASSERTS } from "./assert";
+import { TEXT_ADAPTERS } from "./constants";
+import { readProviderDir } from "./read-provider-dir";
 import { runProvider } from "./run-provider";
 
 const FIXTURES = new URL("./fixtures/", import.meta.url);
 
-const providers = readdirSync(FIXTURES).filter((name) => name !== "_sample");
+const hasAdapter = (name: string) =>
+  (readProviderDir(new URL(`${name}/`, FIXTURES)).manifest.adapters.text ?? "") in TEXT_ADAPTERS;
+
+const providers = readdirSync(FIXTURES).filter((name) => name !== "_sample" && hasAdapter(name));
 
 const runs = await Promise.all(
   providers.map((name) => runProvider(new URL(`${name}/`, FIXTURES), TEXT_ASSERTS)),

@@ -1,0 +1,54 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro:streamGenerateContent?alt=sse",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "generationConfig": {},
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "What is 17 * 23?"
+            }
+          ]
+        },
+        {
+          "role": "model",
+          "parts": [
+            {
+              "text": "17 * 23 = 17 * 20 + 17 * 3 = 340 + 51 = 391.",
+              "thought": true
+            },
+            {
+              "text": "391"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "And that plus 9?"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

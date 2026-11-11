@@ -1,0 +1,48 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.minimax.io/anthropic/v1/messages",
+    "headers": {
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "MiniMax-M2",
+      "max_tokens": 4096,
+      "system": [
+        {
+          "type": "text",
+          "text": "You are a terse assistant."
+        },
+        {
+          "type": "text",
+          "text": "Answer in one short sentence."
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Name one planet in the solar system."
+            }
+          ]
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

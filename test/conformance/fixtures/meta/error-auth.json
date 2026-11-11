@@ -1,0 +1,44 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.meta.ai/v1/responses",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "llama-4-maverick",
+      "input": [
+        {
+          "role": "system",
+          "content": "You are a terse assistant."
+        },
+        {
+          "role": "system",
+          "content": "Answer in one short sentence."
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Name one planet in the solar system."
+            }
+          ]
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

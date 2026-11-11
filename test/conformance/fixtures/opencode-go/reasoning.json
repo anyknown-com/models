@@ -1,0 +1,40 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://opencode.ai/zen/go/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "kimi-k2",
+      "messages": [
+        {
+          "role": "user",
+          "content": "What is 17 * 23?"
+        },
+        {
+          "role": "assistant",
+          "content": "391",
+          "reasoning_content": "17 * 23 = 17 * 20 + 17 * 3 = 340 + 51 = 391."
+        },
+        {
+          "role": "user",
+          "content": "And that plus 9?"
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

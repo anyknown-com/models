@@ -1,0 +1,12 @@
+{
+  "provider": "groq",
+  "adapters": {
+    "text": "openai-compatible",
+    "transcribe": "groq"
+  },
+  "models": {
+    "text": "openai/gpt-oss-120b"
+  },
+  "unsupported": {},
+  "unverified": true
+}

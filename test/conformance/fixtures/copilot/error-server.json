@@ -1,0 +1,27 @@
+{
+  "unverified": true,
+  "derivedFrom": "error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.githubcopilot.com/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "gpt-5-mini",
+      "messages": [],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

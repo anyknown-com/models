@@ -1,0 +1,11 @@
+{
+  "provider": "opencode-zen",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "gpt-5-nano"
+  },
+  "unsupported": {},
+  "unverified": true
+}

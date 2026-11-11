@@ -1,0 +1,11 @@
+{
+  "provider": "custom",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "custom-model"
+  },
+  "unsupported": {},
+  "unverified": true
+}

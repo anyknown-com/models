@@ -1,0 +1,11 @@
+{
+  "provider": "opencode-go",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "kimi-k2"
+  },
+  "unsupported": {},
+  "unverified": true
+}

@@ -1,0 +1,26 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.xiaomimimo.com/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "mimo-v2-flash",
+      "messages": [],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

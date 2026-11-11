@@ -1,0 +1,11 @@
+{
+  "provider": "xiaomi",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "mimo-v2-flash"
+  },
+  "unsupported": {},
+  "unverified": true
+}

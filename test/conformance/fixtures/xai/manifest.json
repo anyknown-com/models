@@ -1,0 +1,11 @@
+{
+  "provider": "xai",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "grok-5"
+  },
+  "unsupported": {},
+  "unverified": true
+}

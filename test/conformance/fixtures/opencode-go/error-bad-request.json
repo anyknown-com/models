@@ -1,0 +1,26 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://opencode.ai/zen/go/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "kimi-k2",
+      "messages": [],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

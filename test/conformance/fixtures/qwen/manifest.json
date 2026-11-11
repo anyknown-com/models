@@ -1,0 +1,11 @@
+{
+  "provider": "qwen",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "qwen3-max"
+  },
+  "unsupported": {},
+  "unverified": true
+}

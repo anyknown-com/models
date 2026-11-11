@@ -1,0 +1,11 @@
+{
+  "provider": "google",
+  "adapters": {
+    "text": "google"
+  },
+  "models": {
+    "text": "gemini-3-pro"
+  },
+  "unsupported": {},
+  "unverified": true
+}

@@ -1,0 +1,11 @@
+{
+  "provider": "kimi-code",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "kimi-for-coding"
+  },
+  "unsupported": {},
+  "unverified": true
+}

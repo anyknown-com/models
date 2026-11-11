@@ -1,0 +1,44 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/responses",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "gpt-5.2",
+      "input": [
+        {
+          "role": "developer",
+          "content": "You are a terse assistant."
+        },
+        {
+          "role": "developer",
+          "content": "Answer in one short sentence."
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "Name one planet in the solar system."
+            }
+          ]
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "provider": "anthropic",
+  "adapters": {
+    "text": "anthropic"
+  },
+  "models": {
+    "text": "claude-sonnet-5-20260101"
+  },
+  "unsupported": {},
+  "unverified": true
+}

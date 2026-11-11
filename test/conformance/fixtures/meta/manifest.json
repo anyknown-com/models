@@ -1,0 +1,13 @@
+{
+  "provider": "meta",
+  "adapters": {
+    "text": "openai"
+  },
+  "models": {
+    "text": "llama-4-maverick"
+  },
+  "unsupported": {
+    "error-unsupported": "meta accepts a URL image part on its Responses wire, so the case that needs the wire to reject a URL does not apply: https://platform.openai.com/docs/guides/images-vision"
+  },
+  "unverified": true
+}

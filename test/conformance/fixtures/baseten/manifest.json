@@ -1,0 +1,11 @@
+{
+  "provider": "baseten",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "openai/gpt-oss-120b"
+  },
+  "unsupported": {},
+  "unverified": true
+}

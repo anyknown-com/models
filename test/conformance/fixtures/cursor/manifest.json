@@ -1,0 +1,11 @@
+{
+  "provider": "cursor",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "composer-1"
+  },
+  "unsupported": {},
+  "unverified": true
+}

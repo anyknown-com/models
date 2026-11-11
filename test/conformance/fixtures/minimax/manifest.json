@@ -1,0 +1,11 @@
+{
+  "provider": "minimax",
+  "adapters": {
+    "text": "anthropic"
+  },
+  "models": {
+    "text": "MiniMax-M2"
+  },
+  "unsupported": {},
+  "unverified": true
+}

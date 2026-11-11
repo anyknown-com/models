@@ -1,0 +1,11 @@
+{
+  "provider": "mistral",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "mistral-large-latest"
+  },
+  "unsupported": {},
+  "unverified": true
+}

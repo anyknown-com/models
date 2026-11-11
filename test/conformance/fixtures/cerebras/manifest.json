@@ -1,0 +1,11 @@
+{
+  "provider": "cerebras",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "gpt-oss-120b"
+  },
+  "unsupported": {},
+  "unverified": true
+}
