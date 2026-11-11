@@ -1,0 +1,131 @@
+{
+  "unverified": true,
+  "cases": {
+    "response-order": {
+      "request": {
+        "model": "@cf/baai/bge-reranker-base",
+        "query": "where did we meet",
+        "documents": [
+          "Coffee\n\nWe met at the corner cafe.",
+          "Trip\n\nThe flight left at noon.",
+          "Dinner\n\nWe had dinner by the river."
+        ],
+        "topK": 3
+      },
+      "calls": [
+        {
+          "model": "@cf/baai/bge-reranker-base",
+          "input": {
+            "query": "where did we meet",
+            "contexts": [
+              { "text": "Coffee\n\nWe met at the corner cafe." },
+              { "text": "Trip\n\nThe flight left at noon." },
+              { "text": "Dinner\n\nWe had dinner by the river." }
+            ],
+            "top_k": 3
+          },
+          "output": {
+            "response": [
+              { "id": 2, "score": 0.91 },
+              { "id": 0, "score": 0.42 },
+              { "id": 1, "score": 0.03 }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "ranking": [
+          { "index": 2, "score": 0.91 },
+          { "index": 0, "score": 0.42 },
+          { "index": 1, "score": 0.03 }
+        ]
+      }
+    },
+    "missing-id-and-score": {
+      "request": {
+        "model": "@cf/baai/bge-reranker-base",
+        "query": "where did we meet",
+        "documents": [
+          "Coffee\n\nWe met at the corner cafe.",
+          "Trip\n\nThe flight left at noon.",
+          "Dinner\n\nWe had dinner by the river."
+        ],
+        "topK": 3
+      },
+      "calls": [
+        {
+          "model": "@cf/baai/bge-reranker-base",
+          "input": {
+            "query": "where did we meet",
+            "contexts": [
+              { "text": "Coffee\n\nWe met at the corner cafe." },
+              { "text": "Trip\n\nThe flight left at noon." },
+              { "text": "Dinner\n\nWe had dinner by the river." }
+            ],
+            "top_k": 3
+          },
+          "output": {
+            "response": [{ "id": 0, "score": 0.88 }, { "score": 0.5 }, { "id": 2 }]
+          }
+        }
+      ],
+      "result": {
+        "ranking": [
+          { "index": 0, "score": 0.88 },
+          { "index": 2, "score": 0 }
+        ]
+      }
+    },
+    "no-response": {
+      "request": {
+        "model": "@cf/baai/bge-reranker-base",
+        "query": "where did we meet",
+        "documents": ["Coffee\n\nWe met at the corner cafe."],
+        "topK": 1
+      },
+      "calls": [
+        {
+          "model": "@cf/baai/bge-reranker-base",
+          "input": {
+            "query": "where did we meet",
+            "contexts": [{ "text": "Coffee\n\nWe met at the corner cafe." }],
+            "top_k": 1
+          },
+          "output": {}
+        }
+      ],
+      "result": { "ranking": [] }
+    },
+    "no-top-k": {
+      "request": {
+        "model": "@cf/baai/bge-reranker-base",
+        "query": "where did we meet",
+        "documents": ["Coffee\n\nWe met at the corner cafe.", "Trip\n\nThe flight left at noon."]
+      },
+      "calls": [
+        {
+          "model": "@cf/baai/bge-reranker-base",
+          "input": {
+            "query": "where did we meet",
+            "contexts": [
+              { "text": "Coffee\n\nWe met at the corner cafe." },
+              { "text": "Trip\n\nThe flight left at noon." }
+            ]
+          },
+          "output": {
+            "response": [
+              { "id": 1, "score": 0.6 },
+              { "id": 0, "score": 0.2 }
+            ]
+          }
+        }
+      ],
+      "result": {
+        "ranking": [
+          { "index": 1, "score": 0.6 },
+          { "index": 0, "score": 0.2 }
+        ]
+      }
+    }
+  }
+}

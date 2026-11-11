@@ -31,6 +31,15 @@ try {
   await record("embed", "@cf/qwen/qwen3-embedding-0.6b", {
     text: ["segment 1", "segment 2", "segment 3"],
   });
+  await record("rerank", "@cf/baai/bge-reranker-base", {
+    query: "where did we meet",
+    contexts: [
+      { text: "Coffee\n\nWe met at the corner cafe." },
+      { text: "Trip\n\nThe flight left at noon." },
+      { text: "Dinner\n\nWe had dinner by the river." },
+    ],
+    top_k: 3,
+  });
 } finally {
   await proxy.dispose();
 }

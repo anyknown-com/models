@@ -1,6 +1,7 @@
 export { embed } from "./embed";
 export { generateText } from "./generate-text";
 export { ModelError } from "./model-error";
+export { rerank } from "./rerank";
 export { streamText } from "./stream-text";
 export type { EmbedAdapter } from "./types/embed-adapter";
 export type { EmbedRequest } from "./types/embed-request";
