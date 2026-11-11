@@ -1,0 +1,55 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "nova-3",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.deepgram.com/v1/listen?model=nova-3&smart_format=true&detect_language=true",
+    "headers": {
+      "authorization": "Token <key>",
+      "content-type": "audio/webm"
+    },
+    "fields": {
+      "type": "audio/webm",
+      "size": 3
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "metadata": {
+        "request_id": "6d1f6a3e-0000-4000-8000-000000000000",
+        "created": "2026-11-11T12:00:00.000Z",
+        "duration": 25.9,
+        "channels": 1
+      },
+      "results": {
+        "channels": [
+          {
+            "detected_language": "en",
+            "language_confidence": 0.98,
+            "alternatives": [
+              {
+                "transcript": "good morning",
+                "confidence": 0.9,
+                "words": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "result": {
+    "text": "good morning",
+    "usage": {
+      "amount": 25.9,
+      "unit": "seconds"
+    }
+  }
+}

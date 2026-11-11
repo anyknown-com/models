@@ -1,0 +1,37 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "nova-3",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.deepgram.com/v1/listen?model=nova-3&smart_format=true&detect_language=true",
+    "headers": {
+      "authorization": "Token <key>",
+      "content-type": "audio/webm"
+    },
+    "fields": {
+      "type": "audio/webm",
+      "size": 3
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "err_code": "INVALID_AUTH",
+      "err_msg": "Invalid credentials.",
+      "request_id": "6d1f6a3e-0000-4000-8000-000000000001"
+    }
+  },
+  "error": {
+    "kind": "auth",
+    "status": 401,
+    "code": "INVALID_AUTH",
+    "message": "",
+    "retryable": false
+  }
+}

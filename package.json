@@ -9,7 +9,8 @@
     ".": "./src/index.ts",
     "./workers-ai": "./src/workers-ai/index.ts",
     "./openai": "./src/openai/index.ts",
-    "./groq": "./src/groq/index.ts"
+    "./groq": "./src/groq/index.ts",
+    "./deepgram": "./src/deepgram/index.ts"
   },
   "scripts": {
     "test": "vitest run"
