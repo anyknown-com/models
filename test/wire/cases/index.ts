@@ -1,7 +1,9 @@
 export { badRequest } from "./bad-request";
+export { draw } from "./draw";
 export { file } from "./file";
 export { image } from "./image";
 export { reasoning } from "./reasoning";
+export { redraw } from "./redraw";
 export { text } from "./text";
 export { toolCall } from "./tool-call";
 export { tools } from "./tools";
