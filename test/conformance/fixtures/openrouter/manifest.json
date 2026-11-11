@@ -1,0 +1,10 @@
+{
+  "provider": "openrouter",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "openai/gpt-5-nano"
+  },
+  "unsupported": {}
+}
