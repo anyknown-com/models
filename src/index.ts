@@ -11,7 +11,6 @@ export { synthesize } from "./synthesize";
 export { transcribe } from "./transcribe";
 export { readVideoResult } from "./read-video-result";
 export { readVideoStatus } from "./read-video-status";
-export { streamText } from "./stream-text";
 export { submitVideo } from "./submit-video";
 export type { FinishReason } from "./types/finish-reason";
 export type { ImageAdapter } from "./types/image-adapter";
