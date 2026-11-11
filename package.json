@@ -9,6 +9,7 @@
     ".": "./src/index.ts",
     "./workers-ai": "./src/workers-ai/index.ts",
     "./openai": "./src/openai/index.ts",
+    "./openai-compatible": "./src/openai-compatible/index.ts",
     "./groq": "./src/groq/index.ts",
     "./deepgram": "./src/deepgram/index.ts",
     "./elevenlabs": "./src/elevenlabs/index.ts",

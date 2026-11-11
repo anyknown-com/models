@@ -1,0 +1,31 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.test/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "model",
+      "messages": [
+        { "role": "system", "content": "You are a terse assistant." },
+        { "role": "system", "content": "Answer in one short sentence." },
+        { "role": "user", "content": "Name one planet in the solar system." }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "chunks": [
+      "data: {\"id\":\"chatcmpl-1\",\"object\":\"chat.completion.chunk\",\"created\":1762819200,\"model\":\"model\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"Mars\"},\"finish_reason\":null}]}\n\n",
+      "data: {\"id\":\"chatcmpl-1\",\"object\":\"chat.completion.chunk\",\"created\":1762819200,\"model\":\"model\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" is a planet.\"},\"finish_reason\":null}]}\n\n",
+      "data: {\"id\":\"chatcmpl-1\",\"object\":\"chat.completion.chunk\",\"created\":1762819200,\"model\":\"model\",\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":31,\"completion_tokens\":5,\"total_tokens\":36}}\n\n",
+      "data: [DONE]\n\n"
+    ]
+  }
+}
