@@ -9,7 +9,7 @@ export interface FixtureRequest {
 
 export type FixtureResponse = { status: number; headers: Record<string, string> } & (
   | { body: JsonValue }
-  | { chunks: string[] }
+  | { chunks: string[]; encoding?: "base64" }
 );
 
 export interface Fixture {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { JsonValue } from "../../src/types/json";
+import { base64Of } from "../../src/wire/base64";
 import type { Fixture } from "./fixture";
 import echo from "./fixtures/echo.json";
 import { replayFetch } from "./replay-fetch";
@@ -33,6 +34,19 @@ describe("replayFetch", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toBe("text/event-stream");
     expect(await chunksOf(response)).toEqual(echo.response.chunks);
+  });
+
+  it("streams base64 chunks as the bytes they encode", async () => {
+    const bytes = [Uint8Array.of(0, 0, 0, 16, 0xff), Uint8Array.of(0x80, 7)];
+
+    const binary: Fixture = {
+      ...fixture,
+      response: { ...fixture.response, chunks: bytes.map(base64Of), encoding: "base64" },
+    };
+
+    const response = await send(replayFetch(binary), recordedBody);
+
+    expect(await response.bytes()).toEqual(Uint8Array.of(0, 0, 0, 16, 0xff, 0x80, 7));
   });
 
   it("returns the recorded body for the same request", async () => {
