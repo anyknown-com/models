@@ -1,0 +1,43 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "generationConfig": {},
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "Name one planet in the solar system."
+            }
+          ]
+        }
+      ],
+      "systemInstruction": {
+        "parts": [
+          {
+            "text": "You are a terse assistant."
+          },
+          {
+            "text": "Answer in one short sentence."
+          }
+        ]
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "text/event-stream"
+    },
+    "chunks": [
+      "data: {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \"Mars\"}],\"role\": \"model\"},\"index\": 0}],\"usageMetadata\": {\"promptTokenCount\": 18,\"totalTokenCount\": 18,\"promptTokensDetails\": [{\"modality\": \"TEXT\",\"tokenCount\": 18}]},\"modelVersion\": \"gemini-2.5-flash\",\"responseId\": \"resp_01\"}\r\n\r\n",
+      "data: {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \".\"}],\"role\": \"model\"},\"finishReason\": \"STOP\",\"index\": 0}],\"usageMetadata\": {\"promptTokenCount\": 18,\"candidatesTokenCount\": 2,\"totalTokenCount\": 20,\"promptTokensDetails\": [{\"modality\": \"TEXT\",\"tokenCount\": 18}]},\"modelVersion\": \"gemini-2.5-flash\",\"responseId\": \"resp_01\"}\r\n\r\n"
+    ]
+  }
+}

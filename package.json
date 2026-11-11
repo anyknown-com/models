@@ -15,6 +15,7 @@
     "./elevenlabs": "./src/elevenlabs/index.ts",
     "./fish-audio": "./src/fish-audio/index.ts",
     "./anthropic": "./src/anthropic/index.ts",
+    "./google": "./src/google/index.ts",
     "./is-overflow": "./src/is-overflow.ts"
   },
   "scripts": {
