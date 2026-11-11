@@ -1,6 +1,5 @@
-import { readFileSync } from "node:fs";
+import sampleWav from "../../../scripts/sample.wav?inline";
 
-export const sampleAudio = () =>
-  new Blob([readFileSync(new URL("../../../scripts/sample.wav", import.meta.url))], {
-    type: "audio/wav",
-  });
+const bytes = Uint8Array.from(atob(sampleWav.split(",")[1]!), (char) => char.charCodeAt(0));
+
+export const sampleAudio = () => new Blob([bytes], { type: "audio/wav" });

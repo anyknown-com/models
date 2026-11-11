@@ -88,9 +88,11 @@
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.build.json && node scripts/esm-extensions.mjs",
     "test": "vitest run",
-    "verify:pack": "pnpm build && node scripts/verify-pack.mjs"
+    "verify:pack": "pnpm build && node scripts/verify-pack.mjs",
+    "test:worker": "vitest run --config vitest.worker.config.ts"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.22.0",
     "es-toolkit": "^1.53.1",
     "tsx": "^4.23.15",
     "vitest": "^4.1.11"
