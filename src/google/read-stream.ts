@@ -4,13 +4,12 @@ import type { JsonObject } from "../types/json";
 import type { StreamEvent } from "../types/stream-event";
 import { finishEventsOf } from "../wire/finish-events-of";
 import { readSse } from "../wire/read-sse";
-import { sseDataOf } from "../wire/sse-data-of";
+import { chunkOf } from "./chunk-of";
 import { PROVIDER } from "./constants";
 import { finishReasonOf } from "./finish-reason-of";
 import { readParts } from "./read-parts";
 import { readToolCalls } from "./read-tool-calls";
 import { tokenUsageOf } from "./token-usage-of";
-import type { GenerateContentChunk } from "./types";
 
 export async function* readStream(
   body: ReadableStream<Uint8Array>,
@@ -23,7 +22,7 @@ export async function* readStream(
   let failure: ModelError | undefined;
 
   for await (const { data } of readSse(body)) {
-    const chunk = sseDataOf<GenerateContentChunk>(PROVIDER, data);
+    const chunk = chunkOf(data);
 
     if (chunk instanceof ModelError) {
       failure = chunk;
@@ -31,13 +30,14 @@ export async function* readStream(
     }
 
     const candidate = chunk.candidates?.[0];
-    const content = candidate?.content?.parts;
+    const content = candidate?.content?.parts ?? [];
     const calls = readToolCalls(content, declared);
 
     hasToolCalls ||= calls.length > 0;
 
     if (chunk.usageMetadata) usage = chunk.usageMetadata;
     if (candidate?.finishReason) reason = finishReasonOf(candidate.finishReason, hasToolCalls);
+    if (!candidate?.finishReason && chunk.promptFeedback?.blockReason) reason = "content-filter";
 
     yield* parts.read(content);
     yield* calls;

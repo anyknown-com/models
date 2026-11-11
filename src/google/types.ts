@@ -28,6 +28,13 @@ export type GooglePartChunk = {
 };
 
 export type GenerateContentChunk = {
-  candidates?: { content?: { parts?: GooglePartChunk[] }; finishReason?: string }[];
+  candidates?: { content?: { parts?: GooglePartChunk[] | null }; finishReason?: string }[];
   usageMetadata?: JsonObject;
+  promptFeedback?: { blockReason?: string };
+};
+
+export type ReadField = {
+  path: string[];
+  type: "string" | "number" | "boolean" | "object" | "array";
+  required?: true;
 };

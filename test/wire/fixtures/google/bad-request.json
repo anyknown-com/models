@@ -1,0 +1,38 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "generationConfig": {
+        "maxOutputTokens": -1
+      },
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "Hello."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json; charset=UTF-8"
+    },
+    "body": {
+      "error": {
+        "code": 400,
+        "message": "Unable to submit request because it has a maxOutputTokens value of -1 but the supported range is from 1 (inclusive) to 65537 (exclusive). Update the value and try again.",
+        "status": "INVALID_ARGUMENT"
+      }
+    }
+  }
+}
