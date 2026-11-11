@@ -1,5 +1,5 @@
 import type { JsonValue } from "../types/json";
-import { parsedOf } from "./parsed-of";
+import { parsedOf } from "../wire/parsed-of";
 
 export function toolInputOf(args: string, declared: boolean): JsonValue | string {
   if (declared && args.trim() === "") return {};

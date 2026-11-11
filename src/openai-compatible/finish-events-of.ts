@@ -2,7 +2,7 @@ import type { ModelError } from "../model-error";
 import type { FinishReason } from "../types/finish-reason";
 import type { JsonObject } from "../types/json";
 import type { StreamEvent } from "../types/stream-event";
-import { streamErrorOf } from "./stream-error-of";
+import { streamErrorOf } from "../wire/stream-error-of";
 import { tokenUsageOf } from "./token-usage-of";
 
 export function finishEventsOf(

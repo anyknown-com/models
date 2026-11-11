@@ -14,6 +14,20 @@ export const PDF_MEDIA_TYPE = "application/pdf";
 
 export const TEXT_MEDIA_TYPE = "text/plain";
 
+export const STREAM_ERROR_STATUS: Readonly<Record<string, number>> = {
+  api_error: 500,
+  overloaded_error: 529,
+  rate_limit_error: 429,
+  request_too_large: 413,
+  authentication_error: 401,
+  permission_error: 403,
+  not_found_error: 404,
+  billing_error: 400,
+  invalid_request_error: 400,
+};
+
+export const UNKNOWN_STREAM_ERROR_STATUS = 500;
+
 export const DEFAULT_THINKING_BUDGET = 1024;
 
 export const UNKNOWN_MODEL_MAX_OUTPUT_TOKENS = 4096;

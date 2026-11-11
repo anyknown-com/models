@@ -2,6 +2,7 @@ import type { StreamEvent } from "../types/stream-event";
 import type { TextRequest } from "../types/text-request";
 import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
+import { modelErrorOf } from "./model-error-of";
 import { readStream } from "./read-stream";
 import type { AnthropicCall } from "./types";
 
@@ -20,10 +21,16 @@ export async function* streamMessages(
     body,
     fetch,
     signal,
-    errorOf: (text) => ({ message: text }),
+    errorOf: modelErrorOf,
   });
 
   const declared = new Set(request.tools?.map((tool) => tool.name));
 
-  yield* readStream(provider, response.body ?? new Blob().stream(), declared);
+  try {
+    yield* readStream(provider, response.body ?? new Blob().stream(), declared);
+  } catch (error) {
+    if (!signal?.aborted) throw error;
+
+    yield { type: "abort" };
+  }
 }

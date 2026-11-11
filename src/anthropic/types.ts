@@ -36,4 +36,5 @@ export type MessagesEvent = {
     stop_reason?: string | null;
   };
   usage?: JsonObject;
+  error?: { type?: string };
 };

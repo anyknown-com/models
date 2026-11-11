@@ -1,6 +1,6 @@
 import type { ModelError } from "../model-error";
 import type { StreamEvent } from "../types/stream-event";
-import { streamErrorOf } from "./stream-error-of";
+import { streamErrorOf } from "../wire/stream-error-of";
 import { toolInputOf } from "./tool-input-of";
 import type { ChatDelta, ChatToolCallDelta } from "./types";
 

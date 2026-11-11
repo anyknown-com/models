@@ -1,10 +1,8 @@
 import { defaultFetch } from "../default-fetch";
-import { ModelError } from "../model-error";
 import { toModelError } from "../to-model-error";
 import type { JsonValue } from "../types/json";
-import { errorKindOf } from "./error-kind-of";
-
-type ProviderError = { kind?: ModelError["kind"]; code?: string; message: string };
+import { httpErrorOf } from "./http-error-of";
+import type { ErrorOf } from "./types";
 
 type PostInit = {
   provider: string;
@@ -13,7 +11,7 @@ type PostInit = {
   body: JsonValue;
   fetch?: typeof fetch;
   signal?: AbortSignal;
-  errorOf: (body: string, status: number) => ProviderError;
+  errorOf: ErrorOf;
 };
 
 export async function post(init: PostInit): Promise<Response> {
@@ -34,17 +32,7 @@ export async function post(init: PostInit): Promise<Response> {
 
   if (response.ok) return response;
 
-  const { status } = response;
   const body = await response.text().catch(() => "");
-  const { kind, code, message } = init.errorOf(body, status);
 
-  throw new ModelError({
-    ...errorKindOf(status),
-    ...(kind === undefined ? {} : { kind }),
-    provider,
-    status,
-    message,
-    body,
-    ...(code === undefined ? {} : { code }),
-  });
+  throw httpErrorOf(provider, response.status, body, init.errorOf);
 }

@@ -1,12 +1,13 @@
+import { ModelError } from "../model-error";
 import type { FinishReason } from "../types/finish-reason";
 import type { JsonObject } from "../types/json";
 import type { StreamEvent } from "../types/stream-event";
 import { readSse } from "../wire/read-sse";
 import { contentEventOf } from "./content-event-of";
+import { eventOf } from "./event-of";
 import { finishEventsOf } from "./finish-events-of";
 import { finishReasonOf } from "./finish-reason-of";
 import { readToolCalls } from "./read-tool-calls";
-import type { MessagesEvent } from "./types";
 
 export async function* readStream(
   provider: string,
@@ -15,12 +16,21 @@ export async function* readStream(
 ): AsyncIterable<StreamEvent> {
   const toolCallsOf = readToolCalls(declared);
   const texts = new Set<number>();
+  let started = false;
   let start: JsonObject | undefined;
   let delta: JsonObject | undefined;
   let reason: FinishReason | undefined;
+  let failure: ModelError | undefined;
 
   for await (const { data } of readSse(body)) {
-    const event: MessagesEvent = JSON.parse(data);
+    const event = eventOf(provider, data, !started);
+
+    started ||= event instanceof ModelError || event.type !== "ping";
+
+    if (event instanceof ModelError) {
+      failure = event;
+      continue;
+    }
 
     if (event.type === "message_start") start = event.message?.usage;
 
@@ -36,5 +46,5 @@ export async function* readStream(
     yield* toolCallsOf(event);
   }
 
-  yield* finishEventsOf(provider, reason, start, delta);
+  yield* finishEventsOf(provider, { reason, start, delta, failure });
 }
