@@ -58,12 +58,22 @@ const failedFinish = (message: unknown, extra: Partial<ModelError> = {}) =>
   });
 
 describe("anthropic errors", () => {
-  it("sends the bad-request case", async () => {
-    const adapter = anthropic({ key: "", fetch: replayFetch(badRequestFixture as Fixture) });
+  it("reads the recorded bad-request response into a ModelError", async () => {
+    const fixture = badRequestFixture as Fixture;
+    const { model } = fixture.request.body as { model: string };
+    const response = fixture.response as unknown as { body: { error: { message: string } } };
+    const adapter = anthropic({ key: "", fetch: replayFetch(fixture) });
+    const stream = adapter.stream({ ...badRequest, model });
+    const failed = stream[Symbol.asyncIterator]().next();
 
-    await expect(adapter.stream(badRequest)[Symbol.asyncIterator]().next()).rejects.toMatchObject({
+    await expect(failed).rejects.toBeInstanceOf(ModelError);
+    await expect(failed).rejects.toMatchObject({
+      kind: "bad-request",
       status: 400,
       code: "invalid_request_error",
+      message: response.body.error.message,
+      provider: "anthropic",
+      retryable: false,
     });
   });
 

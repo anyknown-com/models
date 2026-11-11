@@ -3,12 +3,14 @@ import { anthropic } from "../../../src/anthropic";
 import type { JsonObject } from "../../../src/types/json";
 import type { StreamEvent } from "../../../src/types/stream-event";
 import type { TextRequest } from "../../../src/types/text-request";
-import { file, image, reasoning, text, tools } from "../cases";
+import { file, image, reasoning, text, textCache, toolCall, tools } from "../cases";
 import type { Fixture } from "../fixture";
 import fileFixture from "../fixtures/anthropic/file.json";
 import imageFixture from "../fixtures/anthropic/image.json";
 import reasoningFixture from "../fixtures/anthropic/reasoning.json";
+import textCacheWriteFixture from "../fixtures/anthropic/text-cache-write.json";
 import textFixture from "../fixtures/anthropic/text.json";
+import toolCallFixture from "../fixtures/anthropic/tool-call.json";
 import toolsFixture from "../fixtures/anthropic/tools.json";
 import { replayFetch } from "../replay-fetch";
 
@@ -26,19 +28,19 @@ const caseOf = (name: string, request: TextRequest, json: unknown) => ({
 });
 
 const CASES = [
-  caseOf("text", text, textFixture),
+  caseOf("text", textCache, textFixture),
+  caseOf("text-cache-write", textCache, textCacheWriteFixture),
   caseOf("tools", tools, toolsFixture),
   caseOf("reasoning", reasoning, reasoningFixture),
   caseOf("image", image, imageFixture),
   caseOf("file", file, fileFixture),
 ];
 
-const unverified = CASES.filter(({ fixture }) => fixture.unverified).map(({ name }) => name);
-
 const dataOf = ({ response }: Fixture): EventData[] =>
-  ("chunks" in response ? response.chunks : []).map((chunk) =>
-    JSON.parse(chunk.slice(chunk.indexOf("data: ") + 6)),
-  );
+  ("chunks" in response ? response.chunks : [])
+    .flatMap((chunk) => chunk.split("\n"))
+    .filter((line) => line.startsWith("data: "))
+    .map((line) => JSON.parse(line.slice(6)));
 
 const sse = (events: JsonObject[]): string =>
   events.map((event) => `event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`).join("");
@@ -65,49 +67,82 @@ const toolUse = (index: number, id: string, parts: string[]): JsonObject[] => [
   { type: "content_block_stop", index },
 ];
 
+const cacheOf = (raw: unknown) =>
+  (raw as { cache_creation: { ephemeral_1h_input_tokens: number } }).cache_creation;
+
 const toolCallEvents = (callId: string, input: unknown) => [
   { type: "tool-input-start", callId, name: "get_weather" },
   { type: "tool-call", callId, name: "get_weather", input },
 ];
 
-describe.skipIf(unverified.length > 0)(
-  `anthropic fixture stream${unverified.length > 0 ? ` (skipped: ${unverified.join(", ")} unverified)` : ""}`,
-  () => {
-    it.each(CASES)(
-      "reads the $name stream into text, finish and usage",
-      async ({ request, fixture }) => {
-        const { model } = fixture.request.body as { model: string };
-        const data = dataOf(fixture);
-        const opened = data.find(({ type }) => type === "message_start")?.message?.usage ?? {};
-        const closed = data.find(({ type }) => type === "message_delta")?.usage ?? {};
-        const raw = { ...opened, ...closed };
-        const events = await eventsOf({ ...request, model }, replayFetch(fixture));
+describe("anthropic fixture stream", () => {
+  it.each(CASES)(
+    "reads the $name stream into text, finish and usage",
+    async ({ request, fixture }) => {
+      const { model } = fixture.request.body as { model: string };
+      const data = dataOf(fixture);
+      const opened = data.find(({ type }) => type === "message_start")?.message?.usage ?? {};
+      const closed = data.find(({ type }) => type === "message_delta")?.usage ?? {};
+      const raw = { ...opened, ...closed };
+      const events = await eventsOf({ ...request, model }, replayFetch(fixture));
 
-        const finished = {
-          reason: "stop",
-          usage: {
-            input: raw.input_tokens + raw.cache_read_input_tokens + raw.cache_creation_input_tokens,
-            output: raw.output_tokens,
-            reasoning: 0,
-            cacheRead: raw.cache_read_input_tokens,
-            cacheWrite: raw.cache_creation_input_tokens,
-          },
-          raw,
-        };
+      const finished = {
+        reason: "stop",
+        usage: {
+          input: raw.input_tokens + raw.cache_read_input_tokens + raw.cache_creation_input_tokens,
+          output: raw.output_tokens,
+          reasoning: 0,
+          cacheRead: raw.cache_read_input_tokens,
+          cacheWrite: raw.cache_creation_input_tokens,
+        },
+        raw,
+      };
 
-        expect(events.flatMap((event) => (event.type === "text" ? [event.delta] : []))).toEqual(
-          data.flatMap(({ delta }) => (delta?.type === "text_delta" ? [delta.text] : [])),
-        );
-        expect(events[0]).toEqual({ type: "text-start", id: "0" });
-        expect(events.slice(-3)).toEqual([
-          { type: "text-end", id: "0" },
-          { type: "step-finish", ...finished },
-          { type: "finish", ...finished },
-        ]);
-      },
+      expect(events.flatMap((event) => (event.type === "text" ? [event.delta] : []))).toEqual(
+        data.flatMap(({ delta }) => (delta?.type === "text_delta" ? [delta.text] : [])),
+      );
+      expect(events[0]).toEqual({ type: "text-start", id: "0" });
+      expect(events.slice(-3)).toEqual([
+        { type: "text-end", id: "0" },
+        { type: "step-finish", ...finished },
+        { type: "finish", ...finished },
+      ]);
+    },
+  );
+
+  it("reads the recorded cache write and cache read into usage and raw", async () => {
+    const usageOf = async ({ request, fixture }: ReturnType<typeof caseOf>) => {
+      const { model } = fixture.request.body as { model: string };
+      const events = await eventsOf({ ...request, model }, replayFetch(fixture));
+      const finish = events.at(-1);
+
+      return finish?.type === "finish" ? finish : undefined;
+    };
+
+    const written = await usageOf(CASES[1]);
+    const read = await usageOf(CASES[0]);
+
+    expect(written?.usage.cacheWrite).toBeGreaterThan(4096);
+    expect(written?.usage.cacheRead).toBe(0);
+    expect(read?.usage.cacheRead).toBe(written?.usage.cacheWrite);
+    expect(read?.usage.cacheWrite).toBe(0);
+    expect(cacheOf(written?.raw).ephemeral_1h_input_tokens).toBe(0);
+    expect(cacheOf(read?.raw).ephemeral_1h_input_tokens).toBe(0);
+  });
+
+  it("reads the recorded tool-call stream into tool calls", async () => {
+    const fixture = toolCallFixture as unknown as Fixture;
+    const { model } = fixture.request.body as { model: string };
+    const events = await eventsOf({ ...toolCall, model }, replayFetch(fixture));
+    const calls = events.filter((event) => event.type === "tool-call");
+
+    expect(calls.length).toBeGreaterThan(0);
+    expect(calls.map((call) => call.name)).toEqual(
+      expect.arrayContaining(["get_time", "get_weather"]),
     );
-  },
-);
+    expect(events.at(-1)).toMatchObject({ type: "finish", reason: "tool-calls" });
+  });
+});
 
 describe("anthropic stream", () => {
   it("reads thinking, cache tokens and the one-hour cache write the way the bridge does", async () => {

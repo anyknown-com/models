@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TextRequest } from "../../../src/types/text-request";
-import { text } from "../cases";
+import { text, textCache } from "../cases";
 import fixture from "../fixtures/anthropic/text.json";
 import { requestDiffs } from "../request-diffs";
 import { sentRequest } from "./sent-request";
@@ -14,8 +14,8 @@ const withAnthropic = (anthropic: TextRequest["providerOptions"]): TextRequest =
 });
 
 describe("anthropic request", () => {
-  it("sends the text case as the fixture's request", async () => {
-    const { request, body } = await sentRequest({ ...text, model });
+  it("sends the text-cache case as the fixture's request", async () => {
+    const { request, body } = await sentRequest({ ...textCache, model });
 
     expect(requestDiffs(fixture.request, request, body)).toEqual([]);
     expect(request.headers.get("x-api-key")).toBe("test-key");

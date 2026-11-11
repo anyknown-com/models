@@ -6,5 +6,6 @@ export { image } from "./image";
 export { reasoning } from "./reasoning";
 export { redraw } from "./redraw";
 export { text } from "./text";
+export { textCache } from "./text-cache";
 export { toolCall } from "./tool-call";
 export { tools } from "./tools";

@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "request": {
     "method": "POST",
     "url": "https://api.anthropic.com/v1/messages",
@@ -8,9 +7,19 @@
       "content-type": "application/json"
     },
     "body": {
-      "model": "model",
+      "model": "claude-haiku-4-5",
       "max_tokens": -1,
-      "messages": [{ "role": "user", "content": [{ "type": "text", "text": "Hello." }] }],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Hello."
+            }
+          ]
+        }
+      ],
       "stream": true
     }
   },
@@ -23,8 +32,9 @@
       "type": "error",
       "error": {
         "type": "invalid_request_error",
-        "message": "max_tokens: Input should be greater than or equal to 1"
-      }
+        "message": "max_tokens: must be greater than or equal to 0"
+      },
+      "request_id": "req_011CgwVuvF35cQsh8PEc7AQ8"
     }
   }
 }
