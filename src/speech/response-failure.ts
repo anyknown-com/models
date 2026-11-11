@@ -1,5 +1,5 @@
 import { ModelError } from "../model-error";
-import { kindOfStatus } from "./kind-of-status";
+import { errorKindOf } from "../wire/error-kind-of";
 import { parseJson } from "./parse-json";
 import { providerCode } from "./provider-code";
 import { providerMessage } from "./provider-message";
@@ -10,9 +10,8 @@ export async function responseFailure(provider: string, response: Response): Pro
   const { status } = response;
 
   return new ModelError({
-    kind: kindOfStatus(status),
+    ...errorKindOf(status),
     provider,
-    retryable: status === 429 || status >= 500,
     status,
     code: providerCode(parsed),
     message: providerMessage(parsed) ?? "",
