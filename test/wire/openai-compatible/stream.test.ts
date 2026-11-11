@@ -3,12 +3,13 @@ import { openaiCompatible } from "../../../src/openai-compatible";
 import type { JsonObject } from "../../../src/types/json";
 import type { StreamEvent } from "../../../src/types/stream-event";
 import type { TextRequest } from "../../../src/types/text-request";
-import { file, image, reasoning, text, tools } from "../cases";
+import { file, image, reasoning, text, toolCall, tools } from "../cases";
 import type { Fixture } from "../fixture";
 import fileFixture from "../fixtures/openai-compatible/file.json";
 import imageFixture from "../fixtures/openai-compatible/image.json";
 import reasoningFixture from "../fixtures/openai-compatible/reasoning.json";
 import textFixture from "../fixtures/openai-compatible/text.json";
+import toolCallFixture from "../fixtures/openai-compatible/tool-call.json";
 import toolsFixture from "../fixtures/openai-compatible/tools.json";
 import { replayFetch } from "../replay-fetch";
 
@@ -31,7 +32,11 @@ const CASES = [
   caseOf("file", file, fileFixture),
 ];
 
-const unverified = CASES.filter(({ fixture }) => fixture.unverified).map(({ name }) => name);
+const TOOL_CALL = caseOf("tool-call", toolCall, toolCallFixture);
+
+const unverified = [...CASES, TOOL_CALL]
+  .filter(({ fixture }) => fixture.unverified)
+  .map(({ name }) => name);
 
 const chunksOf = ({ response }: Fixture): ChunkData[] =>
   ("chunks" in response ? response.chunks : [])
@@ -39,7 +44,7 @@ const chunksOf = ({ response }: Fixture): ChunkData[] =>
     .filter((data) => data !== "[DONE]")
     .map((data) => JSON.parse(data) as ChunkData);
 
-const eventsOf = async ({ request, fixture }: (typeof CASES)[number]) => {
+const eventsOf = async ({ request, fixture }: typeof TOOL_CALL) => {
   const { model } = fixture.request.body as { model: string };
   const baseUrl = fixture.request.url.replace(/\/chat\/completions$/, "");
 
@@ -102,5 +107,35 @@ describe.skipIf(unverified.length > 0)(
         ]);
       },
     );
+
+    it("reads the tool-call stream into input starts and tool calls with parsed input", async () => {
+      const events = await eventsOf(TOOL_CALL);
+      const [usage] = chunksOf(TOOL_CALL.fixture).flatMap((chunk) => chunk.usage ?? []);
+
+      const toolEvents = events.flatMap((event) =>
+        event.type === "tool-input-start" || event.type === "tool-call" ? [event] : [],
+      );
+
+      expect(toolEvents).toEqual([
+        { type: "tool-input-start", callId: expect.any(String), name: "get_weather" },
+        { type: "tool-input-start", callId: expect.any(String), name: "get_time" },
+        {
+          type: "tool-call",
+          callId: toolEvents[0]?.callId,
+          name: "get_weather",
+          input: { city: expect.any(String) },
+        },
+        {
+          type: "tool-call",
+          callId: toolEvents[1]?.callId,
+          name: "get_time",
+          input: { timezone: expect.any(String) },
+        },
+      ]);
+      expect(events.slice(-2)).toMatchObject([
+        { type: "step-finish", reason: "tool-calls", raw: usage },
+        { type: "finish", reason: "tool-calls", raw: usage },
+      ]);
+    });
   },
 );

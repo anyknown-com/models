@@ -10,7 +10,18 @@ export type OpenaiCompatibleConfig = {
 
 export type ChatRequest = { url: string; headers: Record<string, string>; body: JsonObject };
 
-export type ChatDelta = { content?: unknown; reasoning_content?: unknown; reasoning?: unknown };
+export type ChatToolCallDelta = {
+  index?: number | null;
+  id?: string | null;
+  function?: { name?: string | null; arguments?: string | null } | null;
+};
+
+export type ChatDelta = {
+  content?: unknown;
+  reasoning_content?: unknown;
+  reasoning?: unknown;
+  tool_calls?: ChatToolCallDelta[] | null;
+};
 
 export type ChatChunk = {
   usage?: JsonObject | null;

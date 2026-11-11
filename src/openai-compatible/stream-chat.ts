@@ -19,5 +19,7 @@ export async function* streamChat(
     errorOf: (body) => ({ message: body }),
   });
 
-  yield* readStream(name, response.body ?? new Blob().stream());
+  const declared = new Set(request.tools?.map((tool) => tool.name));
+
+  yield* readStream(name, response.body ?? new Blob().stream(), declared);
 }
