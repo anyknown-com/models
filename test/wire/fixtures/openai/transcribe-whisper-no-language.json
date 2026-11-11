@@ -1,4 +1,5 @@
 {
+  "unverified": true,
   "input": {
     "model": "whisper-1",
     "filename": "speech.webm"

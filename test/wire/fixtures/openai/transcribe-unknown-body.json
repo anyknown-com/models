@@ -1,4 +1,5 @@
 {
+  "unverified": true,
   "input": {
     "model": "gpt-transcribe",
     "filename": "speech.webm"
