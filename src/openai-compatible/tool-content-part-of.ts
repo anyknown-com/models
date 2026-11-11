@@ -1,11 +1,17 @@
 import type { JsonObject } from "../types/json";
 import type { FilePart, ImagePart, TextPart } from "../types/parts";
 import { base64Of } from "../wire/base64";
+import { sendableHrefOf } from "../wire/sendable-href-of";
 
-const dataOf = (data: Uint8Array | URL): JsonObject =>
-  data instanceof URL ? { type: "url", url: data.href } : { type: "data", data: base64Of(data) };
+const dataOf = (provider: string, data: Uint8Array | URL): JsonObject =>
+  data instanceof URL
+    ? { type: "url", url: sendableHrefOf(provider, data) }
+    : { type: "data", data: base64Of(data) };
 
-export function toolContentPartOf(part: TextPart | ImagePart | FilePart): JsonObject {
+export function toolContentPartOf(
+  provider: string,
+  part: TextPart | ImagePart | FilePart,
+): JsonObject {
   if (part.type === "text") return part;
 
   const providerOptions: JsonObject = part.providerOptions
@@ -15,7 +21,7 @@ export function toolContentPartOf(part: TextPart | ImagePart | FilePart): JsonOb
   if (part.type === "image") {
     const mediaType = part.image instanceof URL ? "image" : (part.mediaType ?? "image");
 
-    return { type: "file", data: dataOf(part.image), mediaType, ...providerOptions };
+    return { type: "file", data: dataOf(provider, part.image), mediaType, ...providerOptions };
   }
 
   const filename: JsonObject =
@@ -23,7 +29,7 @@ export function toolContentPartOf(part: TextPart | ImagePart | FilePart): JsonOb
 
   return {
     type: "file",
-    data: dataOf(part.data),
+    data: dataOf(provider, part.data),
     ...filename,
     mediaType: part.mediaType,
     ...providerOptions,

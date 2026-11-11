@@ -1,6 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ModelError } from "../../../src/model-error";
+import { openaiCompatible } from "../../../src/openai-compatible";
 import { buildRequest } from "../../../src/openai-compatible/build-request";
+import type { ModelMessage } from "../../../src/types/model-message";
 import type { FilePart, ImagePart } from "../../../src/types/parts";
 
 const CONFIG = { name: "openrouter", key: "k", baseUrl: "https://api.example.test/v1" };
@@ -48,5 +50,36 @@ describe("openai-compatible image and file parts", () => {
     expect(() =>
       partOf({ type: "file", data: new Uint8Array([1]), mediaType: "application/msword" }),
     ).toThrow(ModelError);
+  });
+
+  it("refuses ftp links in a user image and a tool result before it calls fetch", async () => {
+    const ftpImage: ImagePart = { type: "image", image: new URL("ftp://example.test/a.png") };
+
+    const requests: ModelMessage[][] = [
+      [{ role: "user", content: [ftpImage] }],
+      [
+        {
+          role: "tool",
+          content: [
+            {
+              type: "tool-result",
+              toolCallId: "c",
+              toolName: "t",
+              output: { type: "content", value: [ftpImage] },
+            },
+          ],
+        },
+      ],
+    ];
+
+    for (const messages of requests) {
+      const fetch = vi.fn<typeof globalThis.fetch>();
+      const stream = openaiCompatible({ ...CONFIG, fetch }).stream({ model: "m", messages });
+
+      await expect(stream[Symbol.asyncIterator]().next()).rejects.toMatchObject({
+        kind: "unsupported",
+      });
+      expect(fetch).not.toHaveBeenCalled();
+    }
   });
 });

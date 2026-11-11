@@ -15,7 +15,7 @@ const toChatMessage = (provider: string, message: ModelMessage): JsonObject[] =>
   return message.content.map(({ toolCallId, output }) => ({
     role: "tool",
     tool_call_id: toolCallId,
-    content: toolContentOf(output),
+    content: toolContentOf(provider, output),
   }));
 };
 
