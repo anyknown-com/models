@@ -17,3 +17,10 @@ export type ToolMedia = {
   mediaType: string;
   providerOptions?: ProviderOptions;
 };
+
+export type GooglePartChunk = { text?: string; thought?: boolean; thoughtSignature?: string };
+
+export type GenerateContentChunk = {
+  candidates?: { content?: { parts?: GooglePartChunk[] }; finishReason?: string }[];
+  usageMetadata?: JsonObject;
+};

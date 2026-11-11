@@ -3,26 +3,28 @@ import type { TextRequest } from "../types/text-request";
 import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
 import { PROVIDER } from "./constants";
+import { readStream } from "./read-stream";
 import type { GoogleCall } from "./types";
-import { unsupported } from "../wire/unsupported";
-
-const unreadStream = async (response: Response): Promise<StreamEvent[]> => {
-  await response.body?.cancel();
-
-  throw unsupported(PROVIDER, "google does not read the stream yet");
-};
 
 export async function* streamGenerateContent(
   call: GoogleCall,
   request: TextRequest,
 ): AsyncIterable<StreamEvent> {
+  const { signal } = request;
+
   const response = await post({
     provider: PROVIDER,
     ...buildRequest(call, request),
     fetch: call.fetch,
-    signal: request.signal,
+    signal,
     errorOf: (text) => ({ message: text }),
   });
 
-  yield* await unreadStream(response);
+  try {
+    yield* readStream(response.body ?? new Blob().stream());
+  } catch (error) {
+    if (!signal?.aborted) throw error;
+
+    yield { type: "abort" };
+  }
 }
