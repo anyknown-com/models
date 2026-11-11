@@ -22,3 +22,9 @@ export type AssistantPart = Exclude<AssistantModelMessage["content"], string>[nu
 export type RoleGroup =
   | { role: "user"; messages: (UserModelMessage | ToolModelMessage)[] }
   | { role: "assistant"; messages: AssistantModelMessage[] };
+
+export type Signatures = readonly (readonly [string, readonly (number | null)[]])[];
+
+export type MessageContext = { model: string; documentName: (filename?: string) => string };
+
+export type Media = { bytes: Uint8Array; mediaType: string; filename?: string };

@@ -1,7 +1,8 @@
 import type { ModelMessage } from "../types/model-message";
 import { assistantBlocksOf } from "./assistant-blocks-of";
+import { documentNamer } from "./document-namer";
 import { groupedByRole } from "./grouped-by-role";
-import type { BedrockMessage } from "./types";
+import type { BedrockMessage, MessageContext } from "./types";
 import { userBlocksOf } from "./user-blocks-of";
 
 export function toMessages(messages: ModelMessage[], model: string): BedrockMessage[] {
@@ -9,9 +10,11 @@ export function toMessages(messages: ModelMessage[], model: string): BedrockMess
     messages.filter((message) => message.role !== "tool" || message.content.length > 0),
   );
 
+  const context: MessageContext = { model, documentName: documentNamer() };
+
   return groups.flatMap((group, i): BedrockMessage[] => {
     if (group.role === "user") {
-      return [{ role: "user", content: group.messages.flatMap((m) => userBlocksOf(m, model)) }];
+      return [{ role: "user", content: group.messages.flatMap((m) => userBlocksOf(m, context)) }];
     }
 
     const last = i === groups.length - 1;

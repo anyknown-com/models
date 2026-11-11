@@ -1,9 +1,13 @@
 import type { JsonObject } from "../types/json";
 import type { ToolResultOutput } from "../types/parts";
-import { unsupported } from "../wire/unsupported";
-import { PROVIDER } from "./constants";
+import { mediaOf } from "./media-of";
+import { toContentBlock } from "./to-content-block";
+import type { MessageContext } from "./types";
 
-export function toolResultContentOf(output: ToolResultOutput): JsonObject[] {
+export function toolResultContentOf(
+  output: ToolResultOutput,
+  context: MessageContext,
+): JsonObject[] {
   switch (output.type) {
     case "text":
     case "error-text":
@@ -12,12 +16,8 @@ export function toolResultContentOf(output: ToolResultOutput): JsonObject[] {
     case "error-json":
       return [{ text: JSON.stringify(output.value) }];
     case "content":
-      return output.value.map((part) => {
-        if (part.type !== "text") {
-          throw unsupported(PROVIDER, `bedrock does not send a tool result ${part.type} part yet`);
-        }
-
-        return { text: part.text };
-      });
+      return output.value.map((part) =>
+        part.type === "text" ? { text: part.text } : toContentBlock(mediaOf(part, false), context),
+      );
   }
 }
