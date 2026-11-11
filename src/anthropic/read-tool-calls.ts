@@ -1,5 +1,5 @@
 import type { StreamEvent } from "../types/stream-event";
-import { toolInputOf } from "./tool-input-of";
+import { toolInputOf } from "../wire/tool-input-of";
 import type { MessagesEvent } from "./types";
 
 type ToolCallDraft = { callId: string; name: string; json: string };
@@ -23,9 +23,10 @@ export function readToolCalls(declared: ReadonlySet<string>) {
     if (!draft || type !== "content_block_stop") return [];
 
     const { callId, name, json } = draft;
+    const input = toolInputOf(json === "" ? "{}" : json, declared.has(name));
 
     drafts.delete(index);
 
-    return [{ type: "tool-call", callId, name, input: toolInputOf(json, declared.has(name)) }];
+    return [{ type: "tool-call", callId, name, input }];
   };
 }
