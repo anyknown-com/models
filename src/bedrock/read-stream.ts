@@ -8,10 +8,16 @@ import { PROVIDER } from "./constants";
 import { converseEventOf } from "./converse-event-of";
 import { finishReasonOf } from "./finish-reason-of";
 import { readEventStream } from "./read-event-stream";
+import { readToolCalls } from "./read-tool-calls";
 import { tokenUsageOf } from "./token-usage-of";
 import type { BlockKind } from "./types";
 
-export async function* readStream(body: ReadableStream<Uint8Array>): AsyncIterable<StreamEvent> {
+export async function* readStream(
+  body: ReadableStream<Uint8Array>,
+  model: string,
+  declared: ReadonlySet<string>,
+): AsyncIterable<StreamEvent> {
+  const toolCallsOf = readToolCalls(model, declared);
   const blocks = new Map<number, BlockKind>();
   let reason: FinishReason | undefined;
   let usage: JsonObject | undefined;
@@ -26,9 +32,12 @@ export async function* readStream(body: ReadableStream<Uint8Array>): AsyncIterab
       continue;
     }
 
-    if (event?.messageStop) reason = finishReasonOf(event.messageStop.stopReason);
-    if (event?.metadata?.usage) usage = event.metadata.usage;
-    if (event) yield* blockEventsOf(event, blocks);
+    if (!event) continue;
+    if (event.messageStop) reason = finishReasonOf(event.messageStop.stopReason);
+    if (event.metadata?.usage) usage = event.metadata.usage;
+
+    yield* blockEventsOf(event, blocks);
+    yield* toolCallsOf(event);
   }
 
   yield* finishEventsOf(PROVIDER, { reason, usage: tokenUsageOf(usage), raw: usage, failure });

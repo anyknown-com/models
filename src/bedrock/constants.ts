@@ -102,7 +102,7 @@ export const READ_FIELDS: Readonly<Record<string, readonly ReadField[]>> = {
   ),
   contentBlockDelta: blockFieldsOf(
     "contentBlockDelta",
-    ...fieldsOf("object", delta(), delta("reasoningContent")),
+    ...fieldsOf("object", delta(), delta("reasoningContent"), delta("toolUse")),
     ...fieldsOf(
       "string",
       delta("text"),
@@ -127,6 +127,24 @@ export const READ_FIELDS: Readonly<Record<string, readonly ReadField[]>> = {
   ],
 };
 
-export const USAGE_COUNT_FIELDS: readonly ReadField[] = ["inputTokens", "outputTokens"].map(
-  (key): ReadField => ({ path: usage(key), type: "number", required: true }),
-);
+const requiredFieldsOf = (type: ReadField["type"], ...paths: string[][]): ReadField[] =>
+  paths.map((path) => ({ path, type, required: true }));
+
+const toolUseStart = ["contentBlockStart", "start", "toolUse"];
+
+export const FIELDS_WITHIN: Readonly<
+  Record<string, { parent: string[]; fields: readonly ReadField[] }>
+> = {
+  contentBlockStart: {
+    parent: toolUseStart,
+    fields: requiredFieldsOf("string", [...toolUseStart, "toolUseId"], [...toolUseStart, "name"]),
+  },
+  contentBlockDelta: {
+    parent: delta("toolUse"),
+    fields: requiredFieldsOf("string", delta("toolUse", "input")),
+  },
+  metadata: {
+    parent: usage(),
+    fields: requiredFieldsOf("number", usage("inputTokens"), usage("outputTokens")),
+  },
+};

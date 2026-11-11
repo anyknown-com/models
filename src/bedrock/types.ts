@@ -38,10 +38,21 @@ export type ReasoningDelta = {
   redactedContent?: string;
 };
 
-export type BlockDelta = { text?: string; reasoningContent?: ReasoningDelta | null };
+export type BlockDelta = {
+  text?: string;
+  reasoningContent?: ReasoningDelta | null;
+  toolUse?: { input: string } | null;
+};
+
+export type ToolUseStart = { toolUseId: string; name: string };
+
+export type ToolCallDraft = { callId: string; name: string; json: string };
 
 export type ConverseEvent = {
-  contentBlockStart?: { contentBlockIndex: number; start?: { toolUse?: JsonObject | null } | null };
+  contentBlockStart?: {
+    contentBlockIndex: number;
+    start?: { toolUse?: ToolUseStart | null } | null;
+  };
   contentBlockDelta?: { contentBlockIndex: number; delta?: BlockDelta | null };
   contentBlockStop?: { contentBlockIndex: number };
   messageStop?: { stopReason: string };

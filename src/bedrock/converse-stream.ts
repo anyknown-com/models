@@ -10,7 +10,8 @@ export async function* converseStream(
   call: BedrockCall,
   request: TextRequest,
 ): AsyncIterable<StreamEvent> {
-  const { signal } = request;
+  const { signal, model } = request;
+  const declared = new Set(request.tools?.map((tool) => tool.name));
 
   const response = await post({
     provider: PROVIDER,
@@ -21,7 +22,7 @@ export async function* converseStream(
   });
 
   try {
-    yield* readStream(response.body ?? new Blob().stream());
+    yield* readStream(response.body ?? new Blob().stream(), model, declared);
   } catch (error) {
     if (!signal?.aborted) throw error;
 

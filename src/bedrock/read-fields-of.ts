@@ -1,12 +1,13 @@
 import { fieldOf } from "../speech/field-of";
 import type { ReadField } from "../wire/types";
-import { READ_FIELDS, USAGE_COUNT_FIELDS } from "./constants";
+import { FIELDS_WITHIN, READ_FIELDS } from "./constants";
 
 export function readFieldsOf(type: string, event: unknown): readonly ReadField[] {
   const fields = READ_FIELDS[type] ?? [];
-  const usage = fieldOf(fieldOf(event, "metadata"), "usage");
+  const within = FIELDS_WITHIN[type];
+  const parent = within?.parent.reduce(fieldOf, event);
 
-  if (type !== "metadata" || typeof usage !== "object" || usage === null) return fields;
+  if (!within || typeof parent !== "object" || parent === null) return fields;
 
-  return [...fields, ...USAGE_COUNT_FIELDS];
+  return [...fields, ...within.fields];
 }
