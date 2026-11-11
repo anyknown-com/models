@@ -6,3 +6,5 @@ export type ResponsesCall = { provider: string; key: string; fetch: typeof fetch
 export type ResponsesRequest = { url: string; headers: Record<string, string>; body: JsonObject };
 
 export type AssistantPart = Exclude<AssistantModelMessage["content"], string>[number];
+
+export type Media = { data: Uint8Array | URL; mediaType: string; filename: string };

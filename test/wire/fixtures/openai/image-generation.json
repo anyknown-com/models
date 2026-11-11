@@ -1,0 +1,48 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/images/generations",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "gpt-image-2.5-sunburst",
+      "prompt": "A red square centered on a white background.",
+      "quality": "high",
+      "size": "1024x1024",
+      "n": 1
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "created": 1762819200,
+      "background": "opaque",
+      "data": [
+        {
+          "b64_json": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAF0lEQVR4nGP4z8BAEiJN9aiGUQ1DSgMAkPn/Afnh+ngAAAAASUVORK5CYII="
+        }
+      ],
+      "output_format": "png",
+      "quality": "high",
+      "size": "1024x1024",
+      "usage": {
+        "input_tokens": 12,
+        "input_tokens_details": {
+          "image_tokens": 0,
+          "text_tokens": 12
+        },
+        "output_tokens": 4160,
+        "total_tokens": 4172,
+        "output_tokens_details": {
+          "image_tokens": 4160,
+          "text_tokens": 0
+        }
+      }
+    }
+  }
+}

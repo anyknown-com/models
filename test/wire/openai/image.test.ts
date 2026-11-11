@@ -5,7 +5,7 @@ import type { ImageRequest } from "../../../src/types/image-request";
 import { bytesOfBase64 } from "../../../src/wire/base64";
 import { draw, redraw } from "../cases";
 import type { Fixture } from "../fixture";
-import generation from "../fixtures/openai/image.json";
+import generation from "../fixtures/openai/image-generation.json";
 import edit from "../fixtures/openai/image-edit.json";
 import { replayFetch } from "../replay-fetch";
 

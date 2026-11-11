@@ -2,47 +2,45 @@
   "unverified": true,
   "request": {
     "method": "POST",
-    "url": "https://api.openai.com/v1/images/generations",
+    "url": "https://api.openai.com/v1/responses",
     "headers": {
       "content-type": "application/json"
     },
     "body": {
-      "model": "gpt-image-2.5-sunburst",
-      "prompt": "A red square centered on a white background.",
-      "quality": "high",
-      "size": "1024x1024",
-      "n": 1
+      "model": "gpt-6-luna",
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "What color is this image? Answer in one word."
+            },
+            {
+              "type": "input_image",
+              "image_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAF0lEQVR4nGP4z8BAEiJN9aiGUQ1DSgMAkPn/Afnh+ngAAAAASUVORK5CYII="
+            }
+          ]
+        }
+      ],
+      "stream": true
     }
   },
   "response": {
     "status": 200,
     "headers": {
-      "content-type": "application/json"
+      "content-type": "text/event-stream; charset=utf-8"
     },
-    "body": {
-      "created": 1762819200,
-      "background": "opaque",
-      "data": [
-        {
-          "b64_json": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAF0lEQVR4nGP4z8BAEiJN9aiGUQ1DSgMAkPn/Afnh+ngAAAAASUVORK5CYII="
-        }
-      ],
-      "output_format": "png",
-      "quality": "high",
-      "size": "1024x1024",
-      "usage": {
-        "input_tokens": 12,
-        "input_tokens_details": {
-          "image_tokens": 0,
-          "text_tokens": 12
-        },
-        "output_tokens": 4160,
-        "total_tokens": 4172,
-        "output_tokens_details": {
-          "image_tokens": 4160,
-          "text_tokens": 0
-        }
-      }
-    }
+    "chunks": [
+      "event: response.created\ndata: {\"type\":\"response.created\",\"sequence_number\":0,\"response\":{\"id\":\"resp_01\",\"object\":\"response\",\"created_at\":1794410703,\"status\":\"in_progress\",\"model\":\"gpt-6-luna\",\"output\":[],\"usage\":null}}\n\n",
+      "event: response.in_progress\ndata: {\"type\":\"response.in_progress\",\"sequence_number\":1,\"response\":{\"id\":\"resp_01\",\"object\":\"response\",\"created_at\":1794410703,\"status\":\"in_progress\",\"model\":\"gpt-6-luna\",\"output\":[],\"usage\":null}}\n\n",
+      "event: response.output_item.added\ndata: {\"type\":\"response.output_item.added\",\"sequence_number\":2,\"output_index\":0,\"item\":{\"id\":\"msg_01\",\"type\":\"message\",\"status\":\"in_progress\",\"role\":\"assistant\",\"content\":[]}}\n\n",
+      "event: response.content_part.added\ndata: {\"type\":\"response.content_part.added\",\"sequence_number\":3,\"item_id\":\"msg_01\",\"output_index\":0,\"content_index\":0,\"part\":{\"type\":\"output_text\",\"text\":\"\",\"annotations\":[]}}\n\n",
+      "event: response.output_text.delta\ndata: {\"type\":\"response.output_text.delta\",\"sequence_number\":4,\"item_id\":\"msg_01\",\"output_index\":0,\"content_index\":0,\"delta\":\"Red.\"}\n\n",
+      "event: response.output_text.done\ndata: {\"type\":\"response.output_text.done\",\"sequence_number\":5,\"item_id\":\"msg_01\",\"output_index\":0,\"content_index\":0,\"text\":\"Red.\"}\n\n",
+      "event: response.content_part.done\ndata: {\"type\":\"response.content_part.done\",\"sequence_number\":6,\"item_id\":\"msg_01\",\"output_index\":0,\"content_index\":0,\"part\":{\"type\":\"output_text\",\"text\":\"Red.\",\"annotations\":[]}}\n\n",
+      "event: response.output_item.done\ndata: {\"type\":\"response.output_item.done\",\"sequence_number\":7,\"output_index\":0,\"item\":{\"id\":\"msg_01\",\"type\":\"message\",\"status\":\"completed\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"Red.\",\"annotations\":[]}]}}\n\n",
+      "event: response.completed\ndata: {\"type\":\"response.completed\",\"sequence_number\":8,\"response\":{\"id\":\"resp_01\",\"object\":\"response\",\"created_at\":1794410703,\"status\":\"completed\",\"model\":\"gpt-6-luna\",\"output\":[{\"id\":\"msg_01\",\"type\":\"message\",\"status\":\"completed\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"Red.\",\"annotations\":[]}]}],\"usage\":{\"input_tokens\":280,\"input_tokens_details\":{\"cached_tokens\":0},\"output_tokens\":3,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":283}}}\n\n"
+    ]
   }
 }

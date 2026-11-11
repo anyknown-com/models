@@ -1,6 +1,7 @@
 export { badRequest } from "./bad-request";
 export { draw } from "./draw";
 export { file } from "./file";
+export { fileDocx } from "./file-docx";
 export { image } from "./image";
 export { reasoning } from "./reasoning";
 export { redraw } from "./redraw";
