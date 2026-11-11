@@ -2,7 +2,18 @@
   "name": "@anyknown/models",
   "version": "0.1.0",
   "private": true,
+  "description": "Call text, speech, embedding, image and video models from many providers with one small API and only fetch.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anyknown-com/anyknown.git",
+    "directory": "packages/models"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
   "type": "module",
+  "sideEffects": false,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -18,6 +29,9 @@
     "./google": "./src/google/index.ts",
     "./bedrock": "./src/bedrock/index.ts",
     "./is-overflow": "./src/is-overflow.ts"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "test": "vitest run"
