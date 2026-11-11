@@ -22,3 +22,12 @@ export type KnownModel = {
 export type ClaudeModel = { maxOutputTokens: number; known: boolean; structuredOutput: boolean };
 
 export type AssistantPart = Exclude<AssistantModelMessage["content"], string>[number];
+
+export type MessagesEvent = {
+  type: string;
+  index?: number;
+  message?: { usage?: JsonObject };
+  content_block?: { type: string };
+  delta?: { type?: string; text?: string; thinking?: string; stop_reason?: string | null };
+  usage?: JsonObject;
+};

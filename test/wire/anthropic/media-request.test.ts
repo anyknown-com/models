@@ -134,6 +134,28 @@ describe("anthropic image and file request", () => {
     }
   });
 
+  it("drops file parts in assistant turns", async () => {
+    const { body } = await sentRequest({
+      model,
+      messages: [
+        { role: "user", content: "a" },
+        {
+          role: "assistant",
+          content: [
+            { type: "text", text: "b" },
+            { type: "file", data: pdf, mediaType: "application/pdf" },
+          ],
+        },
+        { role: "user", content: "c" },
+      ],
+    });
+
+    expect(Array.isArray(body.messages) && body.messages[1]).toEqual({
+      role: "assistant",
+      content: [{ type: "text", text: "b" }],
+    });
+  });
+
   it("puts a message's cacheControl on its last part unless that part has its own", async () => {
     const hour = { anthropic: { cacheControl: { type: "ephemeral", ttl: "1h" } } };
 

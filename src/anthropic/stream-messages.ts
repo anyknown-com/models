@@ -1,20 +1,9 @@
-import { ModelError } from "../model-error";
 import type { StreamEvent } from "../types/stream-event";
 import type { TextRequest } from "../types/text-request";
 import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
+import { readStream } from "./read-stream";
 import type { AnthropicCall } from "./types";
-
-const unreadStream = async (provider: string, response: Response): Promise<StreamEvent[]> => {
-  await response.body?.cancel();
-
-  throw new ModelError({
-    kind: "unsupported",
-    provider,
-    retryable: false,
-    message: "anthropic does not read the stream yet",
-  });
-};
 
 export async function* streamMessages(
   call: AnthropicCall,
@@ -34,5 +23,5 @@ export async function* streamMessages(
     errorOf: (text) => ({ message: text }),
   });
 
-  yield* await unreadStream(provider, response);
+  yield* readStream(provider, response.body ?? new Blob().stream());
 }
