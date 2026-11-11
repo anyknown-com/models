@@ -1,0 +1,5 @@
+{
+  "name": "models-record-workers-ai",
+  "compatibility_date": "2026-08-01",
+  "ai": { "binding": "AI", "remote": true },
+}
