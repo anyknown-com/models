@@ -9,3 +9,7 @@ export const GENERATION_OPTIONS = [
   "mediaResolution",
   "imageConfig",
 ];
+
+export const SKIP_THOUGHT_SIGNATURE = "skip_thought_signature_validator";
+
+export const TOOL_SUCCEEDED = "Tool executed successfully.";

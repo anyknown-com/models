@@ -1,6 +1,6 @@
 import type { JsonObject, JsonValue } from "../types/json";
 import type { TokenUsage } from "../types/token-usage";
-import { isJsonObject } from "./is-json-object";
+import { isJsonObject } from "../wire/is-json-object";
 
 const numberOf = (value: JsonValue | undefined): number | undefined =>
   typeof value === "number" ? value : undefined;

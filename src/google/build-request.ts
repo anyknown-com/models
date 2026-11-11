@@ -2,6 +2,7 @@ import type { TextRequest } from "../types/text-request";
 import { generationConfigOf } from "./generation-config-of";
 import { modelPathOf } from "./model-path-of";
 import { toContents } from "./to-contents";
+import { toTools } from "./to-tools";
 import type { GoogleCall, GoogleRequest } from "./types";
 
 export function buildRequest(call: GoogleCall, request: TextRequest): GoogleRequest {
@@ -13,6 +14,7 @@ export function buildRequest(call: GoogleCall, request: TextRequest): GoogleRequ
     body: {
       generationConfig: generationConfigOf(maxOutputTokens, providerOptions?.google),
       ...toContents(request),
+      ...toTools(request.tools),
     },
   };
 }

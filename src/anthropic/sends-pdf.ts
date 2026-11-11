@@ -1,5 +1,5 @@
 import type { JsonObject, JsonValue } from "../types/json";
-import { isJsonObject } from "./is-json-object";
+import { isJsonObject } from "../wire/is-json-object";
 import type { AnthropicMessage } from "./types";
 
 const documentSourceOf = (block: JsonValue): JsonValue | undefined =>
