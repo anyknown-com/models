@@ -1,3 +1,4 @@
+import type { ProviderOptions } from "../../src/types/provider-options";
 import type { TextRequest } from "../../src/types/text-request";
 import { TEXT_CASES } from "./cases";
 import type { TextCase } from "./cases";
@@ -20,5 +21,10 @@ export function caseRequest(textCase: TextCase, manifest: Manifest): TextRequest
   if ("record" in source && source.record === "request-model") return source.request;
   if (model === undefined) throw new Error("manifest has no text model");
 
-  return { ...source.request, model };
+  const by: Record<string, ProviderOptions> | undefined =
+    "providerOptionsBy" in source ? source.providerOptionsBy : undefined;
+
+  const providerOptions = by?.[manifest.provider];
+
+  return { ...source.request, model, ...(providerOptions ? { providerOptions } : {}) };
 }

@@ -6,8 +6,7 @@
     "synthesize": "openai"
   },
   "models": {
-    "text": "gpt-5.2"
+    "text": "gpt-6-luna"
   },
-  "unsupported": {},
-  "unverified": true
+  "unsupported": {}
 }

@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "derivedFrom": "error-bad-request",
   "request": {
     "method": "POST",
@@ -8,7 +7,7 @@
       "content-type": "application/json"
     },
     "body": {
-      "model": "gpt-5.2",
+      "model": "gpt-6-luna",
       "input": [],
       "stream": true
     }
@@ -20,7 +19,10 @@
     },
     "body": {
       "error": {
-        "message": "request-only"
+        "message": "One of \"input\" or \"previous_response_id\" or 'prompt' or 'conversation' must be provided.",
+        "type": "invalid_request_error",
+        "param": null,
+        "code": "missing_required_parameter"
       }
     }
   }

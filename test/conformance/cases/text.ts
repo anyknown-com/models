@@ -20,7 +20,12 @@ export const TEXT_CASES = [
   { id: "tool-result", source: "recorded", request: tools },
   { id: "image", source: "recorded", request: image },
   { id: "file", source: "recorded", request: file },
-  { id: "reasoning", source: "recorded", request: reasoning },
+  {
+    id: "reasoning",
+    source: "recorded",
+    request: reasoning,
+    providerOptionsBy: { openai: { openai: { reasoningEffort: "high" } } },
+  },
   { id: "usage", source: "recorded", fixtureOf: "text" },
   { id: "usage-cache", source: "recorded", request: textCache, record: "twice" },
   { id: "error-auth", source: "recorded", request: text, record: "wrong-key" },
