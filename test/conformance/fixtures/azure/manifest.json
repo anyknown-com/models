@@ -6,8 +6,6 @@
   "models": {
     "text": "gpt-5.2"
   },
-  "unsupported": {
-    "error-unsupported": "azure accepts a URL image part on its Responses wire, so the case that needs the wire to reject a URL does not apply: https://learn.microsoft.com/azure/ai-foundry/openai/how-to/responses"
-  },
+  "unsupported": {},
   "unverified": true
 }

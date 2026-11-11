@@ -120,4 +120,16 @@ describe("openai image and file parts", () => {
       { type: "input_file", filename: "data", file_data: `data:${DOCX};base64,AQ==` },
     ]);
   });
+
+  it("refuses links that are not http, https or data in user and tool result content", () => {
+    const ftpParts: Part[] = [
+      { type: "image", image: new URL("ftp://example.test/a.png") },
+      { type: "file", data: new URL("ftp://example.test/a.pdf"), mediaType: "application/pdf" },
+    ];
+
+    for (const part of ftpParts) {
+      expect(() => userParts([part])).toThrow(expect.objectContaining({ kind: "unsupported" }));
+      expect(() => toolParts([part])).toThrow(expect.objectContaining({ kind: "unsupported" }));
+    }
+  });
 });

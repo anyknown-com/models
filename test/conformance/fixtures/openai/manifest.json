@@ -8,8 +8,6 @@
   "models": {
     "text": "gpt-5.2"
   },
-  "unsupported": {
-    "error-unsupported": "openai accepts a URL image part on its Responses wire, so the case that needs the wire to reject a URL does not apply: https://platform.openai.com/docs/guides/images-vision"
-  },
+  "unsupported": {},
   "unverified": true
 }

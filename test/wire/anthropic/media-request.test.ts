@@ -134,6 +134,23 @@ describe("anthropic image and file request", () => {
     }
   });
 
+  it("refuses links that are not http or https in user and tool result content", async () => {
+    const ftpParts: (ImagePart | FilePart)[] = [
+      { type: "image", image: new URL("ftp://example.com/a.png") },
+      { type: "file", data: new URL("ftp://example.com/a.pdf"), mediaType: "application/pdf" },
+    ];
+
+    for (const part of ftpParts) {
+      for (const messages of [userTurn(part), toolTurn(part)]) {
+        const stream = anthropic({ key: "k", fetch }).stream({ model, messages });
+
+        await expect(stream[Symbol.asyncIterator]().next()).rejects.toMatchObject({
+          kind: "unsupported",
+        });
+      }
+    }
+  });
+
   it("drops file parts in assistant turns", async () => {
     const { body } = await sentRequest({
       model,
