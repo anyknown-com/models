@@ -1,6 +1,6 @@
 # @anyknown/models
 
-One small API for calling AI models: stream or generate text, transcribe speech, synthesize speech, embed, rerank, generate images and generate video. Each provider is an adapter on its own subpath, so you import only the providers you use. The package has no runtime dependencies and talks to providers with `fetch` only.
+One small API for calling AI models: stream or generate text, transcribe speech, synthesize speech, embed, rerank, generate images and generate video. Each adapter is on its own subpath, so you import only the adapters you use. The package has no runtime dependencies and talks to providers with `fetch` only.
 
 ## Install
 
@@ -257,7 +257,7 @@ export async function downloadFilm(key: string, job: VideoJob): Promise<Uint8Arr
 
 Every adapter takes `{ key, fetch?, baseUrl? }` unless the table says otherwise.
 
-| Import                               | Adapter                                                                                  | Calls                                                                                          |
+| Import                               | Adapter                                                                                  | Functions                                                                                      |
 | ------------------------------------ | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | `@anyknown/models/openai`            | `openai`                                                                                 | `streamText`, `generateText`, `transcribe`, `synthesize`, `generateImage`                      |
 | `@anyknown/models/anthropic`         | `anthropic`                                                                              | `streamText`, `generateText`                                                                   |

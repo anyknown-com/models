@@ -8,7 +8,7 @@ release can break the API; every break is listed under **Breaking**.
 
 ### Added
 
-- **Calls:** `streamText`, `generateText`, `transcribe`, `synthesize`, `embed`, `rerank`, `generateImage`, `submitVideo`, `readVideoStatus` and `readVideoResult`, from `@anyknown/models`.
+- **Functions:** `streamText`, `generateText`, `transcribe`, `synthesize`, `embed`, `rerank`, `generateImage`, `submitVideo`, `readVideoStatus` and `readVideoResult`, from `@anyknown/models`.
 - **Errors:** `ModelError`, with `kind`, `provider`, `retryable`, `status`, `code` and `body`.
 - **`@anyknown/models/openai`:** `openai`, for text, transcription, speech and images.
 - **`@anyknown/models/anthropic`:** `anthropic`, for text.
