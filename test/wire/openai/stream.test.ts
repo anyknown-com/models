@@ -37,14 +37,12 @@ const CASES = [
 
 const TOOL_CALL = caseOf("tool-call", toolCall, toolCallFixture);
 
-const unverified = [...CASES, TOOL_CALL]
-  .filter(({ fixture }) => fixture.unverified)
-  .map(({ name }) => name);
-
 const dataOf = ({ response }: Fixture): EventData[] =>
-  ("chunks" in response ? response.chunks : []).map((chunk) =>
-    JSON.parse(chunk.slice(chunk.indexOf("data: ") + 6)),
-  );
+  ("chunks" in response ? response.chunks : [])
+    .join("")
+    .split("\n\n")
+    .filter((block) => block.includes("data: "))
+    .map((block) => JSON.parse(block.slice(block.indexOf("data: ") + 6)));
 
 const sse = (events: JsonObject[]): string =>
   events.map((event) => `event: ${event.type}\ndata: ${JSON.stringify(event)}\n\n`).join("");
@@ -74,78 +72,75 @@ const summaryDelta = (summary_index: number, delta: string) => ({
   delta,
 });
 
-describe.skipIf(unverified.length > 0)(
-  `openai fixture stream${unverified.length > 0 ? ` (skipped: ${unverified.join(", ")} unverified)` : ""}`,
-  () => {
-    it.each(CASES)(
-      "reads the $name stream into text, reasoning, finish and usage",
-      async ({ request, fixture }) => {
-        const { model } = fixture.request.body as { model: string };
-        const data = dataOf(fixture);
-        const raw = data.find(({ type }) => type === "response.completed")?.response?.usage ?? {};
-
-        const details = (key: string, field: string) =>
-          (raw[key] as unknown as Record<string, number> | undefined)?.[field] ?? 0;
-
-        const events = await eventsOf({ ...request, model }, replayFetch(fixture));
-
-        const finished = {
-          reason: "stop",
-          usage: {
-            input: raw.input_tokens,
-            output: raw.output_tokens,
-            reasoning: details("output_tokens_details", "reasoning_tokens"),
-            cacheRead: details("input_tokens_details", "cached_tokens"),
-            cacheWrite: details("input_tokens_details", "cache_write_tokens"),
-          },
-          raw,
-        };
-
-        expect(events.flatMap((event) => (event.type === "text" ? [event.delta] : []))).toEqual(
-          deltasOf(data, "response.output_text.delta"),
-        );
-        expect(
-          events.flatMap((event) => (event.type === "reasoning" ? [event.delta] : [])),
-        ).toEqual(deltasOf(data, "response.reasoning_summary_text.delta"));
-        expect(events.slice(-2)).toEqual([
-          { type: "step-finish", ...finished },
-          { type: "finish", ...finished },
-        ]);
-      },
-    );
-
-    it("reads the tool-call stream into input starts and tool calls by call id", async () => {
-      const { request, fixture } = TOOL_CALL;
+describe("openai fixture stream", () => {
+  it.each(CASES)(
+    "reads the $name stream into text, reasoning, finish and usage",
+    async ({ request, fixture }) => {
       const { model } = fixture.request.body as { model: string };
+      const data = dataOf(fixture);
+      const raw = data.find(({ type }) => type === "response.completed")?.response?.usage ?? {};
+
+      const details = (key: string, field: string) =>
+        (raw[key] as unknown as Record<string, number> | undefined)?.[field] ?? 0;
+
       const events = await eventsOf({ ...request, model }, replayFetch(fixture));
 
-      const toolEvents = events.flatMap((event) =>
-        event.type === "tool-input-start" || event.type === "tool-call" ? [event] : [],
-      );
+      const finished = {
+        reason: "stop",
+        usage: {
+          input: raw.input_tokens,
+          output: raw.output_tokens,
+          reasoning: details("output_tokens_details", "reasoning_tokens"),
+          cacheRead: details("input_tokens_details", "cached_tokens"),
+          cacheWrite: details("input_tokens_details", "cache_write_tokens"),
+        },
+        raw,
+      };
 
-      expect(toolEvents).toEqual([
-        { type: "tool-input-start", callId: expect.any(String), name: "get_weather" },
-        {
-          type: "tool-call",
-          callId: toolEvents[0]?.callId,
-          name: "get_weather",
-          input: { city: expect.any(String) },
-        },
-        { type: "tool-input-start", callId: expect.any(String), name: "get_time" },
-        {
-          type: "tool-call",
-          callId: toolEvents[2]?.callId,
-          name: "get_time",
-          input: { timezone: expect.any(String) },
-        },
+      expect(events.flatMap((event) => (event.type === "text" ? [event.delta] : []))).toEqual(
+        deltasOf(data, "response.output_text.delta"),
+      );
+      expect(events.flatMap((event) => (event.type === "reasoning" ? [event.delta] : []))).toEqual(
+        deltasOf(data, "response.reasoning_summary_text.delta"),
+      );
+      expect(events.slice(-2)).toEqual([
+        { type: "step-finish", ...finished },
+        { type: "finish", ...finished },
       ]);
-      expect(events.slice(-2)).toMatchObject([
-        { type: "step-finish", reason: "tool-calls" },
-        { type: "finish", reason: "tool-calls" },
-      ]);
-    });
-  },
-);
+    },
+  );
+
+  it("reads the tool-call stream into input starts and tool calls by call id", async () => {
+    const { request, fixture } = TOOL_CALL;
+    const { model } = fixture.request.body as { model: string };
+    const events = await eventsOf({ ...request, model }, replayFetch(fixture));
+
+    const toolEvents = events.flatMap((event) =>
+      event.type === "tool-input-start" || event.type === "tool-call" ? [event] : [],
+    );
+
+    expect(toolEvents).toEqual([
+      { type: "tool-input-start", callId: expect.any(String), name: "get_weather" },
+      {
+        type: "tool-call",
+        callId: toolEvents[0]?.callId,
+        name: "get_weather",
+        input: { city: expect.any(String) },
+      },
+      { type: "tool-input-start", callId: expect.any(String), name: "get_time" },
+      {
+        type: "tool-call",
+        callId: toolEvents[2]?.callId,
+        name: "get_time",
+        input: { timezone: expect.any(String) },
+      },
+    ]);
+    expect(events.slice(-2)).toMatchObject([
+      { type: "step-finish", reason: "tool-calls" },
+      { type: "finish", reason: "tool-calls" },
+    ]);
+  });
+});
 
 describe("openai stream", () => {
   it("reads reasoning summaries, text by item id, cached and reasoning tokens the way the bridge does", async () => {
