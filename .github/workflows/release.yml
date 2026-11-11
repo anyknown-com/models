@@ -1,0 +1,45 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC), see the publish step
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          # Do not set registry-url: setup-node would write an .npmrc with
+          # `_authToken=${NODE_AUTH_TOKEN}`. Without that env var the token is
+          # empty, npm authenticates with it and fails with E404, so OIDC never runs.
+      # Node 22 ships npm 10.x; trusted publishing needs >= 11.5.1.
+      - run: npm install --global npm@latest
+      - run: pnpm install --frozen-lockfile
+
+      # The tag names the release. Refuse to publish if package.json disagrees,
+      # otherwise the tag and the published version drift apart silently.
+      - name: tag matches package.json version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg=$(node -p "require('./package.json').version")
+          test "$tag" = "$pkg" || { echo "tag v$tag != package.json $pkg"; exit 1; }
+
+      - run: pnpm check
+      - run: pnpm test
+      # verify:pack builds dist and packs it.
+      - run: pnpm verify:pack
+
+      # Auth is OIDC: the trusted publisher is bound on npmjs.com to
+      # anyknown-com/models, release.yml. No npm credential lives in the repo.
+      # pnpm publish is not used: its OIDC support is still open (pnpm/pnpm#9812).
+      # Provenance compares package.json repository.url with the signed repo.
+      - run: npm publish --ignore-scripts
