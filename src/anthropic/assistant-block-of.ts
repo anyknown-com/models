@@ -2,7 +2,7 @@ import type { JsonObject } from "../types/json";
 import { textBlockOf } from "./text-block-of";
 import { toolUseBlockOf } from "./tool-use-block-of";
 import type { AssistantPart } from "./types";
-import { unsupportedPart } from "./unsupported-part";
+import { unsupported } from "./unsupported";
 
 export function assistantBlockOf(part: AssistantPart, trims: boolean): JsonObject[] {
   switch (part.type) {
@@ -14,6 +14,6 @@ export function assistantBlockOf(part: AssistantPart, trims: boolean): JsonObjec
     case "tool-result":
       return [];
     default:
-      throw unsupportedPart(part.type);
+      throw unsupported(`${part.type} parts in assistant turns`);
   }
 }

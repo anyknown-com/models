@@ -9,11 +9,11 @@ const isSent = (part: AssistantPart): boolean =>
 export function assistantBlocksOf(
   content: AssistantModelMessage["content"],
   trimsTail: boolean,
-): JsonObject[] {
+): JsonObject[][] {
   const parts: AssistantPart[] =
     typeof content === "string" ? [{ type: "text", text: content }] : content.filter(isSent);
 
-  return parts.flatMap((part, index) =>
+  return parts.map((part, index) =>
     assistantBlockOf(part, trimsTail && index === parts.length - 1),
   );
 }

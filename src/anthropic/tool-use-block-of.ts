@@ -1,9 +1,7 @@
-import type { JsonObject, JsonValue } from "../types/json";
+import type { JsonObject } from "../types/json";
 import type { ToolCallPart } from "../types/parts";
 import { cacheControlOf } from "./cache-control-of";
-
-const isObject = (value: JsonValue): value is JsonObject =>
-  typeof value === "object" && value !== null && !Array.isArray(value);
+import { isJsonObject } from "./is-json-object";
 
 export const toolUseBlockOf = ({
   toolCallId,
@@ -14,6 +12,6 @@ export const toolUseBlockOf = ({
   type: "tool_use",
   id: toolCallId,
   name: toolName,
-  input: isObject(input) ? input : { rawInvalidInput: input },
+  input: isJsonObject(input) ? input : { rawInvalidInput: input },
   ...cacheControlOf(providerOptions),
 });

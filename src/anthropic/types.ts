@@ -3,6 +3,8 @@ import type { AssistantModelMessage } from "../types/model-message";
 
 export type AnthropicCall = { provider: string; key: string; fetch: typeof fetch; baseUrl: string };
 
+export type Media = { data: Uint8Array | URL; mediaType: string };
+
 export type AnthropicMessage = { role: "user" | "assistant"; content: JsonObject[] };
 
 export type AnthropicRequest = {

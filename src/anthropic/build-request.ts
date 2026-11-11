@@ -12,13 +12,14 @@ export function buildRequest(call: AnthropicCall, request: TextRequest): Anthrop
   const { model, system = [], tools = [], providerOptions } = request;
   const { thinking, effort, cacheControl } = providerOptions?.anthropic ?? {};
   const reasoning = thinkingOf(thinking);
+  const messages = toMessages(request.messages);
 
   return {
     url: `${call.baseUrl}/messages`,
     headers: {
       "x-api-key": call.key,
       "anthropic-version": ANTHROPIC_VERSION,
-      ...betaHeaderOf(model, tools),
+      ...betaHeaderOf(model, tools, messages),
     },
     body: {
       model,
@@ -27,7 +28,7 @@ export function buildRequest(call: AnthropicCall, request: TextRequest): Anthrop
       ...(effort ? { output_config: { effort } } : {}),
       ...(cacheControl ? { cache_control: cacheControl } : {}),
       ...(system.length > 0 ? { system: system.map(textBlockOf) } : {}),
-      messages: toMessages(request.messages),
+      messages,
       ...toTools(tools),
       stream: true,
     },

@@ -8,6 +8,12 @@ export const ANTHROPIC_VERSION = "2023-06-01";
 
 export const STRUCTURED_OUTPUTS_BETA = "structured-outputs-2025-11-13";
 
+export const PDFS_BETA = "pdfs-2024-09-25";
+
+export const PDF_MEDIA_TYPE = "application/pdf";
+
+export const TEXT_MEDIA_TYPE = "text/plain";
+
 export const DEFAULT_THINKING_BUDGET = 1024;
 
 export const UNKNOWN_MODEL_MAX_OUTPUT_TOKENS = 4096;
