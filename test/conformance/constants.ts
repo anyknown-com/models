@@ -18,3 +18,5 @@ export const TEXT_ADAPTERS: Partial<Record<string, TextAdapterEntry>> = {
     create: (name, config) => openaiCompatible({ ...config, name }),
   },
 };
+
+export const NETWORK_FAILURE = new TypeError("fetch failed");

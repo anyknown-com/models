@@ -46,6 +46,17 @@ describe("replayFetch", () => {
     expect(await response.json()).toEqual(recordedBody);
   });
 
+  it("expands a $repeat marker before it compares the body", async () => {
+    const withRepeat: Fixture = {
+      ...fixture,
+      request: { ...fixture.request, body: { text: { $repeat: " a", times: 3 } } },
+    };
+
+    const response = await send(replayFetch(withRepeat), { text: " a a a" });
+
+    expect(response.status).toBe(200);
+  });
+
   it("throws the differences when the body differs", async () => {
     await expect(send(replayFetch(fixture), { text: "bye" })).rejects.toThrow(
       'body: expected {"text":"hello"}, got {"text":"bye"}',

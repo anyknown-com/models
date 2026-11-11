@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://openrouter.ai/api/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "openai/gpt-5-nano",
+      "messages": [
+        {
+          "role": "user",
+          "content": {
+            "$repeat": " a",
+            "times": 2100000
+          }
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "This endpoint's maximum context length is 400000 tokens. However, you requested about 1050000 tokens (1050000 of text input). Please reduce the length of either one, or use the context-compression plugin to compress your prompt automatically.",
+        "code": 400,
+        "metadata": {
+          "provider_name": null
+        }
+      }
+    }
+  }
+}

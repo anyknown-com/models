@@ -1,0 +1,28 @@
+{
+  "derivedFrom": "error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://openrouter.ai/api/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "openai/gpt-5-nano",
+      "messages": [],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "Input required: specify \"prompt\" or \"messages\"",
+        "code": 400
+      },
+      "user_id": "org_redacted"
+    }
+  }
+}

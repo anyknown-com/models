@@ -1,5 +1,6 @@
 export { badRequest } from "./bad-request";
 export { draw } from "./draw";
+export { errorBadRequest } from "./error-bad-request";
 export { errorNotFound } from "./error-not-found";
 export { errorOverflow } from "./error-overflow";
 export { errorUnsupported } from "./error-unsupported";

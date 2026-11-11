@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://openrouter.ai/api/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "openai/gpt-5-nano",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a terse assistant."
+        },
+        {
+          "role": "system",
+          "content": "Answer in one short sentence."
+        },
+        {
+          "role": "user",
+          "content": "Name one planet in the solar system."
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "User not found.",
+        "code": 401
+      }
+    }
+  }
+}

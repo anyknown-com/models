@@ -1,5 +1,5 @@
 import {
-  badRequest,
+  errorBadRequest,
   errorNotFound,
   errorOverflow,
   errorUnsupported,
@@ -24,7 +24,7 @@ export const TEXT_CASES = [
   { id: "usage", source: "recorded", fixtureOf: "text" },
   { id: "usage-cache", source: "recorded", request: textCache, record: "twice" },
   { id: "error-auth", source: "recorded", request: text, record: "wrong-key" },
-  { id: "error-bad-request", source: "recorded", request: badRequest },
+  { id: "error-bad-request", source: "recorded", request: errorBadRequest },
   { id: "error-not-found", source: "recorded", request: errorNotFound, record: "request-model" },
   { id: "error-overflow", source: "recorded", request: errorOverflow },
   { id: "error-rate-limit", source: "derived", from: "error-bad-request", status: 429 },
