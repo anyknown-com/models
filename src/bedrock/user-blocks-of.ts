@@ -1,22 +1,21 @@
 import type { JsonObject } from "../types/json";
-import type { ModelMessage } from "../types/model-message";
+import type { ToolModelMessage, UserModelMessage } from "../types/model-message";
 import { unsupported } from "../wire/unsupported";
 import { PROVIDER } from "./constants";
+import { toolResultBlockOf } from "./tool-result-block-of";
+import { userPartsOf } from "./user-parts-of";
 
-export function userBlocksOf(message: ModelMessage): JsonObject[] {
-  if (message.role !== "user") {
-    throw unsupported(PROVIDER, "bedrock does not send a tool message yet");
-  }
+export function userBlocksOf(
+  message: UserModelMessage | ToolModelMessage,
+  model: string,
+): JsonObject[] {
+  if (message.role === "tool") return message.content.map((part) => toolResultBlockOf(part, model));
 
-  if (typeof message.content === "string") return [{ text: message.content }];
+  return userPartsOf(message.content).map((part) => {
+    if (part.type !== "text") {
+      throw unsupported(PROVIDER, `bedrock does not send a user ${part.type} part yet`);
+    }
 
-  return message.content
-    .filter((part) => part.type !== "text" || part.text !== "")
-    .map((part) => {
-      if (part.type !== "text") {
-        throw unsupported(PROVIDER, `bedrock does not send a user ${part.type} part yet`);
-      }
-
-      return { text: part.text };
-    });
+    return { text: part.text };
+  });
 }

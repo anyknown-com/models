@@ -27,3 +27,5 @@ export const CRC32_POLYNOMIAL = 0xedb88320;
 export const MAX_TOKENS_BESIDE_THINKING = 4096;
 
 export const ANTHROPIC_RESPONSE_FIELD_PATHS = ["/delta/stop_sequence"];
+
+export const MISTRAL_TOOL_USE_ID_LENGTH = 9;

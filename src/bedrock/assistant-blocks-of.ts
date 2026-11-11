@@ -1,25 +1,23 @@
 import type { JsonObject } from "../types/json";
-import type { ModelMessage } from "../types/model-message";
-import { unsupported } from "../wire/unsupported";
-import { PROVIDER } from "./constants";
+import type { AssistantModelMessage } from "../types/model-message";
+import { assistantBlockOf } from "./assistant-block-of";
+import { assistantPartsOf } from "./assistant-parts-of";
 
-const partsOf = ({ content }: ModelMessage) =>
-  typeof content === "string"
-    ? [{ type: "text" as const, text: content }]
-    : content.filter(
-        (part) => part.type !== "text" || part.text !== "" || part.providerOptions !== undefined,
-      );
-
-export function assistantBlocksOf(message: ModelMessage, trimsLast: boolean): JsonObject[] {
-  const parts = partsOf(message);
+export function assistantBlocksOf(
+  { content }: AssistantModelMessage,
+  trimsLast: boolean,
+  model: string,
+): JsonObject[] {
+  const parts = assistantPartsOf(content);
+  const hasReasoning = parts.some((part) => part.type === "reasoning");
 
   return parts.flatMap((part, i) => {
-    if (part.type !== "text") {
-      throw unsupported(PROVIDER, `bedrock does not send an assistant ${part.type} part yet`);
-    }
+    if (part.type !== "text") return assistantBlockOf(part, model);
+    if (part.text.trim() === "" && !hasReasoning) return [];
 
-    if (part.text.trim() === "") return [];
-
-    return [{ text: trimsLast && i === parts.length - 1 ? part.text.trim() : part.text }];
+    return assistantBlockOf(
+      trimsLast && i === parts.length - 1 ? { ...part, text: part.text.trim() } : part,
+      model,
+    );
   });
 }

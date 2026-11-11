@@ -1,16 +1,17 @@
 import type { ModelMessage } from "../types/model-message";
+import type { RoleGroup } from "./types";
 
-type Group = { role: "user" | "assistant"; messages: ModelMessage[] };
-
-export function groupedByRole(messages: ModelMessage[]): Group[] {
-  const groups: Group[] = [];
+export function groupedByRole(messages: ModelMessage[]): RoleGroup[] {
+  const groups: RoleGroup[] = [];
 
   for (const message of messages) {
-    const role = message.role === "assistant" ? "assistant" : "user";
     const last = groups.at(-1);
 
-    if (last?.role === role) last.messages.push(message);
-    else groups.push({ role, messages: [message] });
+    if (message.role !== "assistant") {
+      if (last?.role === "user") last.messages.push(message);
+      else groups.push({ role: "user", messages: [message] });
+    } else if (last?.role === "assistant") last.messages.push(message);
+    else groups.push({ role: "assistant", messages: [message] });
   }
 
   return groups;

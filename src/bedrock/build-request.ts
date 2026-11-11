@@ -3,10 +3,12 @@ import { ANTHROPIC_RESPONSE_FIELD_PATHS, MAX_TOKENS_BESIDE_THINKING } from "./co
 import { isAnthropicModel } from "./is-anthropic-model";
 import { thinkingBudgetOf } from "./thinking-budget-of";
 import { toMessages } from "./to-messages";
+import { toToolConfig } from "./to-tool-config";
 import type { BedrockCall, BedrockRequest } from "./types";
+import { withoutToolParts } from "./without-tool-parts";
 
 export function buildRequest(call: BedrockCall, request: TextRequest): BedrockRequest {
-  const { model, system = [], maxOutputTokens, providerOptions } = request;
+  const { model, system = [], tools = [], maxOutputTokens, providerOptions } = request;
   const reasoningConfig = providerOptions?.bedrock?.reasoningConfig;
   const anthropic = isAnthropicModel(model, reasoningConfig);
   const budget = anthropic ? thinkingBudgetOf(reasoningConfig) : undefined;
@@ -21,7 +23,10 @@ export function buildRequest(call: BedrockCall, request: TextRequest): BedrockRe
     headers: { authorization: `Bearer ${call.key}` },
     body: {
       system: system.map(({ text }) => ({ text })),
-      messages: toMessages(request.messages),
+      messages: toMessages(
+        tools.length > 0 ? request.messages : withoutToolParts(request.messages),
+        model,
+      ),
       ...(budget === undefined
         ? {}
         : {
@@ -31,6 +36,7 @@ export function buildRequest(call: BedrockCall, request: TextRequest): BedrockRe
           }),
       ...(anthropic ? { additionalModelResponseFieldPaths: ANTHROPIC_RESPONSE_FIELD_PATHS } : {}),
       ...(maxTokens === undefined ? {} : { inferenceConfig: { maxTokens } }),
+      ...(tools.length > 0 ? { toolConfig: toToolConfig(tools) } : {}),
     },
   };
 }
