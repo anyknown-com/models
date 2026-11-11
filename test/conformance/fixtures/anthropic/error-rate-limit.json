@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "derivedFrom": "error-bad-request",
   "request": {
     "method": "POST",
@@ -9,8 +8,8 @@
       "content-type": "application/json"
     },
     "body": {
-      "model": "claude-sonnet-5-20260101",
-      "max_tokens": 128000,
+      "model": "claude-haiku-4-5",
+      "max_tokens": 64000,
       "messages": [],
       "stream": true
     }
@@ -21,9 +20,12 @@
       "content-type": "application/json"
     },
     "body": {
+      "type": "error",
       "error": {
-        "message": "request-only"
-      }
+        "type": "invalid_request_error",
+        "message": "messages: at least one message is required"
+      },
+      "request_id": "req_011CgwawXRF1Ae9ESqbQyV3x"
     }
   }
 }

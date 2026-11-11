@@ -24,7 +24,10 @@ export const TEXT_CASES = [
     id: "reasoning",
     source: "recorded",
     request: reasoning,
-    providerOptionsBy: { openai: { openai: { reasoningEffort: "high" } } },
+    providerOptionsBy: {
+      openai: { openai: { reasoningEffort: "high" } },
+      anthropic: { anthropic: { thinking: { type: "enabled", budgetTokens: 1024 } } },
+    },
   },
   { id: "usage", source: "recorded", fixtureOf: "text" },
   { id: "usage-cache", source: "recorded", request: textCache, record: "twice" },

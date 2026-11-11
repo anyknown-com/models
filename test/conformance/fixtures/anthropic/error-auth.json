@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "request": {
     "method": "POST",
     "url": "https://api.anthropic.com/v1/messages",
@@ -8,8 +7,8 @@
       "content-type": "application/json"
     },
     "body": {
-      "model": "claude-sonnet-5-20260101",
-      "max_tokens": 128000,
+      "model": "claude-haiku-4-5",
+      "max_tokens": 64000,
       "system": [
         {
           "type": "text",
@@ -35,14 +34,17 @@
     }
   },
   "response": {
-    "status": 500,
+    "status": 401,
     "headers": {
       "content-type": "application/json"
     },
     "body": {
+      "type": "error",
       "error": {
-        "message": "request-only"
-      }
+        "type": "authentication_error",
+        "message": "invalid x-api-key"
+      },
+      "request_id": "req_011CgwawW1fQ2vchKd3eafcx"
     }
   }
 }
