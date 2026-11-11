@@ -40,6 +40,19 @@ try {
     ],
     top_k: 3,
   });
+  await record("text", "@cf/meta/llama-3.2-3b-instruct", {
+    messages: [
+      {
+        role: "system",
+        content:
+          "Rewrite the user's memory-search query into at most two alternative phrasings that would " +
+          "match notes written in different words. Keep the user's language. Reply with one rewrite " +
+          "per line, nothing else.",
+      },
+      { role: "user", content: "where did we meet" },
+    ],
+    max_tokens: 120,
+  });
 } finally {
   await proxy.dispose();
 }

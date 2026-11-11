@@ -1,0 +1,132 @@
+{
+  "unverified": true,
+  "cases": {
+    "rewrite": {
+      "request": {
+        "model": "@cf/meta/llama-3.2-3b-instruct",
+        "system": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else.",
+        "user": "where did we meet",
+        "maxOutputTokens": 120
+      },
+      "calls": [
+        {
+          "model": "@cf/meta/llama-3.2-3b-instruct",
+          "input": {
+            "messages": [
+              {
+                "role": "system",
+                "content": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else."
+              },
+              {
+                "role": "user",
+                "content": "where did we meet"
+              }
+            ],
+            "max_tokens": 120
+          },
+          "output": {
+            "response": "where we first met\nhow we got to know each other",
+            "tool_calls": [],
+            "usage": {
+              "prompt_tokens": 61,
+              "completion_tokens": 12,
+              "total_tokens": 73
+            }
+          }
+        }
+      ],
+      "result": {
+        "text": "where we first met\nhow we got to know each other",
+        "reason": "stop",
+        "usage": {
+          "input": 61,
+          "output": 12,
+          "reasoning": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        }
+      }
+    },
+    "no-max-tokens": {
+      "request": {
+        "model": "@cf/meta/llama-3.2-3b-instruct",
+        "system": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else.",
+        "user": "where did we meet"
+      },
+      "calls": [
+        {
+          "model": "@cf/meta/llama-3.2-3b-instruct",
+          "input": {
+            "messages": [
+              {
+                "role": "system",
+                "content": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else."
+              },
+              {
+                "role": "user",
+                "content": "where did we meet"
+              }
+            ]
+          },
+          "output": {
+            "response": "where we first met\nhow we got to know each other",
+            "tool_calls": [],
+            "usage": {
+              "prompt_tokens": 61,
+              "completion_tokens": 12,
+              "total_tokens": 73
+            }
+          }
+        }
+      ],
+      "result": {
+        "text": "where we first met\nhow we got to know each other",
+        "reason": "stop",
+        "usage": {
+          "input": 61,
+          "output": 12,
+          "reasoning": 0,
+          "cacheRead": 0,
+          "cacheWrite": 0
+        }
+      }
+    },
+    "no-response": {
+      "request": {
+        "model": "@cf/meta/llama-3.2-3b-instruct",
+        "system": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else.",
+        "user": "where did we meet",
+        "maxOutputTokens": 120
+      },
+      "calls": [
+        {
+          "model": "@cf/meta/llama-3.2-3b-instruct",
+          "input": {
+            "messages": [
+              {
+                "role": "system",
+                "content": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else."
+              },
+              {
+                "role": "user",
+                "content": "where did we meet"
+              }
+            ],
+            "max_tokens": 120
+          },
+          "output": {
+            "tool_calls": [],
+            "usage": {
+              "prompt_tokens": 61,
+              "completion_tokens": 12,
+              "total_tokens": 73
+            }
+          }
+        }
+      ],
+      "result": {
+        "error": "server"
+      }
+    }
+  }
+}
