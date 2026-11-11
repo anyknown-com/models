@@ -1,0 +1,44 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "gpt-transcribe",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "gpt-transcribe",
+      "response_format": "json"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "Incorrect API key provided.",
+        "type": "invalid_request_error",
+        "param": null,
+        "code": "invalid_api_key"
+      }
+    }
+  },
+  "error": {
+    "kind": "auth",
+    "status": 401,
+    "code": "invalid_api_key",
+    "message": "Incorrect API key provided.",
+    "retryable": false
+  }
+}

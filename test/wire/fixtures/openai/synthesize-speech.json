@@ -1,0 +1,36 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "gpt-4o-mini-tts",
+    "text": "說一句話",
+    "voice": "sage"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/speech",
+    "headers": {
+      "accept": "audio/mpeg",
+      "authorization": "Bearer <key>",
+      "content-type": "application/json"
+    },
+    "fields": {
+      "model": "gpt-4o-mini-tts",
+      "input": "說一句話",
+      "voice": "sage",
+      "response_format": "mp3"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "audio/mpeg"
+    },
+    "chunks": ["<mp3 audio>"]
+  },
+  "result": {
+    "usage": {
+      "amount": 4,
+      "unit": "characters"
+    }
+  }
+}

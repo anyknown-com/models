@@ -1,0 +1,43 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "gpt-transcribe",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "gpt-transcribe",
+      "response_format": "json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "text": "hi",
+      "usage": {
+        "type": "duration",
+        "seconds": 2
+      }
+    }
+  },
+  "result": {
+    "text": "hi",
+    "usage": {
+      "amount": 2,
+      "unit": "seconds"
+    }
+  }
+}

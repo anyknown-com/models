@@ -1,0 +1,40 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "whisper-1",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "whisper-1",
+      "response_format": "verbose_json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "text": "早安",
+      "duration": 3.5
+    }
+  },
+  "result": {
+    "text": "早安",
+    "usage": {
+      "amount": 3.5,
+      "unit": "seconds"
+    }
+  }
+}
