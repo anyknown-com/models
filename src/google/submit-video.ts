@@ -3,6 +3,7 @@ import type { VideoJob } from "../types/video-job";
 import type { VideoRequest } from "../types/video-request";
 import { post } from "../wire/post";
 import { PROVIDER } from "./constants";
+import { modelErrorOf } from "./model-error-of";
 import type { GoogleCall } from "./types";
 import { videoJobOf } from "./video-job-of";
 import { videoSubmitRequestOf } from "./video-submit-request-of";
@@ -13,7 +14,7 @@ export async function submitVideo(call: GoogleCall, request: VideoRequest): Prom
     ...videoSubmitRequestOf(call, request),
     fetch: call.fetch,
     signal: request.signal,
-    errorOf: (text) => ({ message: text }),
+    errorOf: modelErrorOf,
   });
 
   return videoJobOf(await readJson(PROVIDER, response));

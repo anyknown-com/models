@@ -25,6 +25,15 @@ const offline = google({ key: "test-key", fetch: refusingFetch });
 
 const unsupported = { name: "ModelError", kind: "unsupported" };
 
+const rejected: Fixture = {
+  ...(submit as Fixture),
+  response: {
+    status: 400,
+    headers: { "content-type": "application/json" },
+    body: { error: { code: 400, message: "Invalid duration.", status: "INVALID_ARGUMENT" } },
+  },
+};
+
 describe("google video", () => {
   it("submits a prompt as the fixture's background interaction", async () => {
     const request = { ...film, model: MODEL };
@@ -36,6 +45,17 @@ describe("google video", () => {
     const request = { ...recut, model: MODEL, source: job };
 
     await expect(submitVideo(adapterOf(edit as Fixture), request)).resolves.toBeDefined();
+  });
+
+  it("throws a bad-request model error with the provider's status as code on a 400", async () => {
+    await expect(submitVideo(adapterOf(rejected), { ...film, model: MODEL })).rejects.toMatchObject(
+      {
+        name: "ModelError",
+        kind: "bad-request",
+        status: 400,
+        code: "INVALID_ARGUMENT",
+      },
+    );
   });
 
   it("reads the status with the fixture's get of the interaction", async () => {
