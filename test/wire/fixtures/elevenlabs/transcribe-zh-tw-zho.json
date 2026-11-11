@@ -1,0 +1,60 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "scribe_v2",
+    "filename": "speech.webm",
+    "language": "zh-TW"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data",
+      "xi-api-key": "<key>"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model_id": "scribe_v2",
+      "language_code": "zho"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "language_code": "zho",
+      "language_probability": 0.98,
+      "text": "早安 你好",
+      "words": [
+        {
+          "text": "早安",
+          "start": 0,
+          "end": 0.5,
+          "type": "word",
+          "speaker_id": "speaker_0",
+          "logprob": -0.1
+        },
+        {
+          "text": "你好",
+          "start": 0.6,
+          "end": 1.1,
+          "type": "word",
+          "speaker_id": "speaker_0",
+          "logprob": -0.1
+        }
+      ]
+    }
+  },
+  "result": {
+    "text": "早安 你好",
+    "usage": {
+      "amount": 1.1,
+      "unit": "seconds"
+    }
+  }
+}

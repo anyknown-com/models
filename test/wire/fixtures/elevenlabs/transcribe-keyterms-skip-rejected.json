@@ -1,0 +1,72 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "scribe_v2",
+    "filename": "speech.webm",
+    "terms": [
+      "one two three four five six",
+      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+      "a<b",
+      "a>b",
+      "a{b",
+      "a}b",
+      "a[b",
+      "a]b",
+      "a\\b",
+      "ok term"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data",
+      "xi-api-key": "<key>"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model_id": "scribe_v2",
+      "keyterms": ["yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", "ok term"]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "language_code": "eng",
+      "language_probability": 0.98,
+      "text": "ok term",
+      "words": [
+        {
+          "text": "ok",
+          "start": 0,
+          "end": 0.5,
+          "type": "word",
+          "speaker_id": "speaker_0",
+          "logprob": -0.1
+        },
+        {
+          "text": "term",
+          "start": 0.6,
+          "end": 1.1,
+          "type": "word",
+          "speaker_id": "speaker_0",
+          "logprob": -0.1
+        }
+      ]
+    }
+  },
+  "result": {
+    "text": "ok term",
+    "usage": {
+      "amount": 1.1,
+      "unit": "seconds"
+    }
+  }
+}

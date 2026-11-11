@@ -1,0 +1,50 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "scribe_v2",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data",
+      "xi-api-key": "<key>"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model_id": "scribe_v2"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "language_code": "eng",
+      "language_probability": 0.98,
+      "text": "hello",
+      "words": [
+        {
+          "text": "hello",
+          "start": 0,
+          "end": 0.5,
+          "type": "word",
+          "speaker_id": "speaker_0",
+          "logprob": -0.1
+        }
+      ]
+    }
+  },
+  "result": {
+    "text": "hello",
+    "usage": {
+      "amount": 0.5,
+      "unit": "seconds"
+    }
+  }
+}

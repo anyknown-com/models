@@ -10,7 +10,8 @@
     "./workers-ai": "./src/workers-ai/index.ts",
     "./openai": "./src/openai/index.ts",
     "./groq": "./src/groq/index.ts",
-    "./deepgram": "./src/deepgram/index.ts"
+    "./deepgram": "./src/deepgram/index.ts",
+    "./elevenlabs": "./src/elevenlabs/index.ts"
   },
   "scripts": {
     "test": "vitest run"
