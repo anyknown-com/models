@@ -1,4 +1,4 @@
-import { fieldOf } from "../speech/field-of";
+import { fieldOf } from "./field-of";
 
 export function readTranscription(body: unknown): string {
   const text = fieldOf(body, "text");

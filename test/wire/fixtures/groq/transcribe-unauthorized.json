@@ -1,0 +1,43 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "whisper-large-v3-turbo",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "whisper-large-v3-turbo",
+      "response_format": "verbose_json"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "Invalid API Key",
+        "type": "invalid_request_error",
+        "code": "invalid_api_key"
+      }
+    }
+  },
+  "error": {
+    "kind": "auth",
+    "status": 401,
+    "code": "invalid_api_key",
+    "message": "Invalid API Key",
+    "retryable": false
+  }
+}

@@ -5,7 +5,7 @@ import { transcriptionForm } from "../speech/transcription-form";
 import type { SpeechCall } from "../speech/types";
 import type { TranscribeRequest, TranscribeResult } from "../types/transcribe-request";
 import { languageFields } from "./language-fields";
-import { readTranscription } from "./read-transcription";
+import { readTranscription } from "../speech/read-transcription";
 import { transcriptionSeconds } from "./transcription-seconds";
 
 export async function transcribe(

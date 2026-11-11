@@ -1,0 +1,39 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "whisper-large-v3",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "whisper-large-v3",
+      "response_format": "verbose_json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "text": "早安"
+    }
+  },
+  "result": {
+    "text": "早安",
+    "usage": {
+      "amount": null,
+      "unit": "seconds"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "whisper-large-v3-turbo",
+    "filename": "speech.webm",
+    "language": "zh-TW"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "whisper-large-v3-turbo",
+      "response_format": "verbose_json",
+      "language": "zh"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "task": "transcribe",
+      "language": "Chinese",
+      "text": "早安",
+      "segments": [
+        {
+          "id": 0,
+          "seek": 0,
+          "start": 0,
+          "end": 1.2,
+          "text": "早"
+        },
+        {
+          "id": 1,
+          "seek": 0,
+          "start": 1.2,
+          "end": 2.8,
+          "text": "安"
+        }
+      ]
+    }
+  },
+  "result": {
+    "text": "早安",
+    "usage": {
+      "amount": 2.8,
+      "unit": "seconds"
+    }
+  }
+}

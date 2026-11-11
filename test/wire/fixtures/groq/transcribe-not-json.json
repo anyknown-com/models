@@ -1,0 +1,35 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "whisper-large-v3-turbo",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "speech.webm",
+        "size": 3
+      },
+      "model": "whisper-large-v3-turbo",
+      "response_format": "verbose_json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "text/html"
+    },
+    "chunks": ["<html>"]
+  },
+  "error": {
+    "kind": "server",
+    "message": "Unexpected token '<', \"<html>\" is not valid JSON",
+    "retryable": false
+  }
+}

@@ -8,7 +8,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./workers-ai": "./src/workers-ai/index.ts",
-    "./openai": "./src/openai/index.ts"
+    "./openai": "./src/openai/index.ts",
+    "./groq": "./src/groq/index.ts"
   },
   "scripts": {
     "test": "vitest run"
