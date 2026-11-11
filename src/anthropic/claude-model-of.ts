@@ -13,6 +13,8 @@ const unknownModelOf = (model: string): ClaudeModel => {
     maxOutputTokens: newer ? NEWER_CLAUDE_MAX_OUTPUT_TOKENS : UNKNOWN_MODEL_MAX_OUTPUT_TOKENS,
     known: false,
     structuredOutput: newer,
+    adaptiveThinking: newer,
+    xhighEffort: newer,
   };
 };
 
@@ -21,9 +23,7 @@ export function claudeModelOf(model: string): ClaudeModel {
 
   if (!known) return unknownModelOf(model);
 
-  return {
-    maxOutputTokens: known.maxOutputTokens,
-    known: true,
-    structuredOutput: known.structuredOutput,
-  };
+  const { ids: _ids, ...limits } = known;
+
+  return { ...limits, known: true };
 }

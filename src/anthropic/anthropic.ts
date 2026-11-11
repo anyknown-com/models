@@ -1,6 +1,7 @@
 import { defaultFetch } from "../default-fetch";
 import type { AdapterConfig } from "../types/adapter-config";
 import type { TextAdapter } from "../types/text-adapter";
+import { capabilities } from "./capabilities";
 import { ANTHROPIC_BASE_URL, PROVIDER } from "./constants";
 import { streamMessages } from "./stream-messages";
 import type { AnthropicCall } from "./types";
@@ -15,7 +16,7 @@ export function anthropic(config: AdapterConfig): TextAdapter {
 
   return {
     provider: call.provider,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities,
     stream: (request) => streamMessages(call, request),
   };
 }

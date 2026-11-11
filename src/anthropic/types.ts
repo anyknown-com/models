@@ -13,13 +13,15 @@ export type AnthropicRequest = {
   body: JsonObject;
 };
 
-export type KnownModel = {
-  ids: readonly string[];
+export type ClaudeModel = {
   maxOutputTokens: number;
+  known: boolean;
   structuredOutput: boolean;
+  adaptiveThinking: boolean;
+  xhighEffort: boolean;
 };
 
-export type ClaudeModel = { maxOutputTokens: number; known: boolean; structuredOutput: boolean };
+export type KnownModel = Omit<ClaudeModel, "known"> & { ids: readonly string[] };
 
 export type AssistantPart = Exclude<AssistantModelMessage["content"], string>[number];
 
@@ -38,3 +40,5 @@ export type MessagesEvent = {
   usage?: JsonObject;
   error?: { type?: string };
 };
+
+export type ReadField = { path: string[]; type: "string" | "number" | "object" };

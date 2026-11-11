@@ -1,4 +1,4 @@
-import type { KnownModel } from "./types";
+import type { KnownModel, ReadField } from "./types";
 
 export const PROVIDER = "anthropic";
 
@@ -45,19 +45,88 @@ export const KNOWN_MODELS: readonly KnownModel[] = [
       "claude-opus-4-7",
       "claude-fable-5",
       "claude-sonnet-5",
-      "claude-sonnet-4-6",
-      "claude-opus-4-6",
     ],
     maxOutputTokens: 128_000,
     structuredOutput: true,
+    adaptiveThinking: true,
+    xhighEffort: true,
+  },
+  {
+    ids: ["claude-sonnet-4-6", "claude-opus-4-6"],
+    maxOutputTokens: 128_000,
+    structuredOutput: true,
+    adaptiveThinking: true,
+    xhighEffort: false,
   },
   {
     ids: ["claude-sonnet-4-5", "claude-opus-4-5", "claude-haiku-4-5"],
     maxOutputTokens: 64_000,
     structuredOutput: true,
+    adaptiveThinking: false,
+    xhighEffort: false,
   },
-  { ids: ["claude-opus-4-1"], maxOutputTokens: 32_000, structuredOutput: true },
-  { ids: ["claude-sonnet-4-"], maxOutputTokens: 64_000, structuredOutput: false },
-  { ids: ["claude-opus-4-"], maxOutputTokens: 32_000, structuredOutput: false },
-  { ids: ["claude-3-haiku"], maxOutputTokens: 4096, structuredOutput: false },
+  {
+    ids: ["claude-opus-4-1"],
+    maxOutputTokens: 32_000,
+    structuredOutput: true,
+    adaptiveThinking: false,
+    xhighEffort: false,
+  },
+  {
+    ids: ["claude-sonnet-4-"],
+    maxOutputTokens: 64_000,
+    structuredOutput: false,
+    adaptiveThinking: false,
+    xhighEffort: false,
+  },
+  {
+    ids: ["claude-opus-4-"],
+    maxOutputTokens: 32_000,
+    structuredOutput: false,
+    adaptiveThinking: false,
+    xhighEffort: false,
+  },
+  {
+    ids: ["claude-3-haiku"],
+    maxOutputTokens: 4096,
+    structuredOutput: false,
+    adaptiveThinking: false,
+    xhighEffort: false,
+  },
+];
+
+export const EFFORT_LEVELS = ["low", "medium", "high", "xhigh", "max"];
+
+const USAGE_COUNTS = [
+  "input_tokens",
+  "output_tokens",
+  "cache_read_input_tokens",
+  "cache_creation_input_tokens",
+];
+
+const usageFieldsAt = (path: string[]): ReadField[] => [
+  { path, type: "object" },
+  ...USAGE_COUNTS.map((key): ReadField => ({ path: [...path, key], type: "number" })),
+  { path: [...path, "output_tokens_details"], type: "object" },
+  { path: [...path, "output_tokens_details", "thinking_tokens"], type: "number" },
+];
+
+export const READ_FIELDS: readonly ReadField[] = [
+  { path: ["type"], type: "string" },
+  { path: ["index"], type: "number" },
+  { path: ["message"], type: "object" },
+  ...usageFieldsAt(["message", "usage"]),
+  { path: ["content_block"], type: "object" },
+  { path: ["content_block", "type"], type: "string" },
+  { path: ["content_block", "id"], type: "string" },
+  { path: ["content_block", "name"], type: "string" },
+  { path: ["delta"], type: "object" },
+  { path: ["delta", "type"], type: "string" },
+  { path: ["delta", "text"], type: "string" },
+  { path: ["delta", "thinking"], type: "string" },
+  { path: ["delta", "partial_json"], type: "string" },
+  { path: ["delta", "stop_reason"], type: "string" },
+  ...usageFieldsAt(["usage"]),
+  { path: ["error"], type: "object" },
+  { path: ["error", "type"], type: "string" },
 ];
