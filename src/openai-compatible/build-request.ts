@@ -1,6 +1,7 @@
 import type { TextRequest } from "../types/text-request";
 import { providerFieldsOf } from "./provider-fields-of";
 import { toChatMessages } from "./to-chat-messages";
+import { toChatTools } from "./to-chat-tools";
 import type { ChatRequest, OpenaiCompatibleConfig } from "./types";
 
 const authHeadersOf = ({ key, authHeader }: OpenaiCompatibleConfig): Record<string, string> => {
@@ -20,6 +21,7 @@ export function buildRequest(config: OpenaiCompatibleConfig, request: TextReques
       ...(maxOutputTokens === undefined ? {} : { max_tokens: maxOutputTokens }),
       ...providerFieldsOf(providerOptions?.[config.name]),
       messages: toChatMessages(config.name, request),
+      ...toChatTools(request.tools),
       stream: true,
     },
   };

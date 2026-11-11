@@ -3,14 +3,17 @@ import { openaiCompatible } from "../../../src/openai-compatible";
 import { buildRequest } from "../../../src/openai-compatible/build-request";
 import type { TextRequest } from "../../../src/types/text-request";
 import { post } from "../../../src/wire/post";
-import { text } from "../cases";
+import { reasoning, text, tools } from "../cases";
 import type { Fixture } from "../fixture";
+import reasoningFixture from "../fixtures/openai-compatible/reasoning.json";
 import textFixture from "../fixtures/openai-compatible/text.json";
+import toolsFixture from "../fixtures/openai-compatible/tools.json";
 import { replayFetch } from "../replay-fetch";
 
 const CONFIG = { name: "openrouter", key: "k", baseUrl: "https://api.example.test/v1/" };
 
-const sentAs = (fixture: Fixture, request: TextRequest) => {
+const sentAs = (json: unknown, request: TextRequest) => {
+  const fixture = json as Fixture;
   const { model } = fixture.request.body as { model: string };
   const baseUrl = fixture.request.url.replace(/\/chat\/completions$/, "");
   const config = { ...CONFIG, baseUrl };
@@ -25,7 +28,15 @@ const sentAs = (fixture: Fixture, request: TextRequest) => {
 
 describe("openai-compatible request", () => {
   it("sends each system part as a system message and the user text as a string", async () => {
-    await expect(sentAs(textFixture as Fixture, text)).resolves.toBeInstanceOf(Response);
+    await expect(sentAs(textFixture, text)).resolves.toBeInstanceOf(Response);
+  });
+
+  it("sends tools, assistant tool calls and one tool message per tool result", async () => {
+    await expect(sentAs(toolsFixture, tools)).resolves.toBeInstanceOf(Response);
+  });
+
+  it("sends assistant reasoning as reasoning_content", async () => {
+    await expect(sentAs(reasoningFixture, reasoning)).resolves.toBeInstanceOf(Response);
   });
 
   it("spreads its own provider options cell into the body and renames reasoningEffort", () => {
