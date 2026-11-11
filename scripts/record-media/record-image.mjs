@@ -31,5 +31,9 @@ export async function recordImage({ family, model, keyEnv, edit }) {
 
   if (!call) throw new Error(`${family} 沒有送出 request`);
 
-  return writeFixture(`${family}/${edit ? "image-edit" : "image"}.json`, call, transport.key);
+  return writeFixture(
+    `${family}/${edit ? "image-edit" : "image-generation"}.json`,
+    call,
+    transport.key,
+  );
 }
