@@ -1,0 +1,11 @@
+{
+  "provider": "_sample-unverified",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "sample-model"
+  },
+  "unsupported": {},
+  "unverified": true
+}

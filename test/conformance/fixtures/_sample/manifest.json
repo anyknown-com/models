@@ -1,0 +1,13 @@
+{
+  "provider": "_sample",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "sample-model"
+  },
+  "unsupported": {
+    "image": "sample: declared and recorded, https://example.com/docs/image",
+    "file": "sample: declared, https://example.com/docs/file"
+  }
+}

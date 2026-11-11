@@ -1,0 +1,39 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://sample.test/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "sample-model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a terse assistant."
+        },
+        {
+          "role": "system",
+          "content": "Answer in one short sentence."
+        },
+        {
+          "role": "user",
+          "content": "Name one planet in the solar system."
+        }
+      ],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "sample"
+      }
+    }
+  }
+}

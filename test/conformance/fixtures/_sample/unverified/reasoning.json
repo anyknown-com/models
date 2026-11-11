@@ -1,0 +1,24 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://sample.test/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "another-model"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "sample"
+      }
+    }
+  }
+}
