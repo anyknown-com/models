@@ -7,11 +7,25 @@ import { pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
 import { browserBundleProblems } from "./verify-pack/browser-bundle-problems.mjs";
 
-const MANIFEST_FILES = ["CHANGELOG.md", "README.md", "package.json"];
+const MANIFEST_FILES = ["CHANGELOG.md", "LICENSE", "README.md", "package.json"];
 const DEPENDENCY_FIELDS = ["dependencies", "peerDependencies", "optionalDependencies"];
 
 const toDist = (path, extension) =>
   path.replace(/^\.\/src\//, "./dist/").replace(/\.ts$/, extension);
+
+const stemOf = (entry) =>
+  String(entry?.default)
+    .replace(/^\.\/dist\//, "")
+    .replace(/\.js$/, "");
+
+const contractProblems = (key, entry) => {
+  const stem = stemOf(entry);
+  const shape = { types: `./dist/${stem}.d.ts`, default: `./dist/${stem}.js` };
+
+  if (!isDeepStrictEqual(entry, shape)) return [`export ${key} is not { types, default } in dist`];
+
+  return existsSync(join("src", `${stem}.ts`)) ? [] : [`export ${key} has no src/${stem}.ts`];
+};
 
 const workspace = JSON.parse(readFileSync("package.json", "utf8"));
 const scratch = mkdtempSync(join(tmpdir(), "anyknown-models-pack-"));
@@ -28,12 +42,14 @@ const exportedNames = async (specifier) => {
 };
 
 try {
-  const pack = execFileSync("pnpm", ["pack", "--pack-destination", scratch, "--json"], {
+  const pack = execFileSync("npm", ["pack", "--pack-destination", scratch, "--json"], {
     encoding: "utf8",
   });
 
+  const tarball = join(scratch, JSON.parse(pack)[0].filename);
+
   mkdirSync(installed, { recursive: true });
-  execFileSync("tar", ["-xzf", JSON.parse(pack).filename, "-C", installed, "--strip-components=1"]);
+  execFileSync("tar", ["-xzf", tarball, "-C", installed, "--strip-components=1"]);
 
   const packedText = readFileSync(join(installed, "package.json"), "utf8");
   const packed = JSON.parse(packedText);
@@ -49,13 +65,6 @@ try {
       .flatMap((name) => [toDist(`./src/${name}`, ".js"), toDist(`./src/${name}`, ".d.ts")])
       .map((path) => path.slice(2)),
   ];
-
-  const expectedExports = Object.fromEntries(
-    Object.entries(workspace.exports).map(([key, path]) => [
-      key,
-      { types: toDist(path, ".d.ts"), default: toDist(path, ".js") },
-    ]),
-  );
 
   const entryFiles = Object.values(packed.exports ?? {}).flatMap(Object.values);
 
@@ -80,9 +89,10 @@ try {
     ...expectedFiles
       .filter((file) => !packedFiles.includes(file))
       .map((file) => `missing file in tarball: ${file}`),
-    ...(isDeepStrictEqual(packed.exports, expectedExports)
+    ...Object.entries(workspace.exports).flatMap(([key, entry]) => contractProblems(key, entry)),
+    ...(isDeepStrictEqual(packed.exports, workspace.exports)
       ? []
-      : ["packed exports do not match the workspace exports"]),
+      : ["packed exports do not match the repo exports"]),
     ...entryFiles
       .filter((file) => !existsSync(join(installed, file)))
       .map((file) => `export entry points to a missing file: ${file}`),

@@ -1,0 +1,8 @@
+onlyBuiltDependencies:
+  - esbuild
+  - workerd
+
+# 72h (minutes) before any newly published version resolves; our own packages are exempt.
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - "@anyknown/*"

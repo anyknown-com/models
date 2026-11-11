@@ -1,0 +1,166 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "import", "promise", "vitest"],
+  "jsPlugins": [
+    {
+      "name": "stylistic",
+      "specifier": "@stylistic/eslint-plugin"
+    }
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-console": "error",
+    "no-await-in-loop": "off",
+    "no-shadow": "error",
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/*.css"]
+      }
+    ],
+    "eqeqeq": "error",
+    "no-unused-vars": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/consistent-type-imports": "error",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "kebabCase"
+      }
+    ],
+    "import/no-cycle": "error",
+    "max-lines": [
+      "error",
+      {
+        "max": 300,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-depth": ["error", 4],
+    "complexity": ["error", 15],
+    "promise/always-return": [
+      "warn",
+      {
+        "ignoreLastCallback": true
+      }
+    ],
+    "stylistic/padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      },
+      {
+        "blankLine": "always",
+        "prev": ["const", "let", "var", "using"],
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": ["singleline-const", "singleline-let", "singleline-var", "singleline-using"],
+        "next": ["singleline-const", "singleline-let", "singleline-var", "singleline-using"]
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": ["multiline-const", "multiline-let", "multiline-var", "multiline-using"]
+      },
+      {
+        "blankLine": "always",
+        "prev": "block-like",
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "block-like"
+      },
+      {
+        "blankLine": "always",
+        "prev": {
+          "selector": "IfStatement"
+        },
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": {
+          "selector": "IfStatement"
+        }
+      },
+      {
+        "blankLine": "any",
+        "prev": {
+          "selector": "IfStatement",
+          "lineMode": "singleline"
+        },
+        "next": {
+          "selector": "IfStatement",
+          "lineMode": "singleline"
+        }
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": ["function", "class", "interface", "enum"]
+      },
+      {
+        "blankLine": "always",
+        "prev": ["function", "class", "interface", "enum"],
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "multiline-type"
+      },
+      {
+        "blankLine": "always",
+        "prev": "multiline-type",
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": "import",
+        "next": "import"
+      },
+      {
+        "blankLine": "any",
+        "prev": "directive",
+        "next": "directive"
+      },
+      {
+        "blankLine": "any",
+        "prev": "case",
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": "*",
+        "next": ["case", "default"]
+      }
+    ]
+  },
+  "ignorePatterns": ["dist/**", "**/node_modules/**", "**/*.d.ts"],
+  "overrides": [
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "max-lines": "off"
+      }
+    },
+    {
+      "files": ["**/scripts/**"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

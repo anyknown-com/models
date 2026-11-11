@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 process.env.CI = "1";
 
-const require = createRequire(new URL("../../../apps/api/package.json", import.meta.url));
+const require = createRequire(new URL("../package.json", import.meta.url));
 const wranglerBin = join(dirname(require.resolve("wrangler/package.json")), "bin/wrangler.js");
 const whoami = spawnSync(process.execPath, [wranglerBin, "whoami", "--json"], { stdio: "ignore" });
 

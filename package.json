@@ -1,101 +1,98 @@
 {
   "name": "@anyknown/models",
   "version": "0.1.0",
-  "private": true,
   "description": "Call text, speech, embedding, image and video models from many providers with one small API and only fetch.",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anyknown-com/anyknown.git",
-    "directory": "packages/models"
+    "url": "git+https://github.com/anyknown-com/models.git"
   },
   "files": [
     "dist",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "type": "module",
   "sideEffects": false,
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./workers-ai": "./src/workers-ai/index.ts",
-    "./openai": "./src/openai/index.ts",
-    "./openai-compatible": "./src/openai-compatible/index.ts",
-    "./groq": "./src/groq/index.ts",
-    "./deepgram": "./src/deepgram/index.ts",
-    "./elevenlabs": "./src/elevenlabs/index.ts",
-    "./fish-audio": "./src/fish-audio/index.ts",
-    "./anthropic": "./src/anthropic/index.ts",
-    "./google": "./src/google/index.ts",
-    "./bedrock": "./src/bedrock/index.ts",
-    "./is-overflow": "./src/is-overflow.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./workers-ai": {
+      "types": "./dist/workers-ai/index.d.ts",
+      "default": "./dist/workers-ai/index.js"
+    },
+    "./openai": {
+      "types": "./dist/openai/index.d.ts",
+      "default": "./dist/openai/index.js"
+    },
+    "./openai-compatible": {
+      "types": "./dist/openai-compatible/index.d.ts",
+      "default": "./dist/openai-compatible/index.js"
+    },
+    "./groq": {
+      "types": "./dist/groq/index.d.ts",
+      "default": "./dist/groq/index.js"
+    },
+    "./deepgram": {
+      "types": "./dist/deepgram/index.d.ts",
+      "default": "./dist/deepgram/index.js"
+    },
+    "./elevenlabs": {
+      "types": "./dist/elevenlabs/index.d.ts",
+      "default": "./dist/elevenlabs/index.js"
+    },
+    "./fish-audio": {
+      "types": "./dist/fish-audio/index.d.ts",
+      "default": "./dist/fish-audio/index.js"
+    },
+    "./anthropic": {
+      "types": "./dist/anthropic/index.d.ts",
+      "default": "./dist/anthropic/index.js"
+    },
+    "./google": {
+      "types": "./dist/google/index.d.ts",
+      "default": "./dist/google/index.js"
+    },
+    "./bedrock": {
+      "types": "./dist/bedrock/index.d.ts",
+      "default": "./dist/bedrock/index.js"
+    },
+    "./is-overflow": {
+      "types": "./dist/is-overflow.d.ts",
+      "default": "./dist/is-overflow.js"
+    }
   },
   "publishConfig": {
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "./workers-ai": {
-        "types": "./dist/workers-ai/index.d.ts",
-        "default": "./dist/workers-ai/index.js"
-      },
-      "./openai": {
-        "types": "./dist/openai/index.d.ts",
-        "default": "./dist/openai/index.js"
-      },
-      "./openai-compatible": {
-        "types": "./dist/openai-compatible/index.d.ts",
-        "default": "./dist/openai-compatible/index.js"
-      },
-      "./groq": {
-        "types": "./dist/groq/index.d.ts",
-        "default": "./dist/groq/index.js"
-      },
-      "./deepgram": {
-        "types": "./dist/deepgram/index.d.ts",
-        "default": "./dist/deepgram/index.js"
-      },
-      "./elevenlabs": {
-        "types": "./dist/elevenlabs/index.d.ts",
-        "default": "./dist/elevenlabs/index.js"
-      },
-      "./fish-audio": {
-        "types": "./dist/fish-audio/index.d.ts",
-        "default": "./dist/fish-audio/index.js"
-      },
-      "./anthropic": {
-        "types": "./dist/anthropic/index.d.ts",
-        "default": "./dist/anthropic/index.js"
-      },
-      "./google": {
-        "types": "./dist/google/index.d.ts",
-        "default": "./dist/google/index.js"
-      },
-      "./bedrock": {
-        "types": "./dist/bedrock/index.d.ts",
-        "default": "./dist/bedrock/index.js"
-      },
-      "./is-overflow": {
-        "types": "./dist/is-overflow.d.ts",
-        "default": "./dist/is-overflow.js"
-      }
-    },
     "access": "public"
   },
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.build.json && node scripts/esm-extensions.mjs",
-    "test": "vitest run",
-    "verify:pack": "pnpm build && node scripts/verify-pack.mjs",
-    "test:worker": "vitest run --config vitest.worker.config.ts"
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "oxlint --deny-warnings",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "check": "pnpm typecheck && pnpm lint && pnpm fmt:check && node scripts/check-boundary.mjs && node scripts/check-readme.mjs",
+    "test": "vitest run && node --test scripts/*.test.mjs",
+    "test:worker": "vitest run --config vitest.worker.config.ts",
+    "verify:pack": "pnpm build && node scripts/verify-pack.mjs"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.22.0",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@types/node": "^26.4.0",
     "es-toolkit": "^1.53.1",
     "esbuild": "^0.28.2",
+    "oxc-parser": "^0.157.0",
+    "oxfmt": "^0.65.0",
+    "oxlint": "^1.80.0",
     "tsx": "^4.23.15",
-    "vitest": "^4.1.11"
-  }
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.127.1"
+  },
+  "packageManager": "pnpm@10.30.3"
 }

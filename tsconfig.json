@@ -9,7 +9,12 @@
     "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@anyknown/models": ["./src/index.ts"],
+      "@anyknown/models/is-overflow": ["./src/is-overflow.ts"],
+      "@anyknown/models/*": ["./src/*/index.ts"]
+    }
   },
   "include": ["src", "test", "examples"]
 }

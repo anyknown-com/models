@@ -295,3 +295,7 @@ Every failed call ends in a `ModelError` (thrown, or in the `finish` event of `s
 ## Runtimes
 
 Node.js 20 or later, Cloudflare Workers (without `nodejs_compat`) and browsers. The package is ESM only.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
