@@ -1,0 +1,76 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-haiku-4-5-20251001-v1%3A0/converse-stream",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "system": [],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "text": "What are the weather and the time in Paris right now?"
+            }
+          ]
+        }
+      ],
+      "additionalModelResponseFieldPaths": ["/delta/stop_sequence"],
+      "toolConfig": {
+        "tools": [
+          {
+            "toolSpec": {
+              "name": "get_weather",
+              "description": "Get the current weather in a city.",
+              "inputSchema": {
+                "json": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["city"]
+                }
+              }
+            }
+          },
+          {
+            "toolSpec": {
+              "name": "get_time",
+              "description": "Get the current time in a time zone.",
+              "inputSchema": {
+                "json": {
+                  "type": "object",
+                  "properties": {
+                    "timezone": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["timezone"]
+                }
+              }
+            }
+          }
+        ],
+        "toolChoice": {
+          "auto": {}
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { anthropic } from "../../src/anthropic";
+import { bedrock } from "../../src/bedrock";
 import { google } from "../../src/google";
 import { openai } from "../../src/openai";
 import { openaiCompatible } from "../../src/openai-compatible";
@@ -9,6 +10,10 @@ export const REPLAY_KEY = "key";
 export const TEXT_ADAPTERS: Partial<Record<string, TextAdapterEntry>> = {
   openai: { endpoint: /\/responses$/, create: (_, config) => openai(config) },
   anthropic: { endpoint: /\/messages$/, create: (_, config) => anthropic(config) },
+  bedrock: {
+    endpoint: /\/model\/[^/]+\/converse-stream$/,
+    create: (_, config) => bedrock(config),
+  },
   google: {
     endpoint: /\/models\/[^/]+:streamGenerateContent\?alt=sse$/,
     create: (_, config) => google(config),

@@ -1,0 +1,34 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/anyknown-no-such-model/converse-stream",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "system": [],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "text": "Hello."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}
