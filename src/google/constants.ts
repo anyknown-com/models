@@ -46,3 +46,13 @@ export const PART_FIELDS: readonly ReadField[] = [
   { path: ["functionCall", "id"], type: "string" },
   { path: ["functionCall", "name"], type: "string" },
 ];
+
+// https://aistudio.google.com/docs/omni
+export const VIDEO_FORMAT = {
+  type: "video",
+  aspect_ratio: "16:9",
+  resolution: "720p",
+  duration: "10s",
+};
+
+export const VIDEO_FORMAT_OPTIONS = ["aspect_ratio", "resolution", "duration"];

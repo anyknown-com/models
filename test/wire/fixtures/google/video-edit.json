@@ -1,0 +1,39 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "gemini-omni-1.2-flash",
+      "input": "Make the ball blue.",
+      "background": true,
+      "response_format": {
+        "type": "video",
+        "aspect_ratio": "16:9",
+        "resolution": "720p",
+        "duration": "3s"
+      },
+      "previous_interaction_id": "v1_unverifiedSubmit01",
+      "generation_config": {
+        "video_config": {
+          "task": "edit"
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "id": "v1_unverifiedEdit01",
+      "status": "in_progress",
+      "model": "gemini-omni-1.2-flash",
+      "object": "interaction"
+    }
+  }
+}
