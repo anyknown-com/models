@@ -1,4 +1,5 @@
 export { embed } from "./embed";
+export { generateImage } from "./generate-image";
 export { generateText } from "./generate-text";
 export { ModelError } from "./model-error";
 export { rerank } from "./rerank";
@@ -9,6 +10,9 @@ export type { EmbedResult } from "./types/embed-result";
 export { synthesize } from "./synthesize";
 export { transcribe } from "./transcribe";
 export type { FinishReason } from "./types/finish-reason";
+export type { ImageAdapter } from "./types/image-adapter";
+export type { ImageRequest } from "./types/image-request";
+export type { ImageResult } from "./types/image-result";
 export type { JsonObject, JsonValue } from "./types/json";
 export type {
   AssistantModelMessage,
@@ -40,3 +44,4 @@ export type { TokenUsage } from "./types/token-usage";
 export type { ToolCall, ToolDeclaration } from "./types/tool";
 export type { TranscribeAdapter } from "./types/transcribe-adapter";
 export type { TranscribeRequest, TranscribeResult } from "./types/transcribe-request";
+export type { VisualUsage } from "./types/visual-usage";
