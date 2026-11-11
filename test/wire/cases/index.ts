@@ -1,5 +1,8 @@
 export { badRequest } from "./bad-request";
 export { draw } from "./draw";
+export { errorNotFound } from "./error-not-found";
+export { errorOverflow } from "./error-overflow";
+export { errorUnsupported } from "./error-unsupported";
 export { file } from "./file";
 export { fileDocx } from "./file-docx";
 export { image } from "./image";
