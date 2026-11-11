@@ -52,18 +52,30 @@ const failedFinish = (message: string, extra: Partial<ModelError> = {}) => ({
 });
 
 describe("openai-compatible errors", () => {
-  it("sends the bad-request case", async () => {
+  it("reads the recorded bad-request response into a ModelError", async () => {
     const fixture = badRequestFixture as Fixture;
+    const { model } = fixture.request.body as { model: string };
+
+    const { error } = (fixture.response as unknown as { body: { error: { message: string } } })
+      .body;
 
     const adapter = openaiCompatible({
-      name: "p",
+      name: "openrouter",
       key: "",
-      baseUrl: "https://api.example.test/v1",
+      baseUrl: fixture.request.url.replace(/\/chat\/completions$/, ""),
       fetch: replayFetch(fixture),
     });
 
-    await expect(adapter.stream(badRequest)[Symbol.asyncIterator]().next()).rejects.toMatchObject({
+    const stream = adapter.stream({ ...badRequest, model });
+    const failed = stream[Symbol.asyncIterator]().next();
+
+    await expect(failed).rejects.toBeInstanceOf(ModelError);
+    await expect(failed).rejects.toMatchObject({
+      kind: "bad-request",
       status: 400,
+      message: error.message,
+      provider: "openrouter",
+      retryable: false,
     });
   });
 

@@ -1,17 +1,25 @@
 {
-  "unverified": true,
   "request": {
     "method": "POST",
-    "url": "https://api.example.test/v1/chat/completions",
+    "url": "https://openrouter.ai/api/v1/chat/completions",
     "headers": {
       "content-type": "application/json"
     },
     "body": {
-      "model": "model",
+      "model": "openai/gpt-5-nano",
       "messages": [
-        { "role": "system", "content": "You are a terse assistant." },
-        { "role": "system", "content": "Answer in one short sentence." },
-        { "role": "user", "content": "Name one planet in the solar system." }
+        {
+          "role": "system",
+          "content": "You are a terse assistant."
+        },
+        {
+          "role": "system",
+          "content": "Answer in one short sentence."
+        },
+        {
+          "role": "user",
+          "content": "Name one planet in the solar system."
+        }
       ],
       "stream": true
     }
@@ -22,10 +30,7 @@
       "content-type": "text/event-stream"
     },
     "chunks": [
-      "data: {\"id\":\"chatcmpl-1\",\"object\":\"chat.completion.chunk\",\"created\":1762819200,\"model\":\"model\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"Mars\"},\"finish_reason\":null}]}\n\n",
-      "data: {\"id\":\"chatcmpl-1\",\"object\":\"chat.completion.chunk\",\"created\":1762819200,\"model\":\"model\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" is a planet.\"},\"finish_reason\":null}]}\n\n",
-      "data: {\"id\":\"chatcmpl-1\",\"object\":\"chat.completion.chunk\",\"created\":1762819200,\"model\":\"model\",\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":31,\"completion_tokens\":5,\"total_tokens\":36}}\n\n",
-      "data: [DONE]\n\n"
+      ": OPENROUTER PROCESSING\n\n: OPENROUTER PROCESSING\n\n: OPENROUTER PROCESSING\n\ndata: {\"id\":\"gen-1794410703-kXdC8qMQkJWJdfar058Q\",\"object\":\"chat.completion.chunk\",\"created\":1794410703,\"model\":\"openai/gpt-5-nano\",\"provider\":\"OpenAI\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\",\"role\":\"assistant\",\"reasoning\":null,\"reasoning_details\":[{\"type\":\"reasoning.encrypted\",\"data\":\"gAAAAABq9IjSVKwIPdmc3E131DMYG64Y43x8VzbBFggMfK0q-GdlC0YSFoACdc3Pv6gIx5SVTPVavjlPIKaOth5bpjb-d1wj8LNPdbaJ8v3XhbPMSMC5WaG4qCwjlhCBaAIWRuH1FkVs4lKunEJ3Q7lEXdxixfIb-Ty-Xu28fsO4TPIRaiGGR7yD5SzTfKHYN2txbH_R2Aq34xnWVS5H1-P4tdQY0p90onlflueNEgufVVF50Ist7JXkb4EQ5Z3nZD77vc4cDDrWeoDrBRQAIkxjq_7j_jTs97b8hlxAMRpI2JIHbyfNM0De1wkHhAuc9vuAONG4VK5YhxFTuQPSI_pyX61QXTlmNHw3UspJljgPjLsgCJq2IkSIN2evxk4u23r2per23EdIZF2C-RuNYBB5mzu1K6_qG4GsKelXVYstW3_oCBC2Y3vUbCdPhIoFblPQZ2ZS1oRLsY_n8pLtQT9T2l_wA93jpFW-KCo8kKRDybMUuvdDsAx0bA87SWKjkBx8hLnzuGWKsDDN4wa3fk7RZU-bl_Zjt9hXl4rJnPTHWF8lbH1n_qVRdz4XkM_amZ1ud4S5R_N_T1I5F93R0p0ka3iGbLpJiCz6kVJeLmRim3BQWa6wKgcZwxghc6R_6A5A4wLUYEHJQQx761EFEy_h1ixpDlp_q5JFRTnZx9oGrzjSL0A4cIN1JJV0yjy4IApBzhxwitzLLPW-7zqjO73uYdtcIjE4yjsSnhOHoTfiKSiIs6uih-s1Qg0FWdY2V8uAyFrAzzIb5XGrHsB117z41cyFfFuIelXkQVR1fG27qv7tmGIHHqUSGcOoI4_v9jI73sTr6momRezPjC0KEkLnaG7ecqr10CgekWE_3-hxsxl96obTWPYtovUGEXVAuWc7u1PLMwuYeF7eVmY-dzHyROk9QMv91f8EUV8oJ7tiEMNQtWF3mGV9yat6C7nP_cctpC6FNlrzH5zNphZK69oC_zeo58H9jUhk02tysUAHMhjClZIczG33IOxxBOnMPe10P7i0_wCRfeysf-yeUZ6Z9K1-jaw-B7R3jhu4cKGdaN9OD5wlKL8I8rQhUkRSZYG0Ddy9R1C2NHE4nBN43qvVuAmb3-eV-QYKQtm1BeRqu1jVq8k2gCP9bWHFNueJyO_N3kD6Lo_G434sOhEqThFprA06lPlxqhEuRlC_gX4bCiYFkleHJiRlzjl9OrjN9JloYOxe4MRvY-kEqRGWatgmE_p7Cysl9txLMZUCmAk63OrOeK7wl9oQCDA_JD6vTLSlubSFR5OdCvYqmcsBqyyUTMlU1kYfleK2CxupipCyBBEZrLeoUszbs6OPE1DmoJyrsIApI_jHD2U09EUUtEmg9bzxm-znfI--RtXbmgoOpA6cBwO1n2ueO80LLU_G4_vXnqQ--d-tK_WO_1wDbvWNopqvH-VjxIeRe0dAIawTp2hrDStRJGMFo_w4X8bOcbFWcynyxQCFcY-bBxW9K7sIi7aaNyzpJxaUHwJ4QhE6mGxNy-6t4yI7oZvw5jLP6_jiJ5ATf_4oOdYLA5GLPzaZfUEmjEmtRDADSjLS0RNuNkRraZqNfJaOoh5RVEWfhl3aW36AQvOVKk9slMNJ0nziRBC4nmnETK_q7HmQ8nxbYZ65tfbYl3gzdjzJLeg-hSrFKdKYnFZKLqLBQEHwMDBkiUHGf9a_U_LxDwg0vbxXmCpH4V1bIuhCU5Lnjp2D-yuZTjCSqoiZNXfocKBHAm-fZGjFytbXVC9v-sMaUH--cTD_Wd_VBvOS1hQYbz7DimM4lIrNt-QfHlUpQ31lOGjmz8J13G2Bm9lfTCAz3f1Ktx2JUR51mFmZZnfNctigLKfDlONQbRgB90KGi-5OywI7-7bkQ6itndqzxu1vG5EAHhqljPdfx9fX30MxpF8jZqA8Mi70o_RO6vPCdxIsujBWl3T-G74BXVgvs25OlNxlhVMj6U6CHQ__vhPzo47tk8zsJqRw5x0sc21wa7E7gFu3pH3FwXaYP0pV-QW9lJbH-Y2-cpPYHLaAXKgpzQUs8xtD4mUDmfaDp3DChUurtuWgePlTs4OplzaRx8nN2IXlxXJOuRpakWTXeyvywBIJanf8H7LrvOpUhKjdLPRqgDxfJOjDK6dfQS2MUKXk3pK6sM8HEI0ba6DTLbIiRxOZkx9SllruuzcksfORZXYXgFbEwXrZjJ-_xCm1vmSXTjnZWQHpFdYoYGO6ALRtCbcDZchykNQAlfF7uwiZXFnUmsdp4K_nbi0zyWQAmxcGvDQ1Kq_mkCeaTKwU_rZwKLahS9RrPBUsTiLGzoDQYxZswEZZYwXCG-X9zlmgUZ6P92UZevKM8psA1G5ZS7TLtc9jKIC5wCRMDT7avMoDiszGPnWHZs6m_BGZuEJFe9Ti8f3jjLzUcBfzZHIwo5BMZbtOJOrljIQ9Fc86xIi7czH0z7l4HKl9EjttmSYyFund-ruq8rM6syhf6VSR6ElMMQlfYItVsLQBf2ju-4idOrxl-zddD2boRK8KHM-JYe9zS024yGvqLDpXqhpItbkUfl5wEld9I0OXMB5u76Y4IE3TvxtKdPbSICAy6buqe2bMe6n4pyNDDhMBvOHIi2y5K5eUJurQIdffQSL6hePBblMu2XqRpxxKtpibt0oBowNCudEzYgMxVeL7HnaXwH9yABDy4l858gW-jKKTcULN3ape_4wPlA3cdeDp7O0Mg8DODEgDZgnSjG6mD6JcYq1Ck22-QH-QBVP-NTSqGYdcxbVJ-AvOCikjCUhvVHEDNgHBCn9qoEn5t_b0TxRSpemoNYl-CVew9T224k1cX0A8_vy6nhmwcru3Mz0k_T_m-TAcT-ZVS3S_LvwPMEwgNg3uAutrShXeddKEH3anHTEsN0B1tkBIDjOoGLl_xCmQ4YdD41BD7uIjoc5P5BZjUoNJpPD_Rf5islxVzcNduJlcgv76GEpLGYVgmpVS0LH8I1lZ-HbOrAVh9eC9cR2MhlotQ4kr-jru2A6KymaHIs8W5vThdoT3FSxiZIvUv8X4z2s4iAThFhe90Z96dkCGi_1H7_sYM8aqOfOrTp-QyVlRLIeigoPB911i5A5c0b3dUNLsz5CP4BF5PO_SQFd7QwM9q4briVIwL7-kX_puWYE2XVs51pIf0rtXhuuI-H0yZLj1V0V2m11IleiQNgnDWMtYVfLChFpaBJImXHpsH-Jl1HrLzPfeIF3C5msJGYiEr_OllfxNR8tW_xhij5e9qXGb-8_gbwW_yjEpK-fH6xBESr_eGXAnhRC62LYRuWy8LSaAAz5grsyBBYe-ktpN2W1WMCinFPALC3jeyHDI6tGD0V1w3cnjL4vtOqIuvO5Bmli9f8t-4uwp-BI1J0QmXwCRyIYiQ5IoJY0LwvcUOtFiR23UHEcExKcKV03du7cymMsDG6pIfe0YJ7mLZEIPadstAHdobE6zn0iQ9XI2OEMv44gfuAPTYO___ggCOYtlmuz_yYNIWpkztl_TY9m6vOQz_TP90CVlEzzMgXtqAht6zgBiOSPG1fhWFJPIJxSjLSzHpRHugESSLIZpV8Rh1mhEUo9gJ-HX2hPcQQ6L1YgyY-PPXiiAdZdLj54tyw40I7TtLmD0TsPUtX3eqIzdByvW5PayasZCYHj4a2lAdtlLIbHmJrIwx2grjPBNXXnEzKb3g2dxvjs8PoYNPFrOlEkq3KQu1YTgxL8rhPO_9xsFLWDqY9izvxN2t19KvQyBt063C5YsvBM5wMO02R4r4kq6Oq48pFCOzjciNVWqlW_-3rHSWXkH_3dm-XhbgWiq3fP2ErSfEjLb2t-M1EqXuUSbPx5zMOBbslU6FYuRzoi3eIohdEEVMhb42scUdD7kHpkLdGabgtRJbEYqO5DXK4ucOSN1yixU6LFHV1M-4zk76upur2suLWuY0bUbLGbORglgSfZUfZS9b-Xk3QvJ6H7aNF_uV4dmdpSXdRax_DBot9VXhY83y5mKKblH1N4p5FwtxkLjF0OuIXMXS8GjiQYxLBhQpKOHtRJjXi8H19663vWfeNQ_BCQ24hEh6XEW4-Q6cNdrJpLIN01sg2fop36hlRs10cmVaz9HTZY7lPGMVoiMe2pJNuBZvUmS31fnh0yJHjPZmSRYAnmZ0BrV2oGEQpfJ5REWbMn0KikZ95IafeqkbDj-boLbTTO_CBQ5ccZQsK1iPERTEtHopF6P9ZGrBfnzSDJp-NWs_NBietYUx3pN5oHGUM0Dh6gerzhWQYLa_XlBfJSv1Zy59ck=.eyJlbmRwb2ludF9zbHVnIjoib3BlbmFpL2dwdC01LW5hbm8tMjAyNS0wOC0wN3xvcGVuYWkifQ\",\"format\":\"openai-responses-v1\",\"id\":\"rs_0b27856f99d30222016af488d0cf0087d189abbae8fea7ce66\",\"index\":0}]},\"finish_reason\":null,\"native_finish_reason\":null}]}\n\ndata: {\"id\":\"gen-1794410703-kXdC8qMQkJWJdfar058Q\",\"object\":\"chat.completion.chunk\",\"created\":1794410703,\"model\":\"openai/gpt-5-nano\",\"provider\":\"OpenAI\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Mars\",\"role\":\"assistant\"},\"finish_reason\":null,\"native_finish_reason\":null}]}\n\ndata: {\"id\":\"gen-1794410703-kXdC8qMQkJWJdfar058Q\",\"object\":\"chat.completion.chunk\",\"created\":1794410703,\"model\":\"openai/gpt-5-nano\",\"provider\":\"OpenAI\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\".\",\"role\":\"assistant\"},\"finish_reason\":null,\"native_finish_reason\":null}]}\n\ndata: {\"id\":\"gen-1794410703-kXdC8qMQkJWJdfar058Q\",\"object\":\"chat.completion.chunk\",\"created\":1794410703,\"model\":\"openai/gpt-5-nano\",\"provider\":\"OpenAI\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\",\"role\":\"assistant\",\"reasoning\":null},\"finish_reason\":\"stop\",\"native_finish_reason\":\"completed\"}]}\n\ndata: {\"id\":\"gen-1794410703-kXdC8qMQkJWJdfar058Q\",\"object\":\"chat.completion.chunk\",\"created\":1794410703,\"model\":\"openai/gpt-5-nano\",\"provider\":\"OpenAI\",\"service_tier\":\"default\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\",\"role\":\"assistant\"},\"finish_reason\":\"stop\",\"native_finish_reason\":\"completed\"}],\"usage\":{\"prompt_tokens\":34,\"completion_tokens\":204,\"total_tokens\":238,\"cost\":0.0000833,\"is_byok\":false,\"prompt_tokens_details\":{\"cached_tokens\":0,\"cache_write_tokens\":0,\"audio_tokens\":0,\"video_tokens\":0},\"cost_details\":{\"upstream_inference_cost\":0.0000833,\"upstream_inference_prompt_cost\":0.0000017,\"upstream_inference_completions_cost\":0.0000816},\"completion_tokens_details\":{\"reasoning_tokens\":192,\"image_tokens\":0,\"audio_tokens\":0}}}\n\ndata: [DONE]\n\n"
     ]
   }
 }

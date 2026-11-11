@@ -1,15 +1,19 @@
 {
-  "unverified": true,
   "request": {
     "method": "POST",
-    "url": "https://api.example.test/v1/chat/completions",
+    "url": "https://openrouter.ai/api/v1/chat/completions",
     "headers": {
       "content-type": "application/json"
     },
     "body": {
-      "model": "model",
+      "model": "openai/no-such-model-x",
       "max_tokens": -1,
-      "messages": [{ "role": "user", "content": "Hello." }],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello."
+        }
+      ],
       "stream": true
     }
   },
@@ -20,9 +24,10 @@
     },
     "body": {
       "error": {
-        "message": "Bad request.",
+        "message": "openai/no-such-model-x is not a valid model ID",
         "code": 400
-      }
+      },
+      "user_id": "org_redacted"
     }
   }
 }
