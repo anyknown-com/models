@@ -1,19 +1,25 @@
 import type { TextRequest } from "../types/text-request";
+import { betaHeaderOf } from "./beta-header-of";
 import { ANTHROPIC_VERSION } from "./constants";
 import { maxTokensOf } from "./max-tokens-of";
 import { textBlockOf } from "./text-block-of";
 import { thinkingOf } from "./thinking-of";
 import { toMessages } from "./to-messages";
+import { toTools } from "./to-tools";
 import type { AnthropicCall, AnthropicRequest } from "./types";
 
 export function buildRequest(call: AnthropicCall, request: TextRequest): AnthropicRequest {
-  const { model, system = [], providerOptions } = request;
+  const { model, system = [], tools = [], providerOptions } = request;
   const { thinking, effort, cacheControl } = providerOptions?.anthropic ?? {};
   const reasoning = thinkingOf(thinking);
 
   return {
     url: `${call.baseUrl}/messages`,
-    headers: { "x-api-key": call.key, "anthropic-version": ANTHROPIC_VERSION },
+    headers: {
+      "x-api-key": call.key,
+      "anthropic-version": ANTHROPIC_VERSION,
+      ...betaHeaderOf(model, tools),
+    },
     body: {
       model,
       max_tokens: maxTokensOf(model, request.maxOutputTokens, reasoning?.budget ?? 0),
@@ -22,6 +28,7 @@ export function buildRequest(call: AnthropicCall, request: TextRequest): Anthrop
       ...(cacheControl ? { cache_control: cacheControl } : {}),
       ...(system.length > 0 ? { system: system.map(textBlockOf) } : {}),
       messages: toMessages(request.messages),
+      ...toTools(tools),
       stream: true,
     },
   };

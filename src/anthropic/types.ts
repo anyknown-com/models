@@ -1,4 +1,5 @@
 import type { JsonObject } from "../types/json";
+import type { AssistantModelMessage } from "../types/model-message";
 
 export type AnthropicCall = { provider: string; key: string; fetch: typeof fetch; baseUrl: string };
 
@@ -9,3 +10,13 @@ export type AnthropicRequest = {
   headers: Record<string, string>;
   body: JsonObject;
 };
+
+export type KnownModel = {
+  ids: readonly string[];
+  maxOutputTokens: number;
+  structuredOutput: boolean;
+};
+
+export type ClaudeModel = { maxOutputTokens: number; known: boolean; structuredOutput: boolean };
+
+export type AssistantPart = Exclude<AssistantModelMessage["content"], string>[number];
