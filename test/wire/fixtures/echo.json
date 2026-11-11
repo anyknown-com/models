@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.test/v1/echo",
+    "headers": { "content-type": "application/json" },
+    "body": { "text": "hello" }
+  },
+  "response": {
+    "status": 200,
+    "headers": { "content-type": "text/event-stream" },
+    "chunks": ["data: {\"text\":\"hel\"}\n\n", "data: {\"text\":\"lo\"}\n\n", "data: [DONE]\n\n"]
+  }
+}
