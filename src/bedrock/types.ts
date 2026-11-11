@@ -28,3 +28,22 @@ export type Signatures = readonly (readonly [string, readonly (number | null)[]]
 export type MessageContext = { model: string; documentName: (filename?: string) => string };
 
 export type Media = { bytes: Uint8Array; mediaType: string; filename?: string };
+
+export type BlockKind = "text" | "reasoning";
+
+export type ReasoningDelta = {
+  text?: string;
+  signature?: string;
+  data?: string;
+  redactedContent?: string;
+};
+
+export type BlockDelta = { text?: string; reasoningContent?: ReasoningDelta | null };
+
+export type ConverseEvent = {
+  contentBlockStart?: { contentBlockIndex: number; start?: { toolUse?: JsonObject | null } | null };
+  contentBlockDelta?: { contentBlockIndex: number; delta?: BlockDelta | null };
+  contentBlockStop?: { contentBlockIndex: number };
+  messageStop?: { stopReason: string };
+  metadata?: { usage?: JsonObject | null };
+};

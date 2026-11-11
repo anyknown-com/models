@@ -1,38 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { crc32 } from "../../../src/bedrock/crc32";
 import { readEventStream } from "../../../src/bedrock/read-event-stream";
+import { frame, header, stringHeader, u16, u32 } from "./frames";
 
 const encoder = new TextEncoder();
-
-const u16 = (value: number) => [value >>> 8, value & 0xff];
-
-const u32 = (value: number) => [
-  value >>> 24,
-  (value >>> 16) & 0xff,
-  (value >>> 8) & 0xff,
-  value & 0xff,
-];
-
-const header = (name: string, type: number, value: number[]) => [
-  name.length,
-  ...encoder.encode(name),
-  type,
-  ...value,
-];
-
-const stringHeader = (name: string, value: string) => {
-  const bytes = [...encoder.encode(value)];
-
-  return header(name, 7, [...u16(bytes.length), ...bytes]);
-};
-
-const frame = (headers: number[], payload: string) => {
-  const body = [...encoder.encode(payload)];
-  const prelude = [...u32(16 + headers.length + body.length), ...u32(headers.length)];
-  const message = [...prelude, ...u32(crc32(Uint8Array.from(prelude))), ...headers, ...body];
-
-  return [...message, ...u32(crc32(Uint8Array.from(message)))];
-};
 
 const CHUNK_PAYLOAD = '{"contentBlockIndex":0,"delta":{"text":"你好 🌏"},"p":"abcd"}';
 

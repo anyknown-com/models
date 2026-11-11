@@ -1,4 +1,5 @@
 import { IMAGE_SIGNATURES } from "../wire/image-signatures";
+import type { ReadField } from "../wire/types";
 import type { Signatures } from "./types";
 
 export const PROVIDER = "bedrock";
@@ -76,3 +77,56 @@ export const SIGNATURES_BY_TOP_LEVEL: Readonly<Record<string, Signatures>> = {
   ],
   application: [["application/pdf", [0x25, 0x50, 0x44, 0x46]]],
 };
+
+const fieldsOf = (type: ReadField["type"], ...paths: string[][]): ReadField[] =>
+  paths.map((path) => ({ path, type }));
+
+const blockFieldsOf = (event: string, ...fields: ReadField[]): ReadField[] => [
+  ...fieldsOf("object", [event]),
+  { path: [event, "contentBlockIndex"], type: "number", required: true },
+  ...fields,
+];
+
+const delta = (...path: string[]) => ["contentBlockDelta", "delta", ...path];
+
+const usage = (...path: string[]) => ["metadata", "usage", ...path];
+
+export const READ_FIELDS: Readonly<Record<string, readonly ReadField[]>> = {
+  contentBlockStart: blockFieldsOf(
+    "contentBlockStart",
+    ...fieldsOf(
+      "object",
+      ["contentBlockStart", "start"],
+      ["contentBlockStart", "start", "toolUse"],
+    ),
+  ),
+  contentBlockDelta: blockFieldsOf(
+    "contentBlockDelta",
+    ...fieldsOf("object", delta(), delta("reasoningContent")),
+    ...fieldsOf(
+      "string",
+      delta("text"),
+      ...["text", "signature", "data", "redactedContent"].map((key) =>
+        delta("reasoningContent", key),
+      ),
+    ),
+  ),
+  contentBlockStop: blockFieldsOf("contentBlockStop"),
+  messageStop: [
+    ...fieldsOf("object", ["messageStop"], ["messageStop", "additionalModelResponseFields"]),
+    { path: ["messageStop", "stopReason"], type: "string", required: true },
+  ],
+  metadata: [
+    ...fieldsOf("object", ["metadata"], usage()),
+    ...fieldsOf(
+      "number",
+      usage("cacheReadInputTokens"),
+      usage("cacheWriteInputTokens"),
+      usage("totalTokens"),
+    ),
+  ],
+};
+
+export const USAGE_COUNT_FIELDS: readonly ReadField[] = ["inputTokens", "outputTokens"].map(
+  (key): ReadField => ({ path: usage(key), type: "number", required: true }),
+);
