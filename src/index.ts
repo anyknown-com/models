@@ -1,4 +1,6 @@
+export { generateText } from "./generate-text";
 export { ModelError } from "./model-error";
+export { streamText } from "./stream-text";
 export type { FinishReason } from "./types/finish-reason";
 export type { JsonObject, JsonValue } from "./types/json";
 export type {
