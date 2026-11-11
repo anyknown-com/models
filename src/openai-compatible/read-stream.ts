@@ -2,12 +2,13 @@ import { ModelError } from "../model-error";
 import type { FinishReason } from "../types/finish-reason";
 import type { JsonObject } from "../types/json";
 import type { StreamEvent } from "../types/stream-event";
+import { finishEventsOf } from "../wire/finish-events-of";
 import { readSse } from "../wire/read-sse";
 import { chunkOf } from "./chunk-of";
-import { finishEventsOf } from "./finish-events-of";
 import { finishReasonOf } from "./finish-reason-of";
 import { readText } from "./read-text";
 import { readToolCalls } from "./read-tool-calls";
+import { tokenUsageOf } from "./token-usage-of";
 
 export async function* readStream(
   provider: string,
@@ -45,5 +46,10 @@ export async function* readStream(
 
   yield* toolCalls.finish();
 
-  yield* finishEventsOf(provider, reason, usage, failure ?? toolCalls.failure());
+  yield* finishEventsOf(provider, {
+    reason,
+    usage: tokenUsageOf(usage),
+    raw: usage,
+    failure: failure ?? toolCalls.failure(),
+  });
 }

@@ -2,11 +2,12 @@ import { ModelError } from "../model-error";
 import type { FinishReason } from "../types/finish-reason";
 import type { JsonObject } from "../types/json";
 import type { StreamEvent } from "../types/stream-event";
+import { finishEventsOf } from "../wire/finish-events-of";
 import { readSse } from "../wire/read-sse";
 import { sseDataOf } from "../wire/sse-data-of";
 import { contentEventOf } from "./content-event-of";
-import { finishEventsOf } from "./finish-events-of";
 import { finishReasonOf } from "./finish-reason-of";
+import { tokenUsageOf } from "./token-usage-of";
 import { toolCallEventsOf } from "./tool-call-events-of";
 import type { ResponsesEvent } from "./types";
 
@@ -46,5 +47,10 @@ export async function* readStream(
     yield* toolCalls;
   }
 
-  yield* finishEventsOf(provider, reason, usage, failure);
+  yield* finishEventsOf(provider, {
+    reason: failure ? undefined : reason,
+    usage: tokenUsageOf(usage),
+    raw: usage,
+    failure,
+  });
 }
