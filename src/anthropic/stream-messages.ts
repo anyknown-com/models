@@ -23,5 +23,7 @@ export async function* streamMessages(
     errorOf: (text) => ({ message: text }),
   });
 
-  yield* readStream(provider, response.body ?? new Blob().stream());
+  const declared = new Set(request.tools?.map((tool) => tool.name));
+
+  yield* readStream(provider, response.body ?? new Blob().stream(), declared);
 }

@@ -27,7 +27,13 @@ export type MessagesEvent = {
   type: string;
   index?: number;
   message?: { usage?: JsonObject };
-  content_block?: { type: string };
-  delta?: { type?: string; text?: string; thinking?: string; stop_reason?: string | null };
+  content_block?: { type: string; id?: string; name?: string };
+  delta?: {
+    type?: string;
+    text?: string;
+    thinking?: string;
+    partial_json?: string;
+    stop_reason?: string | null;
+  };
   usage?: JsonObject;
 };

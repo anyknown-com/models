@@ -33,6 +33,8 @@ const CASES = [
   caseOf("file", file, fileFixture),
 ];
 
+const unverified = CASES.filter(({ fixture }) => fixture.unverified).map(({ name }) => name);
+
 const dataOf = ({ response }: Fixture): EventData[] =>
   ("chunks" in response ? response.chunks : []).map((chunk) =>
     JSON.parse(chunk.slice(chunk.indexOf("data: ") + 6)),
@@ -49,41 +51,65 @@ const eventsOf = async (request: TextRequest, fetch: typeof globalThis.fetch) =>
   return events;
 };
 
+const toolUse = (index: number, id: string, parts: string[]): JsonObject[] => [
+  {
+    type: "content_block_start",
+    index,
+    content_block: { type: "tool_use", id, name: "get_weather", input: {} },
+  },
+  ...parts.map((partial_json) => ({
+    type: "content_block_delta",
+    index,
+    delta: { type: "input_json_delta", partial_json },
+  })),
+  { type: "content_block_stop", index },
+];
+
+const toolCallEvents = (callId: string, input: unknown) => [
+  { type: "tool-input-start", callId, name: "get_weather" },
+  { type: "tool-call", callId, name: "get_weather", input },
+];
+
+describe.skipIf(unverified.length > 0)(
+  `anthropic fixture stream${unverified.length > 0 ? ` (skipped: ${unverified.join(", ")} unverified)` : ""}`,
+  () => {
+    it.each(CASES)(
+      "reads the $name stream into text, finish and usage",
+      async ({ request, fixture }) => {
+        const { model } = fixture.request.body as { model: string };
+        const data = dataOf(fixture);
+        const opened = data.find(({ type }) => type === "message_start")?.message?.usage ?? {};
+        const closed = data.find(({ type }) => type === "message_delta")?.usage ?? {};
+        const raw = { ...opened, ...closed };
+        const events = await eventsOf({ ...request, model }, replayFetch(fixture));
+
+        const finished = {
+          reason: "stop",
+          usage: {
+            input: raw.input_tokens + raw.cache_read_input_tokens + raw.cache_creation_input_tokens,
+            output: raw.output_tokens,
+            reasoning: 0,
+            cacheRead: raw.cache_read_input_tokens,
+            cacheWrite: raw.cache_creation_input_tokens,
+          },
+          raw,
+        };
+
+        expect(events.flatMap((event) => (event.type === "text" ? [event.delta] : []))).toEqual(
+          data.flatMap(({ delta }) => (delta?.type === "text_delta" ? [delta.text] : [])),
+        );
+        expect(events[0]).toEqual({ type: "text-start", id: "0" });
+        expect(events.slice(-3)).toEqual([
+          { type: "text-end", id: "0" },
+          { type: "step-finish", ...finished },
+          { type: "finish", ...finished },
+        ]);
+      },
+    );
+  },
+);
+
 describe("anthropic stream", () => {
-  it.each(CASES)(
-    "reads the $name stream into text, finish and usage",
-    async ({ request, fixture }) => {
-      const { model } = fixture.request.body as { model: string };
-      const data = dataOf(fixture);
-      const opened = data.find(({ type }) => type === "message_start")?.message?.usage ?? {};
-      const closed = data.find(({ type }) => type === "message_delta")?.usage ?? {};
-      const raw = { ...opened, ...closed };
-      const events = await eventsOf({ ...request, model }, replayFetch(fixture));
-
-      const finished = {
-        reason: "stop",
-        usage: {
-          input: raw.input_tokens + raw.cache_read_input_tokens + raw.cache_creation_input_tokens,
-          output: raw.output_tokens,
-          reasoning: 0,
-          cacheRead: raw.cache_read_input_tokens,
-          cacheWrite: raw.cache_creation_input_tokens,
-        },
-        raw,
-      };
-
-      expect(events.flatMap((event) => (event.type === "text" ? [event.delta] : []))).toEqual(
-        data.flatMap(({ delta }) => (delta?.type === "text_delta" ? [delta.text] : [])),
-      );
-      expect(events[0]).toEqual({ type: "text-start", id: "0" });
-      expect(events.slice(-3)).toEqual([
-        { type: "text-end", id: "0" },
-        { type: "step-finish", ...finished },
-        { type: "finish", ...finished },
-      ]);
-    },
-  );
-
   it("reads thinking, cache tokens and the one-hour cache write the way the bridge does", async () => {
     const start = {
       input_tokens: 10,
@@ -132,5 +158,27 @@ describe("anthropic stream", () => {
       { type: "step-finish", ...finished },
       { type: "finish", ...finished },
     ]);
+  });
+
+  it("gathers split tool input into one tool call per block, with {} for empty input and the raw text for broken JSON", async () => {
+    const body = sse([
+      { type: "message_start", message: { id: "m", usage: { input_tokens: 5, output_tokens: 1 } } },
+      ...toolUse(0, "t1", ['{"ci', 'ty": "Pa', 'ris"}']),
+      ...toolUse(1, "t2", []),
+      ...toolUse(2, "t3", ['{"city": "Pa']),
+      { type: "message_delta", delta: { stop_reason: "tool_use" }, usage: { output_tokens: 9 } },
+      { type: "message_stop" },
+    ]);
+
+    const events = await eventsOf({ ...tools, model: "claude-sonnet-4-5" }, async () => {
+      return new Response(body, { headers: { "content-type": "text/event-stream" } });
+    });
+
+    expect(events.slice(0, -2)).toEqual([
+      ...toolCallEvents("t1", { city: "Paris" }),
+      ...toolCallEvents("t2", {}),
+      ...toolCallEvents("t3", '{"city": "Pa'),
+    ]);
+    expect(events.at(-1)).toMatchObject({ type: "finish", reason: "tool-calls" });
   });
 });

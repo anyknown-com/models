@@ -5,12 +5,15 @@ import { readSse } from "../wire/read-sse";
 import { contentEventOf } from "./content-event-of";
 import { finishEventsOf } from "./finish-events-of";
 import { finishReasonOf } from "./finish-reason-of";
+import { readToolCalls } from "./read-tool-calls";
 import type { MessagesEvent } from "./types";
 
 export async function* readStream(
   provider: string,
   body: ReadableStream<Uint8Array>,
+  declared: ReadonlySet<string>,
 ): AsyncIterable<StreamEvent> {
+  const toolCallsOf = readToolCalls(declared);
   const texts = new Set<number>();
   let start: JsonObject | undefined;
   let delta: JsonObject | undefined;
@@ -29,6 +32,8 @@ export async function* readStream(
     const content = contentEventOf(event, texts);
 
     if (content) yield content;
+
+    yield* toolCallsOf(event);
   }
 
   yield* finishEventsOf(provider, reason, start, delta);
