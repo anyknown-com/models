@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, readdir, readFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -196,6 +196,32 @@ describe("record.mjs", () => {
     assert.equal(fixture.request.body.messages[1].content[0].toolName, "get_weather");
     assert.doesNotMatch(text, new RegExp(TOKEN));
     assert.doesNotMatch(text, new RegExp(apiHost));
+  });
+
+  it("writes no fixture and names the status and provider message when the status is unexpected", async () => {
+    const provider = await serve(() => ({
+      status: 401,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ error: { message: `invalid x-api-key ${KEY}` } }),
+    }));
+
+    const dir = await mkdtemp(join(tmpdir(), "record-401-"));
+
+    await assert.rejects(
+      recordFixture({
+        family: "fake",
+        caseName: "text",
+        model: "m-4",
+        keyEnv: "RECORD_TEST_KEY",
+        baseUrl: provider,
+        factory: fakeFactory,
+        fixtures: pathToFileURL(`${dir}/`),
+      }),
+      (error) =>
+        error.message.startsWith("text 401: invalid x-api-key") && !error.message.includes(KEY),
+    );
+
+    assert.deepEqual(await readdir(dir), []);
   });
 
   it("prints the missing env and exits 1", async () => {

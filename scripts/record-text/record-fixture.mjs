@@ -10,6 +10,15 @@ const CASES = new URL("../../test/wire/cases/index.ts", import.meta.url);
 const factoryOf = (family) =>
   importExport(new URL(`../../src/${family}/index.ts`, import.meta.url), family);
 
+const messageOf = ({ body, chunks }) => {
+  const message = body?.error?.message ?? body?.message ?? body?.error ?? chunks?.join("");
+
+  return typeof message === "string" ? message : JSON.stringify(message ?? body);
+};
+
+const statusFits = (caseName, status) =>
+  caseName === "bad-request" ? status >= 400 && status < 500 : status >= 200 && status < 300;
+
 export async function recordFixture(options) {
   const { family, caseName, model, baseUrl, provider, fixtures = FIXTURES } = options;
   const transport = await transportOf(options);
@@ -27,6 +36,14 @@ export async function recordFixture(options) {
   await drain(adapter.stream({ ...request, model }));
 
   if (recording.calls.length === 0) throw new Error(`${family} 沒有送出 request`);
+
+  const { response } = recording.calls[0];
+
+  if (!statusFits(caseName, response.status)) {
+    const message = messageOf(response).replaceAll(transport.key, "<key>");
+
+    throw new Error(`${caseName} ${response.status}: ${message}`);
+  }
 
   const json = `${JSON.stringify(recording.calls[0], null, 2)}\n`;
 
