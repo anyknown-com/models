@@ -3,8 +3,10 @@ import { openaiCompatible } from "../../../src/openai-compatible";
 import { buildRequest } from "../../../src/openai-compatible/build-request";
 import type { TextRequest } from "../../../src/types/text-request";
 import { post } from "../../../src/wire/post";
-import { reasoning, text, tools } from "../cases";
+import { file, image, reasoning, text, tools } from "../cases";
 import type { Fixture } from "../fixture";
+import fileFixture from "../fixtures/openai-compatible/file.json";
+import imageFixture from "../fixtures/openai-compatible/image.json";
 import reasoningFixture from "../fixtures/openai-compatible/reasoning.json";
 import textFixture from "../fixtures/openai-compatible/text.json";
 import toolsFixture from "../fixtures/openai-compatible/tools.json";
@@ -37,6 +39,14 @@ describe("openai-compatible request", () => {
 
   it("sends assistant reasoning as reasoning_content", async () => {
     await expect(sentAs(reasoningFixture, reasoning)).resolves.toBeInstanceOf(Response);
+  });
+
+  it("sends image bytes as a data URL in an image_url part", async () => {
+    await expect(sentAs(imageFixture, image)).resolves.toBeInstanceOf(Response);
+  });
+
+  it("sends a PDF as a file part with filename and file_data", async () => {
+    await expect(sentAs(fileFixture, file)).resolves.toBeInstanceOf(Response);
   });
 
   it("spreads its own provider options cell into the body and renames reasoningEffort", () => {
