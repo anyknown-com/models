@@ -1,0 +1,37 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-haiku-4-5-20251001-v1%3A0/converse-stream",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "system": [],
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "text": "Hello."
+            }
+          ]
+        }
+      ],
+      "additionalModelResponseFieldPaths": ["/delta/stop_sequence"],
+      "inferenceConfig": {
+        "maxTokens": -1
+      }
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json",
+      "x-amzn-errortype": "ValidationException:http://internal.amazon.com/coral/com.amazon.bedrock/"
+    },
+    "body": {
+      "message": "1 validation error detected: Value '-1' at 'inferenceConfig.maxTokens' failed to satisfy constraint: Member must have value greater than or equal to 1"
+    }
+  }
+}

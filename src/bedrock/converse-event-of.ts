@@ -3,6 +3,7 @@ import { fieldOf } from "../speech/field-of";
 import { sseDataOf } from "../wire/sse-data-of";
 import { typedDataOf } from "../wire/typed-data-of";
 import { PROVIDER, READ_FIELDS } from "./constants";
+import { exceptionErrorOf } from "./exception-error-of";
 import { readFieldsOf } from "./read-fields-of";
 import type { ConverseEvent, EventFrame } from "./types";
 
@@ -16,6 +17,10 @@ export function converseEventOf({
   payload,
 }: EventFrame): ConverseEvent | ModelError | undefined {
   const type = headers[":event-type"];
+
+  if (headers[":message-type"] === "exception") {
+    return exceptionErrorOf(headers[":exception-type"], payload);
+  }
 
   if (headers[":message-type"] !== "event" || type === undefined) return undefined;
 

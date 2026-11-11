@@ -27,5 +27,5 @@ export async function get(init: GetInit): Promise<Response> {
 
   const body = await response.text().catch(() => "");
 
-  throw httpErrorOf(provider, response.status, body, init.errorOf);
+  throw httpErrorOf(provider, response.status, body, init.errorOf, response.headers);
 }

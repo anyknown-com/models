@@ -7,8 +7,9 @@ export function httpErrorOf(
   status: number,
   body: string,
   errorOf: ErrorOf,
+  headers = new Headers(),
 ): ModelError {
-  const { kind, code, message } = errorOf(body, status);
+  const { kind, code, message } = errorOf(body, status, headers);
 
   return new ModelError({
     ...errorKindOf(status),

@@ -1,8 +1,25 @@
+import type { ModelError } from "../model-error";
 import { IMAGE_SIGNATURES } from "../wire/image-signatures";
 import type { ReadField } from "../wire/types";
 import type { Signatures } from "./types";
 
 export const PROVIDER = "bedrock";
+
+type StreamException = Pick<ModelError, "kind" | "retryable"> & { status: number };
+
+export const STREAM_EXCEPTIONS: Readonly<Record<string, StreamException>> = {
+  internalServerException: { status: 500, kind: "server", retryable: true },
+  modelStreamErrorException: { status: 424, kind: "server", retryable: true },
+  serviceUnavailableException: { status: 503, kind: "server", retryable: true },
+  throttlingException: { status: 429, kind: "rate-limit", retryable: true },
+  validationException: { status: 400, kind: "bad-request", retryable: false },
+};
+
+export const UNKNOWN_STREAM_EXCEPTION: StreamException = {
+  status: 500,
+  kind: "server",
+  retryable: false,
+};
 
 // https://docs.aws.amazon.com/transcribe/latest/dg/streaming-setting-up.html#streaming-event-stream
 export const PRELUDE_LENGTH = 12;

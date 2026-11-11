@@ -34,5 +34,5 @@ export async function post(init: PostInit): Promise<Response> {
 
   const body = await response.text().catch(() => "");
 
-  throw httpErrorOf(provider, response.status, body, init.errorOf);
+  throw httpErrorOf(provider, response.status, body, init.errorOf, response.headers);
 }
