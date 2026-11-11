@@ -1,12 +1,5 @@
 import type { JsonValue } from "../types/json";
-
-const parsedOf = (text: string): JsonValue | undefined => {
-  try {
-    return JSON.parse(text);
-  } catch {
-    return undefined;
-  }
-};
+import { parsedOf } from "./parsed-of";
 
 export function toolInputOf(args: string, declared: boolean): JsonValue | string {
   if (declared && args.trim() === "") return {};

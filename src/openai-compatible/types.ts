@@ -24,6 +24,7 @@ export type ChatDelta = {
 };
 
 export type ChatChunk = {
+  error?: unknown;
   usage?: JsonObject | null;
   choices?: { delta?: ChatDelta | null; finish_reason?: string | null }[];
 };

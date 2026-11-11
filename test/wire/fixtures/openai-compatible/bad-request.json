@@ -1,0 +1,28 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.example.test/v1/chat/completions",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "model": "model",
+      "max_tokens": -1,
+      "messages": [{ "role": "user", "content": "Hello." }],
+      "stream": true
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "Bad request.",
+        "code": 400
+      }
+    }
+  }
+}

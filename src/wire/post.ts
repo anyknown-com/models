@@ -4,7 +4,7 @@ import { toModelError } from "../to-model-error";
 import type { JsonValue } from "../types/json";
 import { errorKindOf } from "./error-kind-of";
 
-type ProviderError = { code?: string; message: string };
+type ProviderError = { kind?: ModelError["kind"]; code?: string; message: string };
 
 type PostInit = {
   provider: string;
@@ -13,7 +13,7 @@ type PostInit = {
   body: JsonValue;
   fetch?: typeof fetch;
   signal?: AbortSignal;
-  errorOf: (body: string) => ProviderError;
+  errorOf: (body: string, status: number) => ProviderError;
 };
 
 export async function post(init: PostInit): Promise<Response> {
@@ -36,10 +36,11 @@ export async function post(init: PostInit): Promise<Response> {
 
   const { status } = response;
   const body = await response.text().catch(() => "");
-  const { code, message } = init.errorOf(body);
+  const { kind, code, message } = init.errorOf(body, status);
 
   throw new ModelError({
     ...errorKindOf(status),
+    ...(kind === undefined ? {} : { kind }),
     provider,
     status,
     message,

@@ -2,6 +2,7 @@ import type { StreamEvent } from "../types/stream-event";
 import type { TextRequest } from "../types/text-request";
 import { post } from "../wire/post";
 import { buildRequest } from "./build-request";
+import { modelErrorOf } from "./model-error-of";
 import { readStream } from "./read-stream";
 import type { OpenaiCompatibleConfig } from "./types";
 
@@ -16,10 +17,16 @@ export async function* streamChat(
     ...buildRequest(config, request),
     fetch,
     signal: request.signal,
-    errorOf: (body) => ({ message: body }),
+    errorOf: modelErrorOf,
   });
 
   const declared = new Set(request.tools?.map((tool) => tool.name));
 
-  yield* readStream(name, response.body ?? new Blob().stream(), declared);
+  try {
+    yield* readStream(name, response.body ?? new Blob().stream(), declared);
+  } catch (error) {
+    if (!request.signal?.aborted) throw error;
+
+    yield { type: "abort" };
+  }
 }
