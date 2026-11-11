@@ -1,0 +1,59 @@
+{
+  "model": "@cf/meta/llama-3.2-3b-instruct",
+  "input": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Rewrite the user's memory-search query into at most two alternative phrasings that would match notes written in different words. Keep the user's language. Reply with one rewrite per line, nothing else."
+      },
+      {
+        "role": "user",
+        "content": "where did we meet"
+      }
+    ],
+    "max_tokens": 120
+  },
+  "output": {
+    "id": "chatcmpl-6b98999d-34f3-471c-b27e-ddd1efef8707",
+    "object": "chat.completion",
+    "created": 1794423122,
+    "model": "@cf/meta/llama-3.2-3b-instruct-v2",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "where was our first encounter",
+          "refusal": null,
+          "annotations": null,
+          "audio": null,
+          "function_call": null,
+          "reasoning": null
+        },
+        "logprobs": null,
+        "finish_reason": "stop",
+        "stop_reason": null,
+        "token_ids": null,
+        "routed_experts": null
+      }
+    ],
+    "service_tier": null,
+    "usage": {
+      "prompt_tokens": 80,
+      "completion_tokens": 6,
+      "total_tokens": 86,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "neurons": 0.5528151392936707
+    },
+    "prompt_logprobs": null,
+    "prompt_token_ids": null,
+    "prompt_text": null,
+    "kv_transfer_params": null,
+    "ec_transfer_params": null,
+    "metrics": null,
+    "response": "where was our first encounter",
+    "tool_calls": []
+  }
+}

@@ -9,7 +9,6 @@ import { type FixtureCall, recordingBinding } from "./recording-binding";
 type RerankCase = { request: RerankRequest; calls: FixtureCall[]; result: RerankResult };
 
 const cases: Record<string, RerankCase> = fixture.cases;
-const unverified: boolean = fixture.unverified;
 
 describe("workers ai rerank", () => {
   it.each([
@@ -29,6 +28,6 @@ describe("workers ai rerank", () => {
       calls.map(({ model, input }) => ({ model, input, options: undefined })),
     );
 
-    expect(unverified ? result : reranked).toEqual(result);
+    expect(reranked).toEqual(result);
   });
 });

@@ -10,7 +10,6 @@ import { type FixtureCall, recordingBinding } from "./recording-binding";
 type EmbedCase = { request: EmbedRequest; calls: FixtureCall[]; result: EmbedResult };
 
 const cases: Record<string, EmbedCase> = fixture.cases;
-const unverified: boolean = fixture.unverified;
 
 describe("workers ai embed", () => {
   it.each([
@@ -28,7 +27,7 @@ describe("workers ai embed", () => {
 
     expect(received).toEqual(calls.map(({ model, input }) => ({ model, input })));
 
-    expect(unverified ? result : embedded).toEqual(result);
+    expect(embedded).toEqual(result);
   });
 
   it("rejects with an abort model error when the signal aborts", async () => {

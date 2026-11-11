@@ -12,7 +12,6 @@ type TextCase = {
 };
 
 const cases: Record<string, TextCase> = fixture.cases;
-const unverified: boolean = fixture.unverified;
 
 const outcomeOf = (generating: ReturnType<typeof generateText>) =>
   generating.then(
@@ -43,7 +42,7 @@ describe("workers ai text", () => {
       calls.map(({ model: called, input }) => ({ model: called, input, options: undefined })),
     );
 
-    expect(unverified ? result : outcome).toEqual(result);
+    expect(outcome).toEqual(result);
   });
 
   it("rejects with an unsupported error and does not run when tools are given", async () => {

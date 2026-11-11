@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "cases": {
     "rewrite": {
       "request": {
@@ -25,22 +24,56 @@
             "max_tokens": 120
           },
           "output": {
-            "response": "where we first met\nhow we got to know each other",
-            "tool_calls": [],
+            "id": "chatcmpl-6b98999d-34f3-471c-b27e-ddd1efef8707",
+            "object": "chat.completion",
+            "created": 1794423122,
+            "model": "@cf/meta/llama-3.2-3b-instruct-v2",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "where was our first encounter",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
             "usage": {
-              "prompt_tokens": 61,
-              "completion_tokens": 12,
-              "total_tokens": 73
-            }
+              "prompt_tokens": 80,
+              "completion_tokens": 6,
+              "total_tokens": 86,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "neurons": 0.5528151392936707
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null,
+            "response": "where was our first encounter",
+            "tool_calls": []
           }
         }
       ],
       "result": {
-        "text": "where we first met\nhow we got to know each other",
+        "text": "where was our first encounter",
         "reason": "stop",
         "usage": {
-          "input": 61,
-          "output": 12,
+          "input": 80,
+          "output": 6,
           "reasoning": 0,
           "cacheRead": 0,
           "cacheWrite": 0

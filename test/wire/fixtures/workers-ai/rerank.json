@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "cases": {
     "response-order": {
       "request": {
@@ -18,26 +17,59 @@
           "input": {
             "query": "where did we meet",
             "contexts": [
-              { "text": "Coffee\n\nWe met at the corner cafe." },
-              { "text": "Trip\n\nThe flight left at noon." },
-              { "text": "Dinner\n\nWe had dinner by the river." }
+              {
+                "text": "Coffee\n\nWe met at the corner cafe."
+              },
+              {
+                "text": "Trip\n\nThe flight left at noon."
+              },
+              {
+                "text": "Dinner\n\nWe had dinner by the river."
+              }
             ],
             "top_k": 3
           },
           "output": {
+            "meta": {
+              "cost_metric_name_1": "input_tokens",
+              "cost_metric_value_1": 51,
+              "cost_metric_name_2": null,
+              "cost_metric_value_2": null,
+              "cost_metric_name_3": null,
+              "cost_metric_value_3": null,
+              "neurons": 0.014414069
+            },
             "response": [
-              { "id": 2, "score": 0.91 },
-              { "id": 0, "score": 0.42 },
-              { "id": 1, "score": 0.03 }
+              {
+                "id": 0,
+                "score": 0.8912569284439087
+              },
+              {
+                "id": 2,
+                "score": 0.1638289988040924
+              },
+              {
+                "id": 1,
+                "score": 0.00092411128571257
+              }
             ]
           }
         }
       ],
       "result": {
         "ranking": [
-          { "index": 2, "score": 0.91 },
-          { "index": 0, "score": 0.42 },
-          { "index": 1, "score": 0.03 }
+          {
+            "index": 0,
+            "score": 0.8912569284439087
+          },
+          {
+            "index": 2,
+            "score": 0.1638289988040924
+          },
+          {
+            "index": 1,
+            "score": 0.00092411128571257
+          }
         ]
       }
     },
@@ -58,21 +90,44 @@
           "input": {
             "query": "where did we meet",
             "contexts": [
-              { "text": "Coffee\n\nWe met at the corner cafe." },
-              { "text": "Trip\n\nThe flight left at noon." },
-              { "text": "Dinner\n\nWe had dinner by the river." }
+              {
+                "text": "Coffee\n\nWe met at the corner cafe."
+              },
+              {
+                "text": "Trip\n\nThe flight left at noon."
+              },
+              {
+                "text": "Dinner\n\nWe had dinner by the river."
+              }
             ],
             "top_k": 3
           },
           "output": {
-            "response": [{ "id": 0, "score": 0.88 }, { "score": 0.5 }, { "id": 2 }]
+            "response": [
+              {
+                "id": 0,
+                "score": 0.88
+              },
+              {
+                "score": 0.5
+              },
+              {
+                "id": 2
+              }
+            ]
           }
         }
       ],
       "result": {
         "ranking": [
-          { "index": 0, "score": 0.88 },
-          { "index": 2, "score": 0 }
+          {
+            "index": 0,
+            "score": 0.88
+          },
+          {
+            "index": 2,
+            "score": 0
+          }
         ]
       }
     },
@@ -88,13 +143,19 @@
           "model": "@cf/baai/bge-reranker-base",
           "input": {
             "query": "where did we meet",
-            "contexts": [{ "text": "Coffee\n\nWe met at the corner cafe." }],
+            "contexts": [
+              {
+                "text": "Coffee\n\nWe met at the corner cafe."
+              }
+            ],
             "top_k": 1
           },
           "output": {}
         }
       ],
-      "result": { "ranking": [] }
+      "result": {
+        "ranking": []
+      }
     },
     "no-top-k": {
       "request": {
@@ -108,22 +169,38 @@
           "input": {
             "query": "where did we meet",
             "contexts": [
-              { "text": "Coffee\n\nWe met at the corner cafe." },
-              { "text": "Trip\n\nThe flight left at noon." }
+              {
+                "text": "Coffee\n\nWe met at the corner cafe."
+              },
+              {
+                "text": "Trip\n\nThe flight left at noon."
+              }
             ]
           },
           "output": {
             "response": [
-              { "id": 1, "score": 0.6 },
-              { "id": 0, "score": 0.2 }
+              {
+                "id": 1,
+                "score": 0.6
+              },
+              {
+                "id": 0,
+                "score": 0.2
+              }
             ]
           }
         }
       ],
       "result": {
         "ranking": [
-          { "index": 1, "score": 0.6 },
-          { "index": 0, "score": 0.2 }
+          {
+            "index": 1,
+            "score": 0.6
+          },
+          {
+            "index": 0,
+            "score": 0.2
+          }
         ]
       }
     }
