@@ -1,11 +1,15 @@
 import { recordCall } from "./record/record-call.mjs";
+import { transportOf } from "./record/transport.mjs";
 import { SAMPLE_FILENAME, sampleAudio } from "./record/sample.mjs";
 
 const BASE = "https://api.openai.com/v1";
 const FIXTURES = new URL("../test/wire/fixtures/openai/", import.meta.url);
-const key = process.env.OPENAI_API_KEY;
 
-if (!key) throw new Error("OPENAI_API_KEY is not set");
+const { key, fetch } = await transportOf({
+  provider: "openai",
+  base: BASE,
+  keyEnv: "OPENAI_API_KEY",
+});
 
 const transcribeInput = { model: "gpt-transcribe", filename: SAMPLE_FILENAME, language: "en" };
 const form = new FormData();
@@ -18,6 +22,7 @@ form.append("languages[]", "en");
 await recordCall({
   file: new URL("recorded-transcribe.json", FIXTURES),
   key,
+  fetch,
   input: transcribeInput,
   request: new Request(`${BASE}/audio/transcriptions`, {
     method: "POST",
@@ -31,6 +36,7 @@ const synthesizeInput = { model: "gpt-4o-mini-tts", text: "Hello from Anyknown."
 await recordCall({
   file: new URL("recorded-synthesize.json", FIXTURES),
   key,
+  fetch,
   input: synthesizeInput,
   request: new Request(`${BASE}/audio/speech`, {
     method: "POST",

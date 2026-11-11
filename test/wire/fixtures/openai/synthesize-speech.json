@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "input": {
     "model": "gpt-4o-mini-tts",
     "text": "說一句話",

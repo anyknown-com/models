@@ -1,0 +1,49 @@
+{
+  "input": {
+    "model": "gpt-transcribe",
+    "filename": "sample.wav",
+    "language": "en"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 55990
+      },
+      "model": "gpt-transcribe",
+      "response_format": "json",
+      "languages[]": "en"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "text": "Hello from Amino.",
+      "languages": [
+        {
+          "code": "en"
+        }
+      ],
+      "usage": {
+        "type": "duration",
+        "seconds": 2
+      }
+    }
+  },
+  "result": {
+    "text": "Hello from Amino.",
+    "usage": {
+      "amount": 2,
+      "unit": "seconds"
+    }
+  }
+}

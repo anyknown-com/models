@@ -12,8 +12,11 @@ import noWords from "../fixtures/elevenlabs/transcribe-no-words.json";
 import notJson from "../fixtures/elevenlabs/transcribe-not-json.json";
 import unauthorized from "../fixtures/elevenlabs/transcribe-unauthorized.json";
 import zhTwZho from "../fixtures/elevenlabs/transcribe-zh-tw-zho.json";
+import recordedSynthesize from "../fixtures/elevenlabs/synthesize-real.json";
+import recordedTranscribe from "../fixtures/elevenlabs/transcribe-real.json";
 import { outcomeOf } from "../speech/outcome-of";
 import { playFixture } from "../speech/play-fixture";
+import { sampleAudio } from "../speech/sample-audio";
 import type { SynthesizeFixture, TranscribeFixture } from "../speech/types";
 
 const KEY = "<key>";
@@ -52,5 +55,32 @@ describe("elevenlabs synthesize", () => {
 
     expect(played.requests).toEqual([fixture.request]);
     expect(outcome).toEqual(fixture.unverified ? outcome : fixture.result);
+  });
+});
+
+describe("elevenlabs recorded transcribe", () => {
+  it("replays the real transcription of sample.wav", async () => {
+    const fixture: TranscribeFixture = recordedTranscribe;
+    const played = playFixture(fixture);
+    const adapter = elevenlabs({ key: KEY, fetch: played.fetch });
+
+    const outcome = await outcomeOf(
+      transcribe(adapter, { ...fixture.input, audio: sampleAudio() }),
+    );
+
+    expect(played.requests).toEqual([fixture.request]);
+    expect(outcome).toEqual(fixture.result);
+  });
+});
+
+describe("elevenlabs recorded synthesize", () => {
+  it("counts characters of the real mp3 reply", async () => {
+    const fixture: SynthesizeFixture = recordedSynthesize;
+    const played = playFixture(fixture);
+    const adapter = elevenlabs({ key: KEY, fetch: played.fetch });
+    const outcome = await outcomeOf(synthesize(adapter, fixture.input));
+
+    expect(played.requests).toEqual([fixture.request]);
+    expect(outcome).toEqual(fixture.result ?? fixture.error);
   });
 });

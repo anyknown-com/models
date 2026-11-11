@@ -18,8 +18,11 @@ import unknownBody from "../fixtures/openai/transcribe-unknown-body.json";
 import whisperFirstSubtag from "../fixtures/openai/transcribe-whisper-first-subtag.json";
 import whisperNoLanguage from "../fixtures/openai/transcribe-whisper-no-language.json";
 import whisperVerboseJson from "../fixtures/openai/transcribe-whisper-verbose-json.json";
+import recordedSynthesize from "../fixtures/openai/synthesize-real.json";
+import recordedTranscribe from "../fixtures/openai/transcribe-real.json";
 import { outcomeOf } from "../speech/outcome-of";
 import { playFixture } from "../speech/play-fixture";
+import { sampleAudio } from "../speech/sample-audio";
 import type { SynthesizeFixture, TranscribeFixture } from "../speech/types";
 
 const KEY = "<key>";
@@ -87,5 +90,32 @@ describe("openai synthesize", () => {
 
     expect(played.requests).toEqual([fixture.request]);
     expect(outcome).toEqual(fixture.unverified ? outcome : fixture.result);
+  });
+});
+
+describe("openai recorded transcribe", () => {
+  it("replays the real transcription of sample.wav", async () => {
+    const fixture: TranscribeFixture = recordedTranscribe;
+    const played = playFixture(fixture);
+    const adapter = openai({ key: KEY, fetch: played.fetch });
+
+    const outcome = await outcomeOf(
+      transcribe(adapter, { ...fixture.input, audio: sampleAudio() }),
+    );
+
+    expect(played.requests).toEqual([fixture.request]);
+    expect(outcome).toEqual(fixture.result);
+  });
+});
+
+describe("openai recorded synthesize", () => {
+  it("reads the real 401 missing_scope", async () => {
+    const fixture: SynthesizeFixture = recordedSynthesize;
+    const played = playFixture(fixture);
+    const adapter = openai({ key: KEY, fetch: played.fetch });
+    const outcome = await outcomeOf(synthesize(adapter, fixture.input));
+
+    expect(played.requests).toEqual([fixture.request]);
+    expect(outcome).toEqual(fixture.result ?? fixture.error);
   });
 });

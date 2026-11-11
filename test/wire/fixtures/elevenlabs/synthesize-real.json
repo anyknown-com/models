@@ -1,0 +1,33 @@
+{
+  "input": {
+    "model": "eleven_flash_v2_5",
+    "text": "Hello from Anyknown.",
+    "voice": "21m00Tcm4TlvDq8ikWAM"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM?output_format=mp3_44100_128",
+    "headers": {
+      "accept": "audio/mpeg",
+      "content-type": "application/json",
+      "xi-api-key": "<key>"
+    },
+    "fields": {
+      "text": "Hello from Anyknown.",
+      "model_id": "eleven_flash_v2_5"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "audio/mpeg"
+    },
+    "chunks": ["<24284 bytes of audio/mpeg>"]
+  },
+  "result": {
+    "usage": {
+      "amount": 20,
+      "unit": "characters"
+    }
+  }
+}

@@ -1,5 +1,4 @@
 {
-  "unverified": true,
   "input": {
     "model": "scribe_v2",
     "filename": "speech.webm"

@@ -1,0 +1,43 @@
+{
+  "input": {
+    "model": "gpt-4o-mini-tts",
+    "text": "Hello from Anyknown.",
+    "voice": "alloy"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/speech",
+    "headers": {
+      "accept": "audio/mpeg",
+      "authorization": "Bearer <key>",
+      "content-type": "application/json"
+    },
+    "fields": {
+      "model": "gpt-4o-mini-tts",
+      "input": "Hello from Anyknown.",
+      "voice": "alloy",
+      "response_format": "mp3"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "You have insufficient permissions for this operation. Missing scopes: api.model.audio.request. Check that you have the correct role in your organization (Reader, Writer, Owner) and project (Member, Owner), and if you're using a restricted API key, that it has the necessary scopes.",
+        "type": "invalid_request_error",
+        "param": null,
+        "code": "missing_scope"
+      }
+    }
+  },
+  "error": {
+    "kind": "auth",
+    "status": 401,
+    "code": "missing_scope",
+    "message": "You have insufficient permissions for this operation. Missing scopes: api.model.audio.request. Check that you have the correct role in your organization (Reader, Writer, Owner) and project (Member, Owner), and if you're using a restricted API key, that it has the necessary scopes.",
+    "retryable": false
+  }
+}

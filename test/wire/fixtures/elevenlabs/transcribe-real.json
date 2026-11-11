@@ -1,0 +1,80 @@
+{
+  "input": {
+    "model": "scribe_v2",
+    "filename": "sample.wav",
+    "language": "en"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data",
+      "xi-api-key": "<key>"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 55990
+      },
+      "model_id": "scribe_v2",
+      "language_code": "en"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "language_code": "eng",
+      "language_probability": 1,
+      "text": "Hello from Aminome",
+      "words": [
+        {
+          "text": "Hello",
+          "start": 0.06,
+          "end": 0.4,
+          "type": "word",
+          "logprob": -0.00011407678539399058
+        },
+        {
+          "text": " ",
+          "start": 0.4,
+          "end": 0.52,
+          "type": "spacing",
+          "logprob": -0.0006231511943042278
+        },
+        {
+          "text": "from",
+          "start": 0.52,
+          "end": 0.72,
+          "type": "word",
+          "logprob": -0.0006231511943042278
+        },
+        {
+          "text": " ",
+          "start": 0.72,
+          "end": 0.84,
+          "type": "spacing",
+          "logprob": -0.9473721981048584
+        },
+        {
+          "text": "Aminome",
+          "start": 0.84,
+          "end": 1.52,
+          "type": "word",
+          "logprob": -0.696109448160444
+        }
+      ],
+      "transcription_id": "jEWaMDpfSRnqurpVL7u0",
+      "audio_duration_secs": 1.6216875
+    }
+  },
+  "result": {
+    "text": "Hello from Aminome",
+    "usage": {
+      "amount": 1.52,
+      "unit": "seconds"
+    }
+  }
+}

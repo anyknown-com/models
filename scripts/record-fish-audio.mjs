@@ -1,11 +1,15 @@
 import { recordCall } from "./record/record-call.mjs";
+import { transportOf } from "./record/transport.mjs";
 import { SAMPLE_FILENAME, sampleAudio } from "./record/sample.mjs";
 
 const BASE = "https://api.fish.audio";
 const FIXTURES = new URL("../test/wire/fixtures/fish-audio/", import.meta.url);
-const key = process.env.FISH_AUDIO_API_KEY;
 
-if (!key) throw new Error("FISH_AUDIO_API_KEY is not set");
+const { key, fetch } = await transportOf({
+  provider: "fish-audio",
+  base: BASE,
+  keyEnv: "FISH_AUDIO_API_KEY",
+});
 
 const transcribeInput = { model: "transcribe-1-pro", filename: SAMPLE_FILENAME, language: "en" };
 const form = new FormData();
@@ -16,6 +20,7 @@ form.set("language", transcribeInput.language);
 await recordCall({
   file: new URL("recorded-transcribe.json", FIXTURES),
   key,
+  fetch,
   input: transcribeInput,
   request: new Request(`${BASE}/v1/asr`, {
     method: "POST",
@@ -33,6 +38,7 @@ const synthesizeInput = {
 await recordCall({
   file: new URL("recorded-synthesize.json", FIXTURES),
   key,
+  fetch,
   input: synthesizeInput,
   request: new Request(`${BASE}/v1/tts`, {
     method: "POST",
