@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "es-toolkit": "^1.53.1",
+    "tsx": "^4.23.15",
     "vitest": "^4.1.11"
   }
 }
