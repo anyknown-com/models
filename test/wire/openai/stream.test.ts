@@ -3,13 +3,14 @@ import { openai } from "../../../src/openai";
 import type { JsonObject } from "../../../src/types/json";
 import type { StreamEvent } from "../../../src/types/stream-event";
 import type { TextRequest } from "../../../src/types/text-request";
-import { file, fileDocx, image, reasoning, text, tools } from "../cases";
+import { file, fileDocx, image, reasoning, text, toolCall, tools } from "../cases";
 import type { Fixture } from "../fixture";
 import fileDocxFixture from "../fixtures/openai/file-docx.json";
 import fileFixture from "../fixtures/openai/file.json";
 import imageFixture from "../fixtures/openai/image.json";
 import reasoningFixture from "../fixtures/openai/reasoning.json";
 import textFixture from "../fixtures/openai/text.json";
+import toolCallFixture from "../fixtures/openai/tool-call.json";
 import toolsFixture from "../fixtures/openai/tools.json";
 import { replayFetch } from "../replay-fetch";
 
@@ -34,7 +35,11 @@ const CASES = [
   caseOf("file-docx", fileDocx, fileDocxFixture),
 ];
 
-const unverified = CASES.filter(({ fixture }) => fixture.unverified).map(({ name }) => name);
+const TOOL_CALL = caseOf("tool-call", toolCall, toolCallFixture);
+
+const unverified = [...CASES, TOOL_CALL]
+  .filter(({ fixture }) => fixture.unverified)
+  .map(({ name }) => name);
 
 const dataOf = ({ response }: Fixture): EventData[] =>
   ("chunks" in response ? response.chunks : []).map((chunk) =>
@@ -108,6 +113,37 @@ describe.skipIf(unverified.length > 0)(
         ]);
       },
     );
+
+    it("reads the tool-call stream into input starts and tool calls by call id", async () => {
+      const { request, fixture } = TOOL_CALL;
+      const { model } = fixture.request.body as { model: string };
+      const events = await eventsOf({ ...request, model }, replayFetch(fixture));
+
+      const toolEvents = events.flatMap((event) =>
+        event.type === "tool-input-start" || event.type === "tool-call" ? [event] : [],
+      );
+
+      expect(toolEvents).toEqual([
+        { type: "tool-input-start", callId: expect.any(String), name: "get_weather" },
+        {
+          type: "tool-call",
+          callId: toolEvents[0]?.callId,
+          name: "get_weather",
+          input: { city: expect.any(String) },
+        },
+        { type: "tool-input-start", callId: expect.any(String), name: "get_time" },
+        {
+          type: "tool-call",
+          callId: toolEvents[2]?.callId,
+          name: "get_time",
+          input: { timezone: expect.any(String) },
+        },
+      ]);
+      expect(events.slice(-2)).toMatchObject([
+        { type: "step-finish", reason: "tool-calls" },
+        { type: "finish", reason: "tool-calls" },
+      ]);
+    });
   },
 );
 

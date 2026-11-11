@@ -13,7 +13,7 @@ export type ResponsesEvent = {
   type: string;
   output_index?: number | null;
   item_id?: string;
-  item?: { id?: string; type?: string };
+  item?: { id?: string; type?: string; call_id?: string; name?: string; arguments?: string };
   delta?: string;
   response?: {
     incomplete_details?: { reason?: string } | null;

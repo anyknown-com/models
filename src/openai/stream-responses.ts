@@ -20,8 +20,10 @@ export async function* streamResponses(
     errorOf: (text) => ({ message: text }),
   });
 
+  const declared = new Set(request.tools?.map((tool) => tool.name));
+
   try {
-    yield* readStream(provider, response.body ?? new Blob().stream());
+    yield* readStream(provider, response.body ?? new Blob().stream(), declared);
   } catch (error) {
     if (!signal?.aborted) throw error;
 

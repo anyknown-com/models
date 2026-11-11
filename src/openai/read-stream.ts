@@ -7,6 +7,7 @@ import { sseDataOf } from "../wire/sse-data-of";
 import { contentEventOf } from "./content-event-of";
 import { finishEventsOf } from "./finish-events-of";
 import { finishReasonOf } from "./finish-reason-of";
+import { toolCallEventsOf } from "./tool-call-events-of";
 import type { ResponsesEvent } from "./types";
 
 const FINISHED = new Set(["response.completed", "response.incomplete"]);
@@ -14,8 +15,10 @@ const FINISHED = new Set(["response.completed", "response.incomplete"]);
 export async function* readStream(
   provider: string,
   body: ReadableStream<Uint8Array>,
+  declared: ReadonlySet<string>,
 ): AsyncIterable<StreamEvent> {
   const itemIds = new Map<number, string>();
+  let called = false;
   let reason: FinishReason | undefined;
   let usage: JsonObject | undefined;
   let failure: ModelError | undefined;
@@ -29,13 +32,18 @@ export async function* readStream(
     }
 
     if (FINISHED.has(event.type)) {
-      reason = finishReasonOf(event.response?.incomplete_details?.reason);
+      reason = finishReasonOf(event.response?.incomplete_details?.reason, called);
       usage = event.response?.usage ?? undefined;
     }
 
     const content = contentEventOf(event, itemIds);
+    const toolCalls = toolCallEventsOf(event, declared);
+
+    called ||= toolCalls.some(({ type }) => type === "tool-call");
 
     if (content) yield content;
+
+    yield* toolCalls;
   }
 
   yield* finishEventsOf(provider, reason, usage, failure);
