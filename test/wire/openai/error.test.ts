@@ -197,6 +197,7 @@ describe("openai errors", () => {
       field: "response.usage.input_tokens",
     },
     { name: "a type that is not a string", event: { type: 5, delta: "x" }, field: "type" },
+    { name: "no type", event: { delta: "x" }, field: "type" },
   ])("ends with an error finish on $name", async ({ event, field }) => {
     const events = await eventsOf(streamOf([START, sse([event]), STOP]));
 

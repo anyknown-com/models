@@ -63,7 +63,9 @@ const RESPONSE_FIELDS = [
   ...fieldsOf("number", usage("output_tokens_details", "reasoning_tokens")),
 ];
 
-export const TYPE_FIELDS: readonly ReadField[] = fieldsOf("string", ["type"]);
+export const TYPE_FIELDS: readonly ReadField[] = [
+  { path: ["type"], type: "string", required: true },
+];
 
 export const READ_FIELDS: Partial<Record<string, readonly ReadField[]>> = {
   "response.output_text.delta": [
