@@ -18,7 +18,14 @@ export type ToolMedia = {
   providerOptions?: ProviderOptions;
 };
 
-export type GooglePartChunk = { text?: string; thought?: boolean; thoughtSignature?: string };
+export type FunctionCallChunk = { id?: string | null; name?: string | null; args?: unknown };
+
+export type GooglePartChunk = {
+  text?: string;
+  thought?: boolean;
+  thoughtSignature?: string;
+  functionCall?: FunctionCallChunk;
+};
 
 export type GenerateContentChunk = {
   candidates?: { content?: { parts?: GooglePartChunk[] }; finishReason?: string }[];

@@ -8,10 +8,15 @@ import { PROVIDER } from "./constants";
 import { finishEventsOf } from "./finish-events-of";
 import { finishReasonOf } from "./finish-reason-of";
 import { readParts } from "./read-parts";
+import { readToolCalls } from "./read-tool-calls";
 import type { GenerateContentChunk } from "./types";
 
-export async function* readStream(body: ReadableStream<Uint8Array>): AsyncIterable<StreamEvent> {
+export async function* readStream(
+  body: ReadableStream<Uint8Array>,
+  declared: ReadonlySet<string>,
+): AsyncIterable<StreamEvent> {
   const parts = readParts();
+  let hasToolCalls = false;
   let reason: FinishReason | undefined;
   let usage: JsonObject | undefined;
   let failure: ModelError | undefined;
@@ -25,11 +30,16 @@ export async function* readStream(body: ReadableStream<Uint8Array>): AsyncIterab
     }
 
     const candidate = chunk.candidates?.[0];
+    const content = candidate?.content?.parts;
+    const calls = readToolCalls(content, declared);
+
+    hasToolCalls ||= calls.length > 0;
 
     if (chunk.usageMetadata) usage = chunk.usageMetadata;
-    if (candidate?.finishReason) reason = finishReasonOf(candidate.finishReason);
+    if (candidate?.finishReason) reason = finishReasonOf(candidate.finishReason, hasToolCalls);
 
-    yield* parts.read(candidate?.content?.parts);
+    yield* parts.read(content);
+    yield* calls;
   }
 
   yield* parts.finish();

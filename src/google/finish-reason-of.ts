@@ -12,4 +12,5 @@ const REASONS = new Map<string, FinishReason>([
   ["MALFORMED_FUNCTION_CALL", "error"],
 ]);
 
-export const finishReasonOf = (reason: string): FinishReason => REASONS.get(reason) ?? "other";
+export const finishReasonOf = (reason: string, hasToolCalls: boolean): FinishReason =>
+  reason === "STOP" && hasToolCalls ? "tool-calls" : (REASONS.get(reason) ?? "other");

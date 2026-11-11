@@ -11,6 +11,7 @@ export async function* streamGenerateContent(
   request: TextRequest,
 ): AsyncIterable<StreamEvent> {
   const { signal } = request;
+  const declared = new Set(request.tools?.map((tool) => tool.name));
 
   const response = await post({
     provider: PROVIDER,
@@ -21,7 +22,7 @@ export async function* streamGenerateContent(
   });
 
   try {
-    yield* readStream(response.body ?? new Blob().stream());
+    yield* readStream(response.body ?? new Blob().stream(), declared);
   } catch (error) {
     if (!signal?.aborted) throw error;
 
