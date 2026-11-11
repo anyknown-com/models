@@ -2,8 +2,8 @@ import type { JsonObject } from "../types/json";
 import type { ModelMessage } from "../types/model-message";
 import type { TextRequest } from "../types/text-request";
 import { assistantItemsOf } from "./assistant-items-of";
+import { functionCallOutputOf } from "./function-call-output-of";
 import { isReasoningModel } from "./is-reasoning-model";
-import { unsupported } from "./unsupported";
 import { userContentOf } from "./user-content-of";
 
 const itemsOf = (provider: string, message: ModelMessage): JsonObject[] => {
@@ -11,9 +11,9 @@ const itemsOf = (provider: string, message: ModelMessage): JsonObject[] => {
     return [{ role: "user", content: userContentOf(provider, message.content) }];
   }
 
-  if (message.role === "assistant") return assistantItemsOf(provider, message.content);
+  if (message.role === "assistant") return assistantItemsOf(message.content);
 
-  throw unsupported(provider, "openai does not send a tool message yet");
+  return message.content.map((part) => functionCallOutputOf(provider, part));
 };
 
 export function toInput(provider: string, { model, system = [], messages }: TextRequest) {
