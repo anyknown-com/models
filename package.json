@@ -11,7 +11,8 @@
     "./openai": "./src/openai/index.ts",
     "./groq": "./src/groq/index.ts",
     "./deepgram": "./src/deepgram/index.ts",
-    "./elevenlabs": "./src/elevenlabs/index.ts"
+    "./elevenlabs": "./src/elevenlabs/index.ts",
+    "./fish-audio": "./src/fish-audio/index.ts"
   },
   "scripts": {
     "test": "vitest run"

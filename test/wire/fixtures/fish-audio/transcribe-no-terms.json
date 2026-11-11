@@ -1,0 +1,52 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "transcribe-1-pro",
+    "filename": "speech.webm",
+    "terms": ["Anyknown"]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.fish.audio/v1/asr",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data",
+      "model": "transcribe-1-pro"
+    },
+    "fields": {
+      "audio": {
+        "name": "speech.webm",
+        "size": 3
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "text": "早安",
+      "duration": 2100,
+      "segments": [
+        {
+          "text": "早",
+          "start": 0,
+          "end": 0.9
+        },
+        {
+          "text": "安",
+          "start": 0.9,
+          "end": 2.1
+        }
+      ]
+    }
+  },
+  "result": {
+    "text": "早安",
+    "usage": {
+      "amount": 2.1,
+      "unit": "seconds"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "transcribe-1-pro",
+    "filename": "speech.webm"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.fish.audio/v1/asr",
+    "headers": {
+      "authorization": "Bearer <key>",
+      "content-type": "multipart/form-data",
+      "model": "transcribe-1-pro"
+    },
+    "fields": {
+      "audio": {
+        "name": "speech.webm",
+        "size": 3
+      }
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "status": 401,
+      "message": "Invalid api key"
+    }
+  },
+  "error": {
+    "kind": "auth",
+    "status": 401,
+    "message": "Invalid api key",
+    "retryable": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "unverified": true,
+  "input": {
+    "model": "s2.1-pro",
+    "text": "你好",
+    "voice": "v1"
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://api.fish.audio/v1/tts",
+    "headers": {
+      "accept": "audio/mpeg",
+      "authorization": "Bearer <key>",
+      "content-type": "application/json",
+      "model": "s2.1-pro"
+    },
+    "fields": {
+      "text": "你好",
+      "reference_id": "v1",
+      "format": "mp3"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "audio/mpeg"
+    },
+    "chunks": ["<mp3 audio>"]
+  },
+  "result": {
+    "usage": {
+      "amount": 6,
+      "unit": "bytes"
+    }
+  }
+}
