@@ -13,7 +13,8 @@
     "./groq": "./src/groq/index.ts",
     "./deepgram": "./src/deepgram/index.ts",
     "./elevenlabs": "./src/elevenlabs/index.ts",
-    "./fish-audio": "./src/fish-audio/index.ts"
+    "./fish-audio": "./src/fish-audio/index.ts",
+    "./anthropic": "./src/anthropic/index.ts"
   },
   "scripts": {
     "test": "vitest run"
