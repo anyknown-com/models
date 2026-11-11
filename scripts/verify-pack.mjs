@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { isDeepStrictEqual } from "node:util";
+import { browserBundleProblems } from "./verify-pack/browser-bundle-problems.mjs";
 
 const MANIFEST_FILES = ["CHANGELOG.md", "README.md", "package.json"];
 const DEPENDENCY_FIELDS = ["dependencies", "peerDependencies", "optionalDependencies"];
@@ -66,6 +67,12 @@ try {
     }),
   );
 
+  const browserProblems = await Promise.all(
+    Object.values(packed.exports ?? {}).map((entry) =>
+      browserBundleProblems(installed, entry.default),
+    ),
+  );
+
   const problems = [
     ...packedFiles
       .filter((file) => !expectedFiles.includes(file))
@@ -86,6 +93,7 @@ try {
     ...subpaths
       .filter(({ names }) => names.length === 0)
       .map(({ specifier }) => `import("${specifier}") exports nothing`),
+    ...browserProblems.flat(),
   ];
 
   for (const { specifier, names } of subpaths) console.log(`${specifier}: ${names.join(", ")}`);
