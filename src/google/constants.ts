@@ -56,3 +56,13 @@ export const VIDEO_FORMAT = {
 };
 
 export const VIDEO_FORMAT_OPTIONS = ["aspect_ratio", "resolution", "duration"];
+
+// https://ai.google.dev/api/interactions-api
+export const VIDEO_ENDED: Record<string, string> = {
+  failed: "google video job failed",
+  cancelled: "google video job was cancelled",
+  incomplete: "google video job ended incomplete",
+  requires_action: "google video job waits for an action the adapter cannot take",
+  requires_continuation:
+    "google video job waits for a continuation request the adapter does not send",
+};

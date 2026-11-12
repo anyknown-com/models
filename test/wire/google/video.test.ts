@@ -34,6 +34,19 @@ const rejected: Fixture = {
   },
 };
 
+const statusOf = (body: Record<string, unknown>): Fixture => ({
+  ...(status as Fixture),
+  response: { ...(status as Fixture).response, body: { id: job.id, ...body } },
+});
+
+const ENDED = [
+  ["cancelled", /cancelled/],
+  ["incomplete", /incomplete/],
+  ["requires_action", /action/],
+  ["requires_continuation", /continuation/],
+  ["paused", /"paused"/],
+] as const;
+
 describe("google video", () => {
   it("submits a prompt as the fixture's background interaction", async () => {
     const request = { ...film, model: MODEL };
@@ -60,6 +73,26 @@ describe("google video", () => {
 
   it("reads the status with the fixture's get of the interaction", async () => {
     await expect(readVideoStatus(adapterOf(status as Fixture), job)).resolves.toBeDefined();
+  });
+
+  it("reads an in_progress interaction as running", async () => {
+    const reading = readVideoStatus(adapterOf(statusOf({ status: "in_progress" })), job);
+
+    await expect(reading).resolves.toMatchObject({ status: "running" });
+  });
+
+  it.each(ENDED)("reads a %s interaction as failed with its status as code", async (ended, why) => {
+    const reading = readVideoStatus(adapterOf(statusOf({ status: ended })), job);
+
+    await expect(reading).resolves.toMatchObject({
+      status: "failed",
+      error: {
+        name: "ModelError",
+        kind: "server",
+        code: ended,
+        message: expect.stringMatching(why),
+      },
+    });
   });
 
   it("reads the result with the fixture's get of the interaction", async () => {

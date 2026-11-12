@@ -6,10 +6,7 @@ export function videoStatusOf(body: unknown): VideoJobStatus {
   const status = fieldOf(body, "status");
 
   if (status === "completed") return { status: "succeeded", raw: body };
+  if (status === "in_progress") return { status: "running", raw: body };
 
-  if (status === "failed" || status === "cancelled") {
-    return { status: "failed", error: videoFailureOf(body, status), raw: body };
-  }
-
-  return { status: "running", raw: body };
+  return { status: "failed", error: videoFailureOf(body, status), raw: body };
 }
