@@ -34,7 +34,16 @@
           ]
         }
       ],
-      "additionalModelResponseFieldPaths": ["/delta/stop_sequence"]
+      "additionalModelRequestFields": {
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": 1024
+        }
+      },
+      "additionalModelResponseFieldPaths": ["/delta/stop_sequence"],
+      "inferenceConfig": {
+        "maxTokens": 5120
+      }
     }
   },
   "response": {

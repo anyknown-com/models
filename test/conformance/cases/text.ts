@@ -27,6 +27,7 @@ export const TEXT_CASES = [
     providerOptionsBy: {
       openai: { openai: { reasoningEffort: "high" } },
       anthropic: { anthropic: { thinking: { type: "enabled", budgetTokens: 1024 } } },
+      bedrock: { bedrock: { reasoningConfig: { type: "enabled", budgetTokens: 1024 } } },
     },
   },
   { id: "usage", source: "recorded", fixtureOf: "text" },
