@@ -14,7 +14,8 @@ export const runCase =
     const controller = new AbortController();
     const mismatches: unknown[] = [];
     const fetch = fetchOf({ speechCase, fixture, controller, mismatches });
-    const call = callOf(kind, manifest, fetch, (fixture ?? fixtures.get(kind.kind))?.request.url);
+    const url = (fixture ?? fixtures.get(kind.cases[0]?.id ?? kind.kind))?.request.url;
+    const call = callOf(kind, manifest, fetch, url);
     const model = manifest.models[kind.kind];
 
     if (model === undefined) throw new Error(`manifest has no ${kind.kind} model`);

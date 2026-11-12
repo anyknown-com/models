@@ -17,7 +17,7 @@ export type SpeechAdapterEntry<Request, Result> = {
 };
 
 export type SpeechKind<Input, Request, Result> = {
-  kind: "transcribe" | "synthesize";
+  kind: "transcribe" | "synthesize" | "image";
   cases: readonly SpeechCase<Input>[];
   adapters: Partial<Record<string, SpeechAdapterEntry<Request, Result>>>;
   requestOf: (input: Input, model: string, provider: string, sample: () => Blob) => Request;

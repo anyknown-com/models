@@ -1,5 +1,5 @@
 import { parseArgs } from "node:util";
-import { USAGE } from "./constants.mjs";
+import { USAGE, VIDEO_WAIT_SECONDS } from "./constants.mjs";
 import { KINDS } from "./kinds.mjs";
 import { recordProvider } from "./record-provider.mjs";
 
@@ -14,6 +14,7 @@ const { positionals, values } = parseArgs({
     via: { type: "string" },
     "request-only": { type: "boolean", default: false },
     fixtures: { type: "string" },
+    wait: { type: "string", default: String(VIDEO_WAIT_SECONDS) },
   },
 });
 
@@ -38,6 +39,7 @@ if (!id || (!binding && !values["base-url"]) || (needsKey && !keyEnv)) {
     via: values.via,
     requestOnly: values["request-only"],
     fixtures: values.fixtures,
+    waitSeconds: Number(values.wait),
   };
 
   process.exitCode = await recordProvider(id, options).catch((error) => {

@@ -21,9 +21,21 @@ export const ERROR_STATUSES = {
   "transcribe-error-bad-request": [400, 422],
   "synthesize-error-auth": [401, 403],
   "synthesize-error-bad-request": [400, 422],
+  "image-error-auth": [401, 403],
+  "image-error-bad-request": [400, 422],
+  "video-error-auth": [401, 403],
+  "video-error-bad-request": [400, 422],
 };
+
+export const VIDEO_POLL_MS = 10_000;
+
+export const VIDEO_WAIT_SECONDS = 600;
+
+export const MEDIA_MIN = 4096;
+
+export const MEDIA_KEPT = 64;
 
 export const BINDING_ERRORS = ["embed-error-not-found", "rerank-error-not-found"];
 
 export const USAGE =
-  "node scripts/record-provider.mjs <provider id> --base-url <url> (--key-env <env> | --via <origin> | --request-only) [--kind <text | transcribe | synthesize>] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]\nnode scripts/record-provider.mjs <provider id> --kind <embed | rerank> [--request-only] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]";
+  "node scripts/record-provider.mjs <provider id> --base-url <url> (--key-env <env> | --via <origin> | --request-only) [--kind <text | transcribe | synthesize | image | video>] [--adapter <adapter>] [--model <id>] [--wait <seconds>] [--fixtures <dir>]\nnode scripts/record-provider.mjs <provider id> --kind <embed | rerank> [--request-only] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]";

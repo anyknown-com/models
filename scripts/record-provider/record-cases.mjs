@@ -5,11 +5,13 @@ const recordable = (recorded, declared) =>
   recorded.source !== "synthetic" &&
   !("fixtureOf" in recorded);
 
-const derivedFrom = (from, derived) =>
-  from && {
-    ...(from.unverified ? { unverified: true } : {}),
-    ...derive(from, derived.from, derived.status),
-  };
+const deriveHttp = (from, derived) => derive(from, derived.from, derived.status);
+
+const derivedFrom = (from, derived, options) => {
+  const fixture = from && (options.derive ?? deriveHttp)(from, derived, options);
+
+  return fixture && { ...(from.unverified ? { unverified: true } : {}), ...fixture };
+};
 
 export async function recordCases(options) {
   const { cases, recordOne, declared } = options;
@@ -20,7 +22,7 @@ export async function recordCases(options) {
   for (const recorded of cases.filter((each) => recordable(each, declared))) {
     const verdict =
       recorded.source === "derived"
-        ? { fixture: derivedFrom(fixtures.get(recorded.from), recorded) }
+        ? { fixture: derivedFrom(fixtures.get(recorded.from), recorded, options) }
         : await recordOne(recorded, options);
 
     if (verdict.fixture) fixtures.set(recorded.id, verdict.fixture);

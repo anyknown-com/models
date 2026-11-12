@@ -5,7 +5,7 @@ import { REQUEST_ONLY_TRANSPORT } from "./request-only-transport.mjs";
 
 export async function openTransport(provider, { kind, via, requestOnly, keyEnv, baseUrl }) {
   if (KINDS[kind].binding) return bindingTransport(requestOnly);
-  if (requestOnly) return REQUEST_ONLY_TRANSPORT;
+  if (requestOnly) return KINDS[kind].requestOnlyTransport ?? REQUEST_ONLY_TRANSPORT;
 
   return transportOf({ via, provider, baseUrl, keyEnv });
 }

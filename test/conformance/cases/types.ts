@@ -39,3 +39,21 @@ export type RerankInput = { query: string; documents: string[]; model?: string }
 export type EmbedCase<Input> =
   | { id: string; source: "recorded"; request: Input }
   | { id: string; source: "synthetic"; request: Input; run: "aborts" };
+
+export type VisualInput = { prompt: string; providerOptions?: ProviderOptions };
+
+export type VideoStep = "submit" | "status" | "result";
+
+export type VideoJobState = "queued" | "running" | "failed";
+
+export type VideoCase =
+  | {
+      id: string;
+      source: "recorded";
+      request: VisualInput;
+      steps: readonly VideoStep[];
+      record?: "wrong-key";
+    }
+  | { id: string; source: "derived"; from: string; status: number }
+  | { id: string; source: "derived"; from: string; jobStatus: VideoJobState }
+  | { id: string; source: "synthetic"; request: VisualInput; fetch: "throws" | "aborts" };

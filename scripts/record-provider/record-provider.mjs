@@ -47,7 +47,9 @@ export async function recordProvider(provider, options) {
   const { fixtures, failures, unsupported } = await recordCases({
     ...KINDS[kind],
     adapterOf,
+    adapter: spec.adapters[kind],
     model,
+    waitSeconds: options.waitSeconds,
     provider: spec.id,
     transport,
     requestOnly,

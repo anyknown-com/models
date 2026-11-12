@@ -4,7 +4,7 @@ import { speechErrorLike } from "./speech-error-like";
 
 const SAID = expect.stringMatching(/\S/);
 
-export const speechErrorAsserts = (kind: "transcribe" | "synthesize") => ({
+export const speechErrorAsserts = (kind: "transcribe" | "synthesize" | "image" | "video") => ({
   [`${kind}-error-auth`]: speechErrorLike({
     kind: "auth",
     status: expect.any(Number),

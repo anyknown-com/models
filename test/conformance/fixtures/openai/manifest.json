@@ -3,12 +3,14 @@
   "adapters": {
     "text": "openai",
     "transcribe": "openai",
-    "synthesize": "openai"
+    "synthesize": "openai",
+    "image": "openai"
   },
   "models": {
     "text": "gpt-6-luna",
     "synthesize": "gpt-4o-mini-tts",
-    "transcribe": "gpt-transcribe"
+    "transcribe": "gpt-transcribe",
+    "image": "gpt-image-2.5-sunburst"
   },
   "unsupported": {}
 }

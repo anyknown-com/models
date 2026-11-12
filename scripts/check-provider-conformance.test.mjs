@@ -103,7 +103,7 @@ test("checks a speech-only manifest against the speech cases of its kinds", () =
   const root = tree({
     d: {
       manifest: speech({
-        adapters: { transcribe: "deepgram", synthesize: "nope", image: "x" },
+        adapters: { transcribe: "deepgram", synthesize: "nope", music: "x" },
         models: { transcribe: "nova-3" },
       }),
       fixtures: ["transcribe", "text"],
@@ -115,7 +115,7 @@ test("checks a speech-only manifest against the speech cases of its kinds", () =
   assert.equal(result.status, 1);
   assert.deepEqual(result.stdout.trim().split("\n"), [
     "d manifest adapters.synthesize names no synthesize adapter",
-    "d manifest adapters.image is not a model call kind",
+    "d manifest adapters.music is not a model call kind",
     "d manifest has no models.synthesize",
     "d text.json is not a case",
     "d transcribe-terms has no fixture and is not declared unsupported",

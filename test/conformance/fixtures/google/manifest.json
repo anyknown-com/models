@@ -1,11 +1,15 @@
 {
   "provider": "google",
   "adapters": {
-    "text": "google"
+    "text": "google",
+    "video": "google"
   },
   "models": {
-    "text": "gemini-3-pro"
+    "text": "gemini-3-pro",
+    "video": "gemini-omni-1.2-flash"
   },
-  "unsupported": {},
+  "unsupported": {
+    "video-status-queued": "the interaction status enum is in_progress, requires_action, completed, failed, cancelled and incomplete, with no queued state, so the adapter reads a waiting job as running https://ai.google.dev/api/interactions-api"
+  },
   "unverified": true
 }

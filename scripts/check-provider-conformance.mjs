@@ -11,6 +11,7 @@ const { TEXT_CASES } = await load("../test/conformance/cases/index.ts");
 const { TEXT_ADAPTERS } = await load("../test/conformance/constants.ts");
 const { SYNTHESIZE, TRANSCRIBE } = await load("../test/conformance/speech/constants.ts");
 const { EMBED, RERANK } = await load("../test/conformance/embed/constants.ts");
+const { IMAGE, VIDEO } = await load("../test/conformance/visual/constants.ts");
 const root = process.argv[2] ? pathToFileURL(`${resolve(process.argv[2])}/`) : FIXTURES;
 
 const known = {
@@ -19,6 +20,8 @@ const known = {
   synthesize: { cases: SYNTHESIZE.cases, adapterNames: Object.keys(SYNTHESIZE.adapters) },
   embed: { cases: EMBED.cases, adapterNames: Object.keys(EMBED.adapters) },
   rerank: { cases: RERANK.cases, adapterNames: Object.keys(RERANK.adapters) },
+  image: { cases: IMAGE.cases, adapterNames: Object.keys(IMAGE.adapters) },
+  video: { cases: VIDEO.cases, adapterNames: Object.keys(VIDEO.adapters) },
 };
 
 let failed = false;

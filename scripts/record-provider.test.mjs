@@ -272,4 +272,39 @@ describe("record-provider.mjs", () => {
     );
     assert.ok((await readdir(dir)).includes("embed-error-not-found.json"));
   });
+
+  it("--kind video --request-only records submit, status and result as one fixture", async () => {
+    const fixtures = await tempDir();
+    const dir = join(fixtures, "google");
+    const flags = ["--kind", "video", "--adapter", "google", "--model", "veo-test"];
+
+    const child = spawn(process.execPath, [
+      CLI,
+      "google",
+      "--base-url",
+      "https://generativelanguage.googleapis.com/v1beta",
+      "--request-only",
+      ...flags,
+      "--fixtures",
+      fixtures,
+    ]);
+
+    const output = outputOf(child.stderr);
+    const code = await new Promise((resolve) => child.on("close", resolve));
+    const video = await readJson(dir, "video.json");
+    const failed = await readJson(dir, "video-status-failed.json");
+    const auth = await readJson(dir, "video-error-auth.json");
+
+    assert.equal(code, 0, output());
+    assert.equal(video.unverified, true);
+    assert.deepEqual(
+      video.calls.map(({ request }) => request.method),
+      ["POST", "GET", "GET"],
+    );
+    assert.equal(video.calls[1].request.headers["x-goog-api-key"], undefined);
+    assert.equal(failed.calls.length, 2);
+    assert.equal(failed.calls[1].response.body.status, "failed");
+    assert.equal(auth.calls.length, 1);
+    assert.ok(!(await readdir(dir)).includes("video-status-queued.json"));
+  });
 });

@@ -1,0 +1,69 @@
+{
+  "unverified": true,
+  "calls": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/interactions",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "fields": {
+          "model": "gemini-omni-1.2-flash",
+          "input": "A red ball rolls slowly across a white table.",
+          "background": true,
+          "response_format": {
+            "type": "video",
+            "aspect_ratio": "16:9",
+            "resolution": "720p",
+            "duration": "3s"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "id": "request-only",
+          "status": "request-only"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://generativelanguage.googleapis.com/v1beta/interactions/request-only",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "id": "request-only",
+          "status": "request-only"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://generativelanguage.googleapis.com/v1beta/interactions/request-only",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "id": "request-only",
+          "status": "request-only"
+        }
+      }
+    }
+  ]
+}

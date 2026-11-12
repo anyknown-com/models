@@ -1,0 +1,28 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/images/generations",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "fields": {
+      "model": "gpt-image-2.5-sunburst",
+      "prompt": "",
+      "quality": "low",
+      "size": "1024x1024",
+      "n": 1
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}
