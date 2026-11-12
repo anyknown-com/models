@@ -1,6 +1,6 @@
 {
   "name": "@anyknown/models",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Call text, speech, embedding, image and video models from many providers with one small API and only fetch.",
   "license": "MIT",
   "repository": {
