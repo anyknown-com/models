@@ -75,7 +75,7 @@
     "lint": "oxlint --deny-warnings",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "check": "pnpm typecheck && pnpm lint && pnpm fmt:check && node scripts/check-boundary.mjs && node scripts/check-readme.mjs",
+    "check": "pnpm typecheck && pnpm lint && pnpm fmt:check && node scripts/check-boundary.mjs && node scripts/check-readme.mjs && node scripts/check-provider-conformance.mjs",
     "test": "vitest run && node --test scripts/*.test.mjs",
     "test:worker": "vitest run --config vitest.worker.config.ts",
     "verify:pack": "pnpm build && node scripts/verify-pack.mjs"
