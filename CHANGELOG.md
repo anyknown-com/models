@@ -4,7 +4,7 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
-## 0.1.0 — Unreleased
+## 0.1.0 — 2026-11-12
 
 ### Added
 
