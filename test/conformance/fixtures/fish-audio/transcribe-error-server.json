@@ -1,0 +1,30 @@
+{
+  "unverified": true,
+  "derivedFrom": "transcribe-error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.fish.audio/v1/asr",
+    "headers": {
+      "content-type": "multipart/form-data",
+      "model": "transcribe-1-pro"
+    },
+    "fields": {
+      "audio": {
+        "name": "sample.wav",
+        "size": 9
+      },
+      "language": "en"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

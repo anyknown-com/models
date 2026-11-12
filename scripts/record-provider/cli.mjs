@@ -5,6 +5,7 @@ import { recordProvider } from "./record-provider.mjs";
 const { positionals, values } = parseArgs({
   allowPositionals: true,
   options: {
+    kind: { type: "string", default: "text" },
     adapter: { type: "string" },
     model: { type: "string" },
     "key-env": { type: "string" },
@@ -27,6 +28,7 @@ if (!id || !values["base-url"] || (needsKey && !keyEnv)) {
   process.exitCode = 2;
 } else {
   const options = {
+    kind: values.kind,
     adapter: values.adapter,
     model: values.model,
     keyEnv,

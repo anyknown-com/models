@@ -95,3 +95,40 @@ test("reports a bad manifest, an unknown or missing case and a reason without a 
     "c unsupported image has no provider doc URL",
   ]);
 });
+
+const speech = (fields) =>
+  JSON.stringify({ provider: "d", models: {}, unsupported: {}, ...fields });
+
+test("checks a speech-only manifest against the speech cases of its kinds", () => {
+  const root = tree({
+    d: {
+      manifest: speech({
+        adapters: { transcribe: "deepgram", synthesize: "nope", embed: "x" },
+        models: { transcribe: "nova-3" },
+      }),
+      fixtures: ["transcribe", "text"],
+    },
+  });
+
+  const result = run(root);
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(result.stdout.trim().split("\n"), [
+    "d manifest adapters.synthesize names no synthesize adapter",
+    "d manifest adapters.embed is not a model call kind",
+    "d manifest has no models.synthesize",
+    "d text.json is not a case",
+    "d transcribe-terms has no fixture and is not declared unsupported",
+    "d transcribe-languages has no fixture and is not declared unsupported",
+    "d transcribe-error-auth has no fixture and is not declared unsupported",
+    "d transcribe-error-bad-request has no fixture and is not declared unsupported",
+    "d transcribe-error-rate-limit has no fixture and is not declared unsupported",
+    "d transcribe-error-server has no fixture and is not declared unsupported",
+    "d synthesize has no fixture and is not declared unsupported",
+    "d synthesize-voice has no fixture and is not declared unsupported",
+    "d synthesize-error-auth has no fixture and is not declared unsupported",
+    "d synthesize-error-bad-request has no fixture and is not declared unsupported",
+    "d synthesize-error-rate-limit has no fixture and is not declared unsupported",
+    "d synthesize-error-server has no fixture and is not declared unsupported",
+  ]);
+});

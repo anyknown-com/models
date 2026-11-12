@@ -1,0 +1,31 @@
+{
+  "unverified": true,
+  "derivedFrom": "transcribe-error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.groq.com/openai/v1/audio/transcriptions",
+    "headers": {
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 9
+      },
+      "model": "whisper-large-v3-turbo",
+      "response_format": "verbose_json",
+      "language": "en"
+    }
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

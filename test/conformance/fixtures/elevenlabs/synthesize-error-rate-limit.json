@@ -1,0 +1,30 @@
+{
+  "derivedFrom": "synthesize-error-auth",
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM?output_format=mp3_44100_128",
+    "headers": {
+      "accept": "audio/mpeg",
+      "content-type": "application/json"
+    },
+    "fields": {
+      "text": "Hello from Anyknown.",
+      "model_id": "eleven_flash_v2_5"
+    }
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": {
+        "type": "authentication_error",
+        "code": "unauthorized",
+        "message": "Invalid API key",
+        "status": "invalid_api_key",
+        "request_id": "1b17d99d491f115f57ae496bd4cec986"
+      }
+    }
+  }
+}

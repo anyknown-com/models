@@ -4,11 +4,13 @@ import { promisify } from "node:util";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { transportOf } from "../record-text/transport-of.mjs";
 import { recordToken } from "../via.mjs";
+import { kindAdapterOf } from "./kind-adapter-of.mjs";
+import { allUnverified } from "./all-unverified.mjs";
 import { FIXTURES, WRONG_KEY } from "./constants.mjs";
+import { KINDS } from "./kinds.mjs";
 import { readManifest } from "./read-manifest.mjs";
 import { recordCases } from "./record-cases.mjs";
 import { REQUEST_ONLY_TRANSPORT } from "./request-only-transport.mjs";
-import { textAdapterOf } from "./text-adapter-of.mjs";
 import { writeJson } from "./write-json.mjs";
 import { writeManifest } from "./write-manifest.mjs";
 
@@ -18,19 +20,22 @@ const OXFMT = fileURLToPath(new URL("../../node_modules/.bin/oxfmt", import.meta
 
 const fixturesRoot = (path) => (path ? pathToFileURL(`${resolve(path)}/`) : FIXTURES);
 
-const targetOf = (provider, existing, options) => {
-  const model = options.model ?? existing?.models?.text;
-  const adapter = options.adapter ?? existing?.adapters?.text;
+const targetOf = (provider, existing, { kind, baseUrl, ...options }) => {
+  const model = options.model ?? existing?.models?.[kind];
+  const adapter = options.adapter ?? existing?.adapters?.[kind];
 
   return {
     model,
-    spec: { id: provider, adapters: { ...existing?.adapters, text: adapter } },
-    adapterOf: textAdapterOf({ id: provider, adapter, model, baseUrl: options.baseUrl }),
+    spec: { id: provider, adapters: { ...existing?.adapters, [kind]: adapter } },
+    adapterOf: kindAdapterOf({ id: provider, kind, adapter, model, baseUrl }),
   };
 };
 
 export async function recordProvider(provider, options) {
-  const { via, requestOnly, keyEnv, baseUrl } = options;
+  const { kind, via, requestOnly, keyEnv, baseUrl } = options;
+
+  if (!KINDS[kind]) throw new Error(`no model call kind named ${kind}`);
+
   const dir = new URL(`${provider}/`, fixturesRoot(options.fixtures));
   const existing = await readManifest(dir);
   const { model, spec, adapterOf } = targetOf(provider, existing, options);
@@ -43,6 +48,7 @@ export async function recordProvider(provider, options) {
   const declared = existing?.unsupported ?? {};
 
   const { fixtures, failures, unsupported } = await recordCases({
+    ...KINDS[kind],
     adapterOf,
     model,
     provider: spec.id,
@@ -59,10 +65,11 @@ export async function recordProvider(provider, options) {
 
   const manifest = await writeManifest(dir, {
     spec,
+    kind,
     model,
     existing,
     unsupported,
-    requestOnly,
+    unverified: await allUnverified(dir),
     secrets,
   });
 

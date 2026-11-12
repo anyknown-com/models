@@ -1,0 +1,28 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.fish.audio/v1/tts",
+    "headers": {
+      "accept": "audio/mpeg",
+      "content-type": "application/json",
+      "model": "s2.1-pro"
+    },
+    "fields": {
+      "text": "",
+      "reference_id": "",
+      "format": "mp3"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

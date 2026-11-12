@@ -5,7 +5,8 @@
     "transcribe": "groq"
   },
   "models": {
-    "text": "openai/gpt-oss-120b"
+    "text": "openai/gpt-oss-120b",
+    "transcribe": "whisper-large-v3-turbo"
   },
   "unsupported": {},
   "unverified": true

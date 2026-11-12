@@ -17,7 +17,11 @@ export const ERROR_STATUSES = {
   "error-bad-request": [400, 422],
   "error-not-found": [404],
   "error-overflow": [200, 400, 413],
+  "transcribe-error-auth": [401, 403],
+  "transcribe-error-bad-request": [400, 422],
+  "synthesize-error-auth": [401, 403],
+  "synthesize-error-bad-request": [400, 422],
 };
 
 export const USAGE =
-  "node scripts/record-provider.mjs <provider id> --base-url <url> (--key-env <env> | --via <origin> | --request-only) [--adapter <text adapter>] [--model <id>] [--fixtures <dir>]";
+  "node scripts/record-provider.mjs <provider id> --base-url <url> (--key-env <env> | --via <origin> | --request-only) [--kind <text | transcribe | synthesize>] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]";

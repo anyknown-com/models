@@ -1,18 +1,13 @@
 import { recordingFetch } from "../record-text/recording-fetch.mjs";
-import { WRONG_KEY } from "./constants.mjs";
 import { judgeCall } from "./judge-call.mjs";
 import { messageOf } from "./message-of.mjs";
+import { transportFor } from "./transport-for.mjs";
 
 const consume = (events) =>
   Array.fromAsync(events).then(
     () => undefined,
     (error) => error,
   );
-
-const wrongKey = { key: WRONG_KEY, fetch: (input, init) => fetch(input, init), viaApiHost: false };
-
-const transportFor = (textCase, { transport, requestOnly }) =>
-  textCase.record === "wrong-key" && !requestOnly ? wrongKey : transport;
 
 const requestOf = (textCase, { model, provider }) => {
   if (textCase.record === "request-model") return textCase.request;

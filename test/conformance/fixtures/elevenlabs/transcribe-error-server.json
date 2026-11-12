@@ -1,0 +1,34 @@
+{
+  "derivedFrom": "transcribe-error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 9
+      },
+      "model_id": "scribe_v2",
+      "language_code": "en"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": {
+        "type": "validation_error",
+        "code": "invalid_audio",
+        "message": "File is corrupted. Please ensure it is playable audio.",
+        "status": "invalid_content",
+        "request_id": "b38323c3a69a2a46f4710d7c0d09f694",
+        "param": "audio_file"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "provider": "elevenlabs",
+  "adapters": {
+    "transcribe": "elevenlabs",
+    "synthesize": "elevenlabs"
+  },
+  "models": {
+    "transcribe": "scribe_v2",
+    "synthesize": "eleven_flash_v2_5"
+  },
+  "unsupported": {
+    "synthesize-error-bad-request": "answers an empty text with 200 and 7566 bytes of audio/mpeg, never 4xx (recorded 2026-11-12), https://elevenlabs.io/docs/api-reference/text-to-speech/convert"
+  }
+}

@@ -6,7 +6,22 @@ export const isObject = (value) =>
 const isStringMap = (value) =>
   isObject(value) && Object.values(value).every((each) => typeof each === "string");
 
-export function shapeReasonsOf(id, manifest, adapterNames) {
+const adapterReasonsOf = ([kind, name], known) => {
+  if (!known[kind]) return [`manifest adapters.${kind} is not a model call kind`];
+
+  return known[kind].adapterNames.includes(name)
+    ? []
+    : [`manifest adapters.${kind} names no ${kind} adapter`];
+};
+
+const modelReasonsOf = (manifest, known) =>
+  Object.keys(manifest.adapters ?? {})
+    .filter((kind) => known[kind] && typeof manifest.models?.[kind] !== "string")
+    .map((kind) => `manifest has no models.${kind}`);
+
+export function shapeReasonsOf(id, manifest, known) {
+  const adapters = isStringMap(manifest.adapters) ? Object.entries(manifest.adapters) : [];
+
   const unknown = Object.keys(manifest)
     .filter((field) => !MANIFEST_FIELDS.includes(field))
     .map((field) => `manifest has an unknown field ${field}`);
@@ -19,10 +34,9 @@ export function shapeReasonsOf(id, manifest, adapterNames) {
     ...unknown,
     ...(manifest.provider === id ? [] : [`manifest provider is not ${id}`]),
     ...maps,
-    ...(adapterNames.includes(manifest.adapters?.text)
-      ? []
-      : ["manifest adapters.text names no text adapter"]),
-    ...(typeof manifest.models?.text === "string" ? [] : ["manifest has no models.text"]),
+    ...(adapters.length > 0 ? [] : ["manifest has no adapters"]),
+    ...adapters.flatMap((entry) => adapterReasonsOf(entry, known)),
+    ...modelReasonsOf(manifest, known),
     ...(manifest.unverified === undefined || manifest.unverified === true
       ? []
       : ["manifest unverified is not true"]),

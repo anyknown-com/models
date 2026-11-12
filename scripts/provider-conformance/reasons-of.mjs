@@ -9,7 +9,7 @@ const fixtureNamesIn = (dir) =>
     .filter((name) => name.endsWith(".json") && name !== MANIFEST)
     .map((name) => name.slice(0, -".json".length));
 
-export function reasonsOf(root, id, { textCases, adapterNames }) {
+export function reasonsOf(root, id, known) {
   const dir = new URL(`${id}/`, root);
   const { manifest, missing, invalid } = readManifest(dir);
 
@@ -18,7 +18,7 @@ export function reasonsOf(root, id, { textCases, adapterNames }) {
   if (!isObject(manifest)) return [`${MANIFEST} is not an object`];
 
   return [
-    ...shapeReasonsOf(id, manifest, adapterNames),
-    ...caseReasonsOf(manifest, fixtureNamesIn(dir), textCases),
+    ...shapeReasonsOf(id, manifest, known),
+    ...caseReasonsOf(manifest, fixtureNamesIn(dir), known),
   ];
 }

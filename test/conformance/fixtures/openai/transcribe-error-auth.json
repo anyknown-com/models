@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "headers": {
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 55990
+      },
+      "model": "gpt-transcribe",
+      "response_format": "json",
+      "languages[]": "en"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json; charset=utf-8"
+    },
+    "body": {
+      "error": {
+        "message": "Incorrect API key provided: anyknown************************0000. You can find your API key at https://platform.openai.com/account/api-keys.",
+        "type": "invalid_request_error",
+        "param": null,
+        "code": "invalid_api_key"
+      }
+    }
+  }
+}

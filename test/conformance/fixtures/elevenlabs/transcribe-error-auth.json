@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 55990
+      },
+      "model_id": "scribe_v2",
+      "language_code": "en"
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": {
+        "type": "authentication_error",
+        "code": "unauthorized",
+        "message": "Invalid API key",
+        "status": "invalid_api_key",
+        "request_id": "3615bed1eaa390870c5ba072c1d18e2f"
+      }
+    }
+  }
+}

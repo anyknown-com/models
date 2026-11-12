@@ -1,0 +1,11 @@
+{
+  "provider": "deepgram",
+  "adapters": {
+    "transcribe": "deepgram"
+  },
+  "models": {
+    "transcribe": "nova-3"
+  },
+  "unsupported": {},
+  "unverified": true
+}

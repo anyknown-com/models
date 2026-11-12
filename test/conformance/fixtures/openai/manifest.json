@@ -6,7 +6,9 @@
     "synthesize": "openai"
   },
   "models": {
-    "text": "gpt-6-luna"
+    "text": "gpt-6-luna",
+    "synthesize": "gpt-4o-mini-tts",
+    "transcribe": "gpt-transcribe"
   },
   "unsupported": {}
 }

@@ -15,7 +15,7 @@ export type Manifest = {
 
 export type ConformanceFixture = Fixture & { derivedFrom?: string };
 
-export type ProviderDir = { manifest: Manifest; fixtures: Map<string, ConformanceFixture> };
+export type ProviderDir<F = ConformanceFixture> = { manifest: Manifest; fixtures: Map<string, F> };
 
 export type TextAdapterEntry = {
   endpoint: RegExp;
@@ -30,4 +30,19 @@ export type TextAsserts = Partial<Record<TextCaseId, CaseAssert>>;
 
 export type Verdict = { id: string; result: "pass" | "fail" | "declared"; reason?: string };
 
-export type ProviderRun = { provider: string; unverified: boolean; verdicts: Verdict[] };
+export type ProviderRun = {
+  provider: string;
+  kind: string;
+  unverified: boolean;
+  verdicts: Verdict[];
+};
+
+export type JudgedCase = { id: string; source: string; fixtureOf?: string };
+
+export type CaseRunner<Case, F, Run> = (
+  judged: Case,
+  provider: ProviderDir<F>,
+  fixture: F | undefined,
+) => Promise<Run & { mismatch?: unknown }>;
+
+export type Check<Run> = (run: Run) => void | Promise<void>;

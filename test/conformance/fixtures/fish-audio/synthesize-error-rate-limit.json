@@ -1,0 +1,29 @@
+{
+  "unverified": true,
+  "derivedFrom": "synthesize-error-auth",
+  "request": {
+    "method": "POST",
+    "url": "https://api.fish.audio/v1/tts",
+    "headers": {
+      "accept": "audio/mpeg",
+      "content-type": "application/json",
+      "model": "s2.1-pro"
+    },
+    "fields": {
+      "text": "Hello from Anyknown.",
+      "reference_id": "",
+      "format": "mp3"
+    }
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

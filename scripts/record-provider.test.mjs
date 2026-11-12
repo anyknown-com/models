@@ -209,4 +209,34 @@ describe("record-provider.mjs", () => {
     assertManifest(written, true);
     assert.deepEqual(written.unsupported, declared);
   });
+  it("--kind transcribe --request-only records the transcribe cases of a speech-only provider", async () => {
+    const fixtures = await tempDir();
+    const dir = join(fixtures, "deepgram");
+    const flags = ["--kind", "transcribe", "--adapter", "deepgram", "--model", "nova-3"];
+
+    const child = spawn(process.execPath, [
+      CLI,
+      "deepgram",
+      "--base-url",
+      "https://api.deepgram.com/v1",
+      "--request-only",
+      ...flags,
+      "--fixtures",
+      fixtures,
+    ]);
+
+    const output = outputOf(child.stderr);
+    const code = await new Promise((resolve) => child.on("close", resolve));
+    const manifest = await readJson(dir, "manifest.json");
+    const transcribe = await readJson(dir, "transcribe.json");
+
+    assert.equal(code, 0, output());
+    assert.deepEqual(manifest.adapters, { transcribe: "deepgram" });
+    assert.deepEqual(manifest.models, { transcribe: "nova-3" });
+    assert.equal(manifest.unverified, true);
+    assert.equal(transcribe.unverified, true);
+    assert.deepEqual(transcribe.request.fields, { type: "audio/wav", size: 55990 });
+    assert.equal(transcribe.request.headers.authorization, undefined);
+    assert.ok((await readdir(dir)).includes("transcribe-error-server.json"));
+  });
 });

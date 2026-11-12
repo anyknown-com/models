@@ -1,22 +1,14 @@
 import { TEXT_CASES } from "./cases";
-import { judgeCase } from "./judge-case";
+import { judgeProvider } from "./judge-provider";
 import { readProviderDir } from "./read-provider-dir";
-import type { ProviderRun, TextAsserts } from "./types";
+import { runCase } from "./run-case";
+import type { ConformanceFixture, ProviderRun, TextAsserts } from "./types";
 
-export async function runProvider(dir: URL, asserts: TextAsserts): Promise<ProviderRun> {
-  const provider = readProviderDir(dir);
-
-  const verdicts = await Promise.all(
-    TEXT_CASES.flatMap((textCase) => {
-      const check = asserts[textCase.id];
-
-      return check ? [judgeCase(textCase, provider, check)] : [];
-    }),
-  );
-
-  return {
-    provider: provider.manifest.provider,
-    unverified: provider.manifest.unverified === true,
-    verdicts,
-  };
-}
+export const runProvider = (dir: URL, asserts: TextAsserts): Promise<ProviderRun> =>
+  judgeProvider({
+    provider: readProviderDir<ConformanceFixture>(dir),
+    kind: "text",
+    cases: TEXT_CASES,
+    asserts,
+    run: runCase,
+  });

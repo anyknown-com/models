@@ -1,0 +1,33 @@
+{
+  "derivedFrom": "transcribe-error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "headers": {
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 9
+      },
+      "model": "gpt-transcribe",
+      "response_format": "json",
+      "languages[]": "en"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "This model does not support the format you provided.",
+        "type": "invalid_request_error",
+        "param": "messages",
+        "code": "unsupported_format"
+      }
+    }
+  }
+}

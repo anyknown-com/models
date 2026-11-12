@@ -6,7 +6,7 @@ const MANIFEST = "manifest.json";
 
 const jsonOf = (url: URL) => JSON.parse(readFileSync(url, "utf8"));
 
-export function readProviderDir(dir: URL): ProviderDir {
+export function readProviderDir<F>(dir: URL): ProviderDir<F> {
   const names = readdirSync(dir).filter((name) => name.endsWith(".json") && name !== MANIFEST);
 
   return {

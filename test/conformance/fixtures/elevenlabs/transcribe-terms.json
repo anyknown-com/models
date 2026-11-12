@@ -1,0 +1,68 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://api.elevenlabs.io/v1/speech-to-text",
+    "headers": {
+      "content-type": "multipart/form-data"
+    },
+    "fields": {
+      "file": {
+        "name": "sample.wav",
+        "size": 55990
+      },
+      "model_id": "scribe_v2",
+      "language_code": "en",
+      "keyterms": ["Amino", "Anyknown"]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "language_code": "eng",
+      "language_probability": 1,
+      "text": "Hello from Amino",
+      "words": [
+        {
+          "text": "Hello",
+          "start": 0.06,
+          "end": 0.4,
+          "type": "word",
+          "logprob": -0.00011967896716669202
+        },
+        {
+          "text": " ",
+          "start": 0.4,
+          "end": 0.52,
+          "type": "spacing",
+          "logprob": -0.0012413900112733245
+        },
+        {
+          "text": "from",
+          "start": 0.52,
+          "end": 0.72,
+          "type": "word",
+          "logprob": -0.0012413900112733245
+        },
+        {
+          "text": " ",
+          "start": 0.72,
+          "end": 0.84,
+          "type": "spacing",
+          "logprob": -0.041899293661117554
+        },
+        {
+          "text": "Amino",
+          "start": 0.84,
+          "end": 1.38,
+          "type": "word",
+          "logprob": -0.041899293661117554
+        }
+      ],
+      "transcription_id": "TXJg3AisffDUNAD9TWmu",
+      "audio_duration_secs": 1.6216875
+    }
+  }
+}

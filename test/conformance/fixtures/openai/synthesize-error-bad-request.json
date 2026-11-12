@@ -1,0 +1,28 @@
+{
+  "unverified": true,
+  "request": {
+    "method": "POST",
+    "url": "https://api.openai.com/v1/audio/speech",
+    "headers": {
+      "accept": "audio/mpeg",
+      "content-type": "application/json"
+    },
+    "fields": {
+      "model": "gpt-4o-mini-tts",
+      "input": "",
+      "voice": "alloy",
+      "response_format": "mp3"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

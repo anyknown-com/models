@@ -1,0 +1,26 @@
+{
+  "unverified": true,
+  "derivedFrom": "transcribe-error-bad-request",
+  "request": {
+    "method": "POST",
+    "url": "https://api.deepgram.com/v1/listen?model=nova-3&smart_format=true&language=en",
+    "headers": {
+      "content-type": "audio/wav"
+    },
+    "fields": {
+      "type": "audio/wav",
+      "size": 9
+    }
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "error": {
+        "message": "request-only"
+      }
+    }
+  }
+}

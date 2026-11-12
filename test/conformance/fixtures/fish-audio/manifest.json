@@ -1,0 +1,13 @@
+{
+  "provider": "fish-audio",
+  "adapters": {
+    "transcribe": "fish-audio",
+    "synthesize": "fish-audio"
+  },
+  "models": {
+    "transcribe": "transcribe-1-pro",
+    "synthesize": "s2.1-pro"
+  },
+  "unsupported": {},
+  "unverified": true
+}
