@@ -1,0 +1,16 @@
+{
+  "provider": "sambanova",
+  "adapters": {
+    "text": "openai-compatible"
+  },
+  "models": {
+    "text": "gpt-oss-120b"
+  },
+  "unsupported": {
+    "image": "SambaNova lists gpt-oss-120b (the recorded model) as text only; image input is only on gemma-4-31B-it and MiniMax-M3.1-Flash: https://docs.sambanova.ai/docs/en/models/sambacloud-models",
+    "file": "SambaNova Chat Completions takes only text, image_url, audio and video content parts in a user message, no file part: https://docs.sambanova.ai/docs/api-reference/chat-completions/create-chat-based-completion",
+    "usage-cache": "SambaNova caches prompts only on MiniMax-M3; for other models the usage object has no cached-token field: https://docs.sambanova.ai/docs/en/features/prompt-caching",
+    "error-not-found": "SambaNova answers an unknown model id with 400 model_not_found, never 404: https://docs.sambanova.ai/docs/en/api-reference/using-the-api/api-error-codes"
+  },
+  "unverified": true
+}
