@@ -239,4 +239,37 @@ describe("record-provider.mjs", () => {
     assert.equal(transcribe.request.headers.authorization, undefined);
     assert.ok((await readdir(dir)).includes("transcribe-error-server.json"));
   });
+
+  it("--kind embed --request-only records the binding runs without a base URL or key", async () => {
+    const fixtures = await tempDir();
+    const dir = join(fixtures, "workers-ai");
+    const flags = ["--kind", "embed", "--adapter", "workers-ai", "--model", "@cf/m"];
+
+    const child = spawn(process.execPath, [
+      CLI,
+      "workers-ai",
+      "--request-only",
+      ...flags,
+      "--fixtures",
+      fixtures,
+    ]);
+
+    const output = outputOf(child.stderr);
+    const code = await new Promise((resolve) => child.on("close", resolve));
+    const manifest = await readJson(dir, "manifest.json");
+    const batch = await readJson(dir, "embed-batch.json");
+
+    assert.equal(code, 0, output());
+    assert.deepEqual(manifest.adapters, { embed: "workers-ai" });
+    assert.equal(manifest.unverified, true);
+    assert.equal(batch.unverified, true);
+    assert.deepEqual(
+      batch.calls.map(({ model, input }) => [model, input.text.length]),
+      [
+        ["@cf/m", 25],
+        ["@cf/m", 2],
+      ],
+    );
+    assert.ok((await readdir(dir)).includes("embed-error-not-found.json"));
+  });
 });

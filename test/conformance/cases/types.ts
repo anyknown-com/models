@@ -31,3 +31,11 @@ export type SpeechCase<Input> =
   | { id: string; source: "recorded"; request: Input; record?: "wrong-key" }
   | { id: string; source: "derived"; from: string; status: number }
   | { id: string; source: "synthetic"; request: Input; fetch: "throws" | "aborts" };
+
+export type EmbedInput = { values: string[]; model?: string };
+
+export type RerankInput = { query: string; documents: string[]; model?: string };
+
+export type EmbedCase<Input> =
+  | { id: string; source: "recorded"; request: Input }
+  | { id: string; source: "synthetic"; request: Input; run: "aborts" };

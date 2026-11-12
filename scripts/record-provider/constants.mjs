@@ -23,5 +23,7 @@ export const ERROR_STATUSES = {
   "synthesize-error-bad-request": [400, 422],
 };
 
+export const BINDING_ERRORS = ["embed-error-not-found", "rerank-error-not-found"];
+
 export const USAGE =
-  "node scripts/record-provider.mjs <provider id> --base-url <url> (--key-env <env> | --via <origin> | --request-only) [--kind <text | transcribe | synthesize>] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]";
+  "node scripts/record-provider.mjs <provider id> --base-url <url> (--key-env <env> | --via <origin> | --request-only) [--kind <text | transcribe | synthesize>] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]\nnode scripts/record-provider.mjs <provider id> --kind <embed | rerank> [--request-only] [--adapter <adapter>] [--model <id>] [--fixtures <dir>]";

@@ -2,15 +2,14 @@ import { execFile } from "node:child_process";
 import { resolve } from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { transportOf } from "../record-text/transport-of.mjs";
 import { recordToken } from "../via.mjs";
 import { kindAdapterOf } from "./kind-adapter-of.mjs";
 import { allUnverified } from "./all-unverified.mjs";
 import { FIXTURES, WRONG_KEY } from "./constants.mjs";
 import { KINDS } from "./kinds.mjs";
+import { openTransport } from "./open-transport.mjs";
 import { readManifest } from "./read-manifest.mjs";
 import { recordCases } from "./record-cases.mjs";
-import { REQUEST_ONLY_TRANSPORT } from "./request-only-transport.mjs";
 import { writeJson } from "./write-json.mjs";
 import { writeManifest } from "./write-manifest.mjs";
 
@@ -32,7 +31,7 @@ const targetOf = (provider, existing, { kind, baseUrl, ...options }) => {
 };
 
 export async function recordProvider(provider, options) {
-  const { kind, via, requestOnly, keyEnv, baseUrl } = options;
+  const { kind, via, requestOnly } = options;
 
   if (!KINDS[kind]) throw new Error(`no model call kind named ${kind}`);
 
@@ -40,11 +39,9 @@ export async function recordProvider(provider, options) {
   const existing = await readManifest(dir);
   const { model, spec, adapterOf } = targetOf(provider, existing, options);
 
-  const transport = requestOnly
-    ? REQUEST_ONLY_TRANSPORT
-    : await transportOf({ via, provider: spec.id, baseUrl, keyEnv });
-
-  const secrets = [transport.key, WRONG_KEY, ...(via ? [await recordToken()] : [])];
+  const transport = await openTransport(spec.id, options);
+  const tokens = via ? [await recordToken()] : [];
+  const secrets = [transport.key, WRONG_KEY, ...tokens].filter(Boolean);
   const declared = existing?.unsupported ?? {};
 
   const { fixtures, failures, unsupported } = await recordCases({
@@ -56,7 +53,7 @@ export async function recordProvider(provider, options) {
     requestOnly,
     secrets,
     declared,
-  });
+  }).finally(() => transport.dispose?.());
 
   for (const [id, fixture] of fixtures) {
     await writeJson(new URL(`${id}.json`, dir), fixture, secrets);

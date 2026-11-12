@@ -1,11 +1,17 @@
 {
   "provider": "workers-ai",
   "adapters": {
-    "text": "openai-compatible"
+    "text": "openai-compatible",
+    "embed": "workers-ai",
+    "rerank": "workers-ai"
   },
   "models": {
-    "text": "@cf/openai/gpt-oss-120b"
+    "text": "@cf/openai/gpt-oss-120b",
+    "embed": "@cf/baai/bge-small-en-v1.5",
+    "rerank": "@cf/baai/bge-reranker-base"
   },
-  "unsupported": {},
-  "unverified": true
+  "unsupported": {
+    "embed-error-not-found": "answers the unknown model id anyknown-no-such-model with 5007 \"No such model anyknown-no-such-model or task\" (HTTP 400), never 404 (recorded 2026-11-12) https://developers.cloudflare.com/workers-ai/platform/errors/",
+    "rerank-error-not-found": "answers the unknown model id anyknown-no-such-model with 5007 \"No such model anyknown-no-such-model or task\" (HTTP 400), never 404 (recorded 2026-11-12) https://developers.cloudflare.com/workers-ai/platform/errors/"
+  }
 }

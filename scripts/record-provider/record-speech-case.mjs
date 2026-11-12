@@ -10,7 +10,7 @@ export async function recordSpeechCase(speechCase, speech, options) {
   const { model, provider, secrets } = options;
   const transport = transportFor(speechCase, options);
   const recording = speechRecordingFetch(transport);
-  const call = options.adapterOf(transport.key, recording.fetch);
+  const call = options.adapterOf({ key: transport.key, fetch: recording.fetch });
   const request = speech.requestOf(speechCase.request, model, provider, sampleAudio);
   const error = await call(request).then(() => undefined, failureOf);
   const recorded = recording.calls.at(-1);

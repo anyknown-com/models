@@ -1,5 +1,6 @@
 import { parseArgs } from "node:util";
 import { USAGE } from "./constants.mjs";
+import { KINDS } from "./kinds.mjs";
 import { recordProvider } from "./record-provider.mjs";
 
 const { positionals, values } = parseArgs({
@@ -18,9 +19,10 @@ const { positionals, values } = parseArgs({
 
 const [id] = positionals;
 const keyEnv = values["key-env"];
-const needsKey = !values["request-only"] && !values.via;
+const binding = KINDS[values.kind]?.binding === true;
+const needsKey = !binding && !values["request-only"] && !values.via;
 
-if (!id || !values["base-url"] || (needsKey && !keyEnv)) {
+if (!id || (!binding && !values["base-url"]) || (needsKey && !keyEnv)) {
   console.error(USAGE);
   process.exitCode = 1;
 } else if (needsKey && !process.env[keyEnv]) {

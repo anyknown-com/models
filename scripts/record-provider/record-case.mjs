@@ -20,7 +20,7 @@ const requestOf = (textCase, { model, provider }) => {
 export async function recordCase(textCase, options) {
   const transport = transportFor(textCase, options);
   const recording = recordingFetch(transport);
-  const adapter = options.adapterOf(transport.key, recording.fetch);
+  const adapter = options.adapterOf({ key: transport.key, fetch: recording.fetch });
   const stream = () => adapter.stream(requestOf(textCase, options));
 
   if (textCase.record === "twice") await consume(stream());

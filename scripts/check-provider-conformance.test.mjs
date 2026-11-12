@@ -103,7 +103,7 @@ test("checks a speech-only manifest against the speech cases of its kinds", () =
   const root = tree({
     d: {
       manifest: speech({
-        adapters: { transcribe: "deepgram", synthesize: "nope", embed: "x" },
+        adapters: { transcribe: "deepgram", synthesize: "nope", image: "x" },
         models: { transcribe: "nova-3" },
       }),
       fixtures: ["transcribe", "text"],
@@ -115,7 +115,7 @@ test("checks a speech-only manifest against the speech cases of its kinds", () =
   assert.equal(result.status, 1);
   assert.deepEqual(result.stdout.trim().split("\n"), [
     "d manifest adapters.synthesize names no synthesize adapter",
-    "d manifest adapters.embed is not a model call kind",
+    "d manifest adapters.image is not a model call kind",
     "d manifest has no models.synthesize",
     "d text.json is not a case",
     "d transcribe-terms has no fixture and is not declared unsupported",
@@ -130,5 +130,27 @@ test("checks a speech-only manifest against the speech cases of its kinds", () =
     "d synthesize-error-bad-request has no fixture and is not declared unsupported",
     "d synthesize-error-rate-limit has no fixture and is not declared unsupported",
     "d synthesize-error-server has no fixture and is not declared unsupported",
+  ]);
+});
+
+test("checks an embed and rerank manifest against their cases", () => {
+  const root = tree({
+    e: {
+      manifest: speech({
+        provider: "e",
+        adapters: { embed: "workers-ai", rerank: "nope" },
+        models: { embed: "m", rerank: "m" },
+      }),
+      fixtures: ["embed", "embed-batch", "embed-error-not-found"],
+    },
+  });
+
+  const result = run(root);
+
+  assert.equal(result.status, 1);
+  assert.deepEqual(result.stdout.trim().split("\n"), [
+    "e manifest adapters.rerank names no rerank adapter",
+    "e rerank has no fixture and is not declared unsupported",
+    "e rerank-error-not-found has no fixture and is not declared unsupported",
   ]);
 });

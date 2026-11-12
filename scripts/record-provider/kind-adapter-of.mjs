@@ -6,5 +6,5 @@ export function kindAdapterOf({ id, kind, adapter, model, baseUrl }) {
   if (!entry) throw new Error(`${id}: no ${kind} adapter named ${adapter}, pass --adapter`);
   if (!model) throw new Error(`${id}: no ${kind} model, pass --model`);
 
-  return (key, fetch) => entry.create(id, { key, fetch, baseUrl });
+  return (config) => entry.create(id, { ...config, baseUrl });
 }
