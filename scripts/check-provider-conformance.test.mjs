@@ -154,3 +154,16 @@ test("checks an embed and rerank manifest against their cases", () => {
     "e rerank-error-not-found has no fixture and is not declared unsupported",
   ]);
 });
+
+test("reports a case id that two kinds share", async () => {
+  const { duplicateCaseReasonsOf } =
+    await import("./provider-conformance/duplicate-case-reasons-of.mjs");
+
+  const known = {
+    text: { cases: [{ id: "text" }, { id: "image" }] },
+    image: { cases: [{ id: "image" }, { id: "image-edit" }] },
+    video: { cases: [{ id: "video" }, { id: "image" }] },
+  };
+
+  assert.deepEqual(duplicateCaseReasonsOf(known), ["case image is in text, image, and video"]);
+});

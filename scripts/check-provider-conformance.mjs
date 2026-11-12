@@ -2,6 +2,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { tsImport } from "tsx/esm/api";
 import { FIXTURES } from "./provider-conformance/constants.mjs";
+import { duplicateCaseReasonsOf } from "./provider-conformance/duplicate-case-reasons-of.mjs";
 import { providerIdsIn } from "./provider-conformance/provider-ids-in.mjs";
 import { reasonsOf } from "./provider-conformance/reasons-of.mjs";
 
@@ -25,6 +26,11 @@ const known = {
 };
 
 let failed = false;
+
+for (const reason of duplicateCaseReasonsOf(known)) {
+  console.log(reason);
+  failed = true;
+}
 
 for (const id of providerIdsIn(root)) {
   for (const reason of reasonsOf(root, id, known)) {
