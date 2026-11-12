@@ -4,6 +4,12 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
+## Unreleased
+
+### Added
+
+- **`@anyknown/models/bedrock`:** prompt caching. `providerOptions: { bedrock: { cachePoint: { type: "default" } } }` on a system part, a message part or a message sends a Converse `cachePoint` block after it; on the request it ends the last message with one.
+
 ## 0.1.1 — 2026-11-12
 
 ### Fixed

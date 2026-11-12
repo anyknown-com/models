@@ -21,6 +21,11 @@
           "content": [
             {
               "text": "Name one planet in the solar system."
+            },
+            {
+              "cachePoint": {
+                "type": "default"
+              }
             }
           ]
         }

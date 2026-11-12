@@ -5,6 +5,8 @@ import { thinkingBudgetOf } from "./thinking-budget-of";
 import { toMessages } from "./to-messages";
 import { toToolConfig } from "./to-tool-config";
 import type { BedrockCall, BedrockRequest } from "./types";
+import { withCachePoint } from "./with-cache-point";
+import { withRequestCachePoint } from "./with-request-cache-point";
 import { withoutToolParts } from "./without-tool-parts";
 
 export function buildRequest(call: BedrockCall, request: TextRequest): BedrockRequest {
@@ -22,10 +24,10 @@ export function buildRequest(call: BedrockCall, request: TextRequest): BedrockRe
     url: `${call.baseUrl}/model/${encodeURIComponent(model)}/converse-stream`,
     headers: { authorization: `Bearer ${call.key}` },
     body: {
-      system: system.map(({ text }) => ({ text })),
-      messages: toMessages(
-        tools.length > 0 ? request.messages : withoutToolParts(request.messages),
-        model,
+      system: system.flatMap((part) => withCachePoint([{ text: part.text }], part.providerOptions)),
+      messages: withRequestCachePoint(
+        toMessages(tools.length > 0 ? request.messages : withoutToolParts(request.messages), model),
+        providerOptions,
       ),
       ...(budget === undefined
         ? {}

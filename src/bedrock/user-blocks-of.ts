@@ -5,16 +5,22 @@ import { toContentBlock } from "./to-content-block";
 import { toolResultBlockOf } from "./tool-result-block-of";
 import type { MessageContext } from "./types";
 import { userPartsOf } from "./user-parts-of";
+import { withCachePoint } from "./with-cache-point";
 
 export function userBlocksOf(
   message: UserModelMessage | ToolModelMessage,
   context: MessageContext,
 ): JsonObject[] {
   if (message.role === "tool") {
-    return message.content.map((part) => toolResultBlockOf(part, context));
+    return message.content.flatMap((part) =>
+      withCachePoint([toolResultBlockOf(part, context)], part.providerOptions),
+    );
   }
 
-  return userPartsOf(message.content).map((part) =>
-    part.type === "text" ? { text: part.text } : toContentBlock(mediaOf(part, true), context),
+  return userPartsOf(message.content).flatMap((part) =>
+    withCachePoint(
+      [part.type === "text" ? { text: part.text } : toContentBlock(mediaOf(part, true), context)],
+      part.providerOptions,
+    ),
   );
 }

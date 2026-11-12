@@ -4,6 +4,7 @@ import { documentNamer } from "./document-namer";
 import { groupedByRole } from "./grouped-by-role";
 import type { BedrockMessage, MessageContext } from "./types";
 import { userBlocksOf } from "./user-blocks-of";
+import { withCachePoint } from "./with-cache-point";
 
 export function toMessages(messages: ModelMessage[], model: string): BedrockMessage[] {
   const groups = groupedByRole(
@@ -14,13 +15,20 @@ export function toMessages(messages: ModelMessage[], model: string): BedrockMess
 
   return groups.flatMap((group, i): BedrockMessage[] => {
     if (group.role === "user") {
-      return [{ role: "user", content: group.messages.flatMap((m) => userBlocksOf(m, context)) }];
+      const content = group.messages.flatMap((m) =>
+        withCachePoint(userBlocksOf(m, context), m.providerOptions),
+      );
+
+      return [{ role: "user", content }];
     }
 
     const last = i === groups.length - 1;
 
     const content = group.messages.flatMap((message, j) =>
-      assistantBlocksOf(message, last && j === group.messages.length - 1, model),
+      withCachePoint(
+        assistantBlocksOf(message, last && j === group.messages.length - 1, model),
+        message.providerOptions,
+      ),
     );
 
     return content.length > 0 ? [{ role: "assistant", content }] : [];
