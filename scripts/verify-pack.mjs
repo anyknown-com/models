@@ -46,7 +46,7 @@ try {
     encoding: "utf8",
   });
 
-  const tarball = join(scratch, JSON.parse(pack)[0].filename);
+  const tarball = join(scratch, Object.values(JSON.parse(pack))[0].filename);
 
   mkdirSync(installed, { recursive: true });
   execFileSync("tar", ["-xzf", tarball, "-C", installed, "--strip-components=1"]);
