@@ -4,11 +4,15 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
-## Unreleased
+## 0.1.2 — 2026-11-12
 
 ### Added
 
 - **`@anyknown/models/bedrock`:** prompt caching. `providerOptions: { bedrock: { cachePoint: { type: "default" } } }` on a system part, a message part or a message sends a Converse `cachePoint` block after it; on the request it ends the last message with one.
+
+### Fixed
+
+- **`@anyknown/models/google`:** `readVideoStatus` reads an interaction that has ended as `incomplete`, `cancelled` or `failed`, or that waits on `requires_action` or `requires_continuation`, as `failed`, with a readable message and the status as `code`. Before, every status other than `completed`, `failed` and `cancelled` read as `running`, so an `incomplete` job was polled forever. A status the API reference does not list also reads as `failed`, with the raw status in the message and `code`.
 
 ## 0.1.1 — 2026-11-12
 
