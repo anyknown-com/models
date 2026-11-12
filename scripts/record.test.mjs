@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { after, before, beforeEach, describe, it } from "node:test";
+import { tsImport } from "tsx/esm/api";
 import { recordFixture } from "./record-text/record-fixture.mjs";
 
 const KEY = "sk-record-test-secret-0123456789";
@@ -22,6 +23,8 @@ const ROUTE_HEADERS = new Set([
 
 const SSE = 'data: {"text":"Mars"}\n\ndata: [DONE]\n\n';
 const RECORD = join(import.meta.dirname, "record.mjs");
+const RESPONSE_OF = new URL("../test/wire/response-of.ts", import.meta.url).href;
+const { responseOf } = await tsImport(RESPONSE_OF, import.meta.url);
 
 let received = [];
 let servers = [];
@@ -196,6 +199,38 @@ describe("record.mjs", () => {
     assert.equal(fixture.request.body.messages[1].content[0].toolName, "get_weather");
     assert.doesNotMatch(text, new RegExp(TOKEN));
     assert.doesNotMatch(text, new RegExp(apiHost));
+  });
+
+  it("records an eventstream body as base64 chunks that replay as the same bytes", async () => {
+    const frames = Buffer.from([0, 0, 0, 16, 0, 0, 0, 0, 0xc4, 0x8b, 0xff, 0xfe, 0x80, 0x01]);
+    const contentType = "application/vnd.amazon.eventstream";
+
+    const provider = await serve(() => ({
+      status: 200,
+      headers: { "content-type": contentType },
+      body: frames,
+    }));
+
+    const file = await recordFixture({
+      family: "fake",
+      caseName: "text",
+      model: "m-5",
+      keyEnv: "RECORD_TEST_KEY",
+      baseUrl: provider,
+      factory: fakeFactory,
+      fixtures: pathToFileURL(`${await mkdtemp(join(tmpdir(), "record-eventstream-"))}/`),
+    });
+
+    const { fixture } = await fixtureAt(file);
+    const replayed = await responseOf(fixture.response).arrayBuffer();
+
+    assert.deepEqual(fixture.response, {
+      status: 200,
+      headers: { "content-type": contentType },
+      chunks: [frames.toString("base64")],
+      encoding: "base64",
+    });
+    assert.deepEqual(Buffer.from(replayed), frames);
   });
 
   it("writes no fixture and names the status and provider message when the status is unexpected", async () => {
