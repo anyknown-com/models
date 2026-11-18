@@ -7,12 +7,14 @@ import { sentRequest } from "./sent-request";
 const model = "gpt-6-luna";
 
 describe("chatgpt request", () => {
-  it("sends the text case as the fixture's request with the subscription headers", async () => {
+  it("sends the text case as the fixture's request with the codex headers", async () => {
     const { request, body } = await sentRequest({ ...text, model });
 
     expect(requestDiffs(fixture.request, request, body)).toEqual([]);
     expect(request.headers.get("authorization")).toBe("Bearer test-token");
     expect(request.headers.get("chatgpt-account-id")).toBe("account-1");
+    expect(request.headers.get("originator")).toBe("codex_cli_rs");
+    expect(request.headers.get("accept")).toBe("text/event-stream");
   });
 
   it("reads its own options cell and never sends max_output_tokens", async () => {
@@ -26,7 +28,6 @@ describe("chatgpt request", () => {
 
     expect(Object.keys(body)).toEqual([
       "model",
-      "instructions",
       "input",
       "prompt_cache_key",
       "reasoning",
@@ -37,6 +38,9 @@ describe("chatgpt request", () => {
     ]);
 
     expect(body.reasoning).toEqual({ effort: "high", summary: "detailed" });
-    expect(body.input).not.toContainEqual(expect.objectContaining({ role: "developer" }));
+    const roles = (body.input as { role?: string }[]).map((item) => item.role);
+
+    expect(roles.filter((role) => role === "developer")).toEqual(["developer"]);
+    expect(roles[0]).toBe("developer");
   });
 });
