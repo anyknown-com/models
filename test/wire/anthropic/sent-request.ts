@@ -1,10 +1,14 @@
 import { anthropic } from "../../../src/anthropic";
+import type { AnthropicAuth } from "../../../src/anthropic/types";
 import type { JsonObject } from "../../../src/types/json";
 import type { TextRequest } from "../../../src/types/text-request";
 
 type SentRequest = { request: Request; body: JsonObject };
 
-export async function sentRequest(request: TextRequest, baseUrl?: string): Promise<SentRequest> {
+export async function sentRequest(
+  request: TextRequest,
+  config: AnthropicAuth & { baseUrl?: string } = { key: "test-key" },
+): Promise<SentRequest> {
   const sent: SentRequest[] = [];
 
   const fetch: typeof globalThis.fetch = async (input, init) => {
@@ -18,7 +22,7 @@ export async function sentRequest(request: TextRequest, baseUrl?: string): Promi
   const events: unknown[] = [];
 
   try {
-    for await (const event of anthropic({ key: "test-key", fetch, baseUrl }).stream(request)) {
+    for await (const event of anthropic({ ...config, fetch }).stream(request)) {
       events.push(event);
     }
   } catch {}

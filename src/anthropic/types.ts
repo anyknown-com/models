@@ -1,7 +1,17 @@
+import type { AdapterConfig } from "../types/adapter-config";
 import type { JsonObject } from "../types/json";
 import type { AssistantModelMessage } from "../types/model-message";
 
-export type AnthropicCall = { provider: string; key: string; fetch: typeof fetch; baseUrl: string };
+export type AnthropicAuth = { key: string } | { token: string };
+
+export type AnthropicConfig = Omit<AdapterConfig, "key"> & AnthropicAuth;
+
+export type AnthropicCall = {
+  provider: string;
+  auth: AnthropicAuth;
+  fetch: typeof fetch;
+  baseUrl: string;
+};
 
 export type Media = { data: Uint8Array | URL; mediaType: string };
 

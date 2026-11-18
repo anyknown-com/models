@@ -1,4 +1,5 @@
 import type { TextRequest } from "../types/text-request";
+import { authHeaderOf } from "./auth-header-of";
 import { betaHeaderOf } from "./beta-header-of";
 import { ANTHROPIC_VERSION } from "./constants";
 import { maxTokensOf } from "./max-tokens-of";
@@ -17,9 +18,9 @@ export function buildRequest(call: AnthropicCall, request: TextRequest): Anthrop
   return {
     url: `${call.baseUrl}/messages`,
     headers: {
-      "x-api-key": call.key,
+      ...authHeaderOf(call.auth),
       "anthropic-version": ANTHROPIC_VERSION,
-      ...betaHeaderOf(model, tools, messages),
+      ...betaHeaderOf(call.auth, model, tools, messages),
     },
     body: {
       model,

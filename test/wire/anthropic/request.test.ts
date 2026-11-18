@@ -22,7 +22,10 @@ describe("anthropic request", () => {
   });
 
   it("posts to the messages path of the given base url", async () => {
-    const { request } = await sentRequest(text, "https://proxy.example/v1");
+    const { request } = await sentRequest(text, {
+      key: "test-key",
+      baseUrl: "https://proxy.example/v1",
+    });
 
     expect(request.url).toBe("https://proxy.example/v1/messages");
   });

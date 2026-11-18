@@ -11,6 +11,8 @@ export const STRUCTURED_OUTPUTS_BETA = "structured-outputs-2025-11-13";
 
 export const PDFS_BETA = "pdfs-2024-09-25";
 
+export const OAUTH_BETA = "oauth-2025-04-20";
+
 export const PDF_MEDIA_TYPE = "application/pdf";
 
 export const TEXT_MEDIA_TYPE = "text/plain";
