@@ -4,6 +4,19 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
+## 0.2.0 — 2026-11-18
+
+### Breaking
+
+- **`TextCapabilities`:** has a new required field `contextWindow: number | null`. An adapter you write yourself must now return it from `capabilities(model)`. Known Claude, OpenAI and Gemini models report their context window from the provider's model docs; every other model reports `null`.
+
+### Added
+
+- **`@anyknown/models/chatgpt`:** `chatgpt`, for text through a ChatGPT subscription (the Codex Responses API at `chatgpt.com/backend-api/codex`). It takes `{ key, accountId, fetch?, baseUrl? }`: `key` is the subscription access token, sent as a bearer with `chatgpt-account-id`. System text goes out as a developer input item, as Codex sends it. The wire fixture is not yet recorded live.
+- **`@anyknown/models/anthropic`:** `anthropic({ token })` sends a subscription token as `Authorization: Bearer` and adds `oauth-2025-04-20` to `anthropic-beta`, in place of `x-api-key`. `anthropic({ key })` is unchanged.
+- **Capabilities:** OpenAI reasoning models report their `reasoning.effort` values in `effortLevels`; an unknown reasoning model reports `low`, `medium` and `high`. Gemini models report the thinking levels Google lists for each model. Claude Haiku 5.5 and Mythos 5.x are known models, with adaptive thinking and all five effort levels.
+- **`@anyknown/models/google`:** `providerOptions.google.thinkingConfig.thinkingLevel` of `low`, `medium` or `high` sent to a Gemini 2.5 model goes out as Google's matching `thinkingBudget`.
+
 ## 0.1.2 — 2026-11-12
 
 ### Added
