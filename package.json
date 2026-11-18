@@ -29,6 +29,10 @@
       "types": "./dist/openai/index.d.ts",
       "default": "./dist/openai/index.js"
     },
+    "./chatgpt": {
+      "types": "./dist/chatgpt/index.d.ts",
+      "default": "./dist/chatgpt/index.js"
+    },
     "./openai-compatible": {
       "types": "./dist/openai-compatible/index.d.ts",
       "default": "./dist/openai-compatible/index.js"
