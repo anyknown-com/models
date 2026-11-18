@@ -13,7 +13,7 @@ export function bedrock(config: BedrockConfig): TextAdapter {
 
   return {
     provider: PROVIDER,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities: () => ({ thinking: "none", effortLevels: [], contextWindow: null }),
     stream: (request) => converseStream(call, request),
   };
 }

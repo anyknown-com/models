@@ -80,6 +80,7 @@ describe("workers ai text", () => {
     expect(workersAi({ binding }).capabilities("x")).toEqual({
       thinking: "none",
       effortLevels: [],
+      contextWindow: null,
     });
   });
 });

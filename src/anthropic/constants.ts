@@ -98,6 +98,28 @@ export const KNOWN_MODELS: readonly KnownModel[] = [
   },
 ];
 
+// https://platform.claude.com/docs/en/about-claude/models/overview
+export const CONTEXT_WINDOWS: readonly { ids: readonly string[]; contextWindow: number }[] = [
+  {
+    ids: [
+      "claude-fable-5",
+      "claude-mythos-5",
+      "claude-opus-5",
+      "claude-sonnet-5",
+      "claude-haiku-5",
+      "claude-opus-4-8",
+      "claude-opus-4-7",
+      "claude-opus-4-6",
+      "claude-sonnet-4-6",
+    ],
+    contextWindow: 1_000_000,
+  },
+  {
+    ids: ["claude-opus-4-", "claude-sonnet-4-", "claude-haiku-4-5"],
+    contextWindow: 200_000,
+  },
+];
+
 export const EFFORT_LEVELS = ["low", "medium", "high", "xhigh", "max"];
 
 const USAGE_COUNTS = [

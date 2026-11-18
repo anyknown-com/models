@@ -12,7 +12,7 @@ export function workersAi({
 }: WorkersAiConfig): TextAdapter & EmbedAdapter & RerankAdapter {
   return {
     provider: PROVIDER,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities: () => ({ thinking: "none", effortLevels: [], contextWindow: null }),
     stream: (request) => streamOnce(binding, request),
     embed: (request) => embedBatches(binding, request),
     rerank: (request) => rerankDocuments(binding, request),

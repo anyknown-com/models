@@ -5,7 +5,7 @@ import type { OpenaiCompatibleConfig } from "./types";
 export function openaiCompatible(config: OpenaiCompatibleConfig): TextAdapter {
   return {
     provider: config.name,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities: () => ({ thinking: "none", effortLevels: [], contextWindow: null }),
     stream: (request) => streamChat(config, request),
   };
 }

@@ -5,6 +5,7 @@ import type { ImageAdapter } from "../types/image-adapter";
 import type { SynthesizeAdapter } from "../types/synthesize-adapter";
 import type { TextAdapter } from "../types/text-adapter";
 import type { TranscribeAdapter } from "../types/transcribe-adapter";
+import { capabilities } from "./capabilities";
 import { OPENAI_BASE_URL } from "./constants";
 import { generateImage } from "./generate-image";
 import { streamResponses } from "./stream-responses";
@@ -23,7 +24,7 @@ export function openai(
 
   return {
     provider: call.provider,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities,
     stream: (request) => streamResponses(call, request),
     transcribe: (request) => transcribe(call, request),
     synthesize: (request) => synthesize(call, request),

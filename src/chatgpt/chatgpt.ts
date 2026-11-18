@@ -1,4 +1,5 @@
 import { defaultFetch } from "../default-fetch";
+import { capabilities } from "../openai/capabilities";
 import type { TextAdapter } from "../types/text-adapter";
 import { CHATGPT_BASE_URL } from "./constants";
 import { streamChatgpt } from "./stream-chatgpt";
@@ -15,7 +16,7 @@ export function chatgpt(config: ChatgptConfig): TextAdapter {
 
   return {
     provider: call.provider,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities,
     stream: (request) => streamChatgpt(call, request),
   };
 }

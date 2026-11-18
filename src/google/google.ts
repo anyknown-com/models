@@ -2,6 +2,7 @@ import { defaultFetch } from "../default-fetch";
 import type { AdapterConfig } from "../types/adapter-config";
 import type { TextAdapter } from "../types/text-adapter";
 import type { VideoAdapter } from "../types/video-adapter";
+import { capabilities } from "./capabilities";
 import { GOOGLE_BASE_URL, PROVIDER } from "./constants";
 import { readInteraction } from "./read-interaction";
 import { streamGenerateContent } from "./stream-generate-content";
@@ -19,7 +20,7 @@ export function google(config: AdapterConfig): TextAdapter & VideoAdapter {
 
   return {
     provider: PROVIDER,
-    capabilities: () => ({ thinking: "none", effortLevels: [] }),
+    capabilities,
     stream: (request) => streamGenerateContent(call, request),
     submitVideo: (request) => submitVideo(call, request),
     readVideoStatus: async (job, options) =>
