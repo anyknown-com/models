@@ -12,6 +12,15 @@ export const GENERATION_OPTIONS = [
   "imageConfig",
 ];
 
+export const BUDGET_GEMINI = /(^|\/)gemini-2\.5-/i;
+
+// https://ai.google.dev/gemini-api/docs/openai#thinking
+export const LEVEL_BUDGETS: ReadonlyMap<string, number> = new Map([
+  ["low", 1024],
+  ["medium", 8192],
+  ["high", 24_576],
+]);
+
 export const SKIP_THOUGHT_SIGNATURE = "skip_thought_signature_validator";
 
 export const TOOL_SUCCEEDED = "Tool executed successfully.";

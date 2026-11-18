@@ -15,8 +15,16 @@ describe("anthropic capabilities", () => {
     expect(capabilitiesOf(model).contextWindow).toBe(contextWindow);
   });
 
-  it("keeps adaptive thinking and its effort levels", () => {
-    expect(capabilitiesOf("claude-fable-5-2")).toEqual({
+  it.each([
+    "claude-fable-5-2",
+    "claude-mythos-5-2",
+    "claude-mythos-5-1",
+    "claude-mythos-5",
+    "claude-opus-5-5",
+    "claude-sonnet-5-5",
+    "claude-haiku-5-5",
+  ])("keeps adaptive thinking and all five effort levels for %s", (model) => {
+    expect(capabilitiesOf(model)).toEqual({
       thinking: "adaptive",
       effortLevels: ["low", "medium", "high", "xhigh", "max"],
       contextWindow: 1_000_000,

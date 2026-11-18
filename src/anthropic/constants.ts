@@ -39,15 +39,17 @@ export const NEWER_CLAUDE_MAX_OUTPUT_TOKENS = 128_000;
 
 export const LEGACY_CLAUDE = /claude-(?:instant(?:-|$)|v?2(?=$|[-.:])|3(?=$|[-.]))/;
 
-// https://docs.claude.com/en/docs/about-claude/models/overview#model-comparison-table
+// https://platform.claude.com/docs/en/build-with-claude/effort#effort-levels
 export const KNOWN_MODELS: readonly KnownModel[] = [
   {
     ids: [
+      "claude-fable-5",
+      "claude-mythos-5",
       "claude-opus-5",
+      "claude-sonnet-5",
+      "claude-haiku-5",
       "claude-opus-4-8",
       "claude-opus-4-7",
-      "claude-fable-5",
-      "claude-sonnet-5",
     ],
     maxOutputTokens: 128_000,
     structuredOutput: true,

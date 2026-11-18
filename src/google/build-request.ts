@@ -12,7 +12,7 @@ export function buildRequest(call: GoogleCall, request: TextRequest): GoogleRequ
     url: `${call.baseUrl}/${modelPathOf(model)}:streamGenerateContent?alt=sse`,
     headers: { "x-goog-api-key": call.key },
     body: {
-      generationConfig: generationConfigOf(maxOutputTokens, providerOptions?.google),
+      generationConfig: generationConfigOf(model, maxOutputTokens, providerOptions?.google),
       ...toContents(request),
       ...toTools(request.tools),
     },

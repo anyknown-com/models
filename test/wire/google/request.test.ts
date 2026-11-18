@@ -45,6 +45,15 @@ describe("google request", () => {
     });
   });
 
+  it("sends a thinking level as a level to gemini 3 and as a budget to gemini 2.5", async () => {
+    const providerOptions = { google: { thinkingConfig: { thinkingLevel: "medium" } } };
+    const gemini3 = await sentRequest({ ...text, model: "gemini-3.8-flash", providerOptions });
+    const gemini25 = await sentRequest({ ...text, model, providerOptions });
+
+    expect(gemini3.body.generationConfig).toEqual({ thinkingConfig: { thinkingLevel: "medium" } });
+    expect(gemini25.body.generationConfig).toEqual({ thinkingConfig: { thinkingBudget: 8192 } });
+  });
+
   it("sends user text as user parts and assistant text as model parts", async () => {
     const { body } = await sentRequest({
       model,
