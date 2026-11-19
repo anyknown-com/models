@@ -1,5 +1,6 @@
 import { ModelError } from "../model-error";
 import { errorKindOf } from "../wire/error-kind-of";
+import { resetAtOf } from "../wire/reset-at-of";
 import { parseJson } from "./parse-json";
 import { providerCode } from "./provider-code";
 import { providerMessage } from "./provider-message";
@@ -16,5 +17,6 @@ export async function responseFailure(provider: string, response: Response): Pro
     code: providerCode(parsed),
     message: providerMessage(parsed) ?? "",
     body,
+    resetAt: resetAtOf(status, response.headers, body, Date.now()),
   });
 }

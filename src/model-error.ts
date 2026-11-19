@@ -6,6 +6,7 @@ type ModelErrorInit = {
   code?: string;
   message: string;
   body?: string;
+  resetAt?: string | null;
   cause?: unknown;
 };
 
@@ -25,6 +26,7 @@ export class ModelError extends Error {
   status?: number;
   code?: string;
   body?: string;
+  resetAt: string | null;
 
   constructor(init: ModelErrorInit) {
     super(init.message, { cause: init.cause });
@@ -35,5 +37,6 @@ export class ModelError extends Error {
     this.status = init.status;
     this.code = init.code;
     this.body = init.body;
+    this.resetAt = init.resetAt ?? null;
   }
 }
