@@ -4,6 +4,12 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
+## 0.3.0 — 2026-11-19
+
+### Added
+
+- **`ModelError.resetAt`:** when the call can succeed again, as an ISO time, or `null` when the provider did not say. It is read from a subscription limit message (Claude's `usage limit reached|<time>`, ChatGPT's `resets_at` or `resets_in_seconds`), then `retry-after` (seconds or an HTTP date), then a Claude subscription's `anthropic-ratelimit-unified-reset` while `anthropic-ratelimit-unified-status` is `rejected`, then on a 429 the `anthropic-ratelimit-*-reset` and `x-ratelimit-reset-*` headers: the window with nothing left, else the latest. Errors that are not an HTTP response, such as a stream that breaks, have `null`.
+
 ## 0.2.0 — 2026-11-18
 
 ### Breaking
