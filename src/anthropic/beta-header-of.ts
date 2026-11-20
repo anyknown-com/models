@@ -1,6 +1,6 @@
 import type { ToolDeclaration } from "../types/tool";
 import { claudeModelOf } from "./claude-model-of";
-import { OAUTH_BETA, PDFS_BETA, STRUCTURED_OUTPUTS_BETA } from "./constants";
+import { CLAUDE_CODE_BETA, OAUTH_BETA, PDFS_BETA, STRUCTURED_OUTPUTS_BETA } from "./constants";
 import { sendsPdf } from "./sends-pdf";
 import type { AnthropicAuth, AnthropicMessage } from "./types";
 
@@ -13,7 +13,7 @@ export function betaHeaderOf(
   const structured = tools.length > 0 && claudeModelOf(model).structuredOutput;
 
   const betas = [
-    ...("token" in auth ? [OAUTH_BETA] : []),
+    ...("token" in auth ? [CLAUDE_CODE_BETA, OAUTH_BETA] : []),
     ...(sendsPdf(messages) ? [PDFS_BETA] : []),
     ...(structured ? [STRUCTURED_OUTPUTS_BETA] : []),
   ];

@@ -4,6 +4,12 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
+## Unreleased
+
+### Fixed
+
+- **`@anyknown/models/anthropic`:** `anthropic({ token })` now sends the request the way Claude Code does, since the API answers any other subscription request with a 429 `rate_limit_error` "Error": `anthropic-beta` has `claude-code-20250219` before `oauth-2025-04-20`, `user-agent` is `claude-cli/2.1.329 (external, cli)`, `x-app` is `cli`, and the first system block is `You are Claude Code, Anthropic's official CLI for Claude.` on its own (not added again when the system already starts with it). `anthropic({ key })` is unchanged.
+
 ## 0.3.0 — 2026-11-19
 
 ### Added

@@ -13,6 +13,16 @@ export const PDFS_BETA = "pdfs-2024-09-25";
 
 export const OAUTH_BETA = "oauth-2025-04-20";
 
+// A subscription token is only served when the request reads as Claude Code's; otherwise a 429 "Error".
+export const CLAUDE_CODE_BETA = "claude-code-20250219";
+
+export const CLAUDE_CODE_IDENTITY = "You are Claude Code, Anthropic's official CLI for Claude.";
+
+export const CLAUDE_CODE_HEADERS: Readonly<Record<string, string>> = {
+  "user-agent": "claude-cli/2.1.329 (external, cli)",
+  "x-app": "cli",
+};
+
 export const PDF_MEDIA_TYPE = "application/pdf";
 
 export const TEXT_MEDIA_TYPE = "text/plain";
