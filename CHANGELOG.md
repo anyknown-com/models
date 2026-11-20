@@ -4,6 +4,12 @@ All notable changes to `@anyknown/models` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The package is pre-1.0, so a minor
 release can break the API; every break is listed under **Breaking**.
 
+## 0.3.2 — 2026-11-21
+
+### Fixed
+
+- **`ModelError.resetAt`:** a Claude subscription 429 now reads the reset of each rejected window, such as `anthropic-ratelimit-unified-5h-status: rejected` with `anthropic-ratelimit-unified-5h-reset`, and takes the latest. A window whose status is `allowed` is ignored. These resets come before `retry-after`, which is used only when no window is rejected.
+
 ## 0.3.1 — 2026-11-21
 
 ### Fixed
