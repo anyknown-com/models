@@ -284,7 +284,7 @@ Every failed call ends in a `ModelError` (thrown, or in the `finish` event of `s
 - `status`: the HTTP status, when the provider answered.
 - `code`: the provider's error code, when it sent one.
 - `body`: the provider's response body, when it sent one.
-- `resetAt`: when the call can succeed again, as an ISO time, or `null` when the provider did not say. It is read from a subscription limit message (Claude's `usage limit reached|<time>`, ChatGPT's `resets_at` or `resets_in_seconds`), then `retry-after`, then a Claude subscription's `anthropic-ratelimit-unified-reset` while its status is `rejected`, then on a 429 the `anthropic-ratelimit-*-reset` and `x-ratelimit-reset-*` headers (the window with nothing left, else the latest).
+- `resetAt`: when the call can succeed again, as an ISO time, or `null` when the provider did not say. It is read from a subscription limit message (Claude's `usage limit reached|<time>`, ChatGPT's `resets_at` or `resets_in_seconds`), then the latest `anthropic-ratelimit-unified[-<window>]-reset` of a Claude subscription whose status is `rejected` (such as the 5-hour or 7-day window), then `retry-after`, then on a 429 the `anthropic-ratelimit-*-reset` and `x-ratelimit-reset-*` headers (the window with nothing left, else the latest).
 - `message` and `cause`, as on every `Error`.
 
 ## Rules

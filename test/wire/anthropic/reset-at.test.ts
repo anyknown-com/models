@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { anthropic } from "../../../src/anthropic";
-import { RESETS, RESETS_ISO, after, atNow, respond, textFailureOf } from "../reset-at";
+import { NOW, RESETS, RESETS_ISO, after, atNow, respond, textFailureOf } from "../reset-at";
 
 const RATE_LIMIT = {
   type: "error",
@@ -18,6 +18,22 @@ describe("anthropic resetAt", () => {
     const error = await textFailureOf(anthropic({ key: "k", fetch }));
 
     expect(error).toMatchObject({ kind: "rate-limit", resetAt: after(120) });
+  });
+
+  it("is the reset of a Claude subscription's rejected 5-hour window, not retry-after", async () => {
+    const fiveHourReset = NOW / 1000 + 8000;
+
+    const fetch = respond(429, RATE_LIMIT, {
+      "retry-after": "8003",
+      "anthropic-ratelimit-unified-5h-status": "rejected",
+      "anthropic-ratelimit-unified-5h-reset": String(fiveHourReset),
+      "anthropic-ratelimit-unified-7d-status": "allowed",
+      "anthropic-ratelimit-unified-7d-reset": String(RESETS),
+    });
+
+    const error = await textFailureOf(anthropic({ token: "t", fetch }));
+
+    expect(error).toMatchObject({ kind: "rate-limit", resetAt: after(8000) });
   });
 
   it("is the reset of a Claude subscription's weekly limit", async () => {
